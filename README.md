@@ -16,7 +16,7 @@ Then open <http://localhost:8080>. The app and catalog data are served from this
 
 ## Practice terminal
 
-Open `simulator.html` from the Atlas or navigate to it directly to use the separate terminal-style practice page. It recognizes commands and task phrases from the registered modules, explains matched options, and shows clearly labeled illustrative output. It does not execute shell commands or access system state.
+Open `simulator.html` from the Atlas or navigate to it directly to use the separate terminal-style practice page. It recognizes commands and task phrases from the registered modules, explains matched options, and shows clearly labeled illustrative output. Shell built-ins `cd` and `pwd` update and report a virtual working directory for the practice session. It does not execute shell commands, inspect your filesystem, or access system state.
 
 ## Module layout
 

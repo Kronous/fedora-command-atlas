@@ -4,9 +4,12 @@ const body = document.querySelector('#terminal-body');
 let catalog = new Map();
 let commandHistory = [];
 let historyIndex = 0;
+let currentDirectory = '/home/fedora';
+let previousDirectory = null;
 
 const builtins = new Map([
-  ['pwd', { summary: 'Print the current working directory.', usage: 'pwd [OPTION]...', flags: [], optionDescriptions: {}, examples: ['pwd'] }],
+  ['pwd', { summary: 'Print the current simulated working directory.', usage: 'pwd [OPTION]...', flags: [], optionDescriptions: {}, examples: ['pwd'] }],
+  ['cd', { summary: 'Change the simulated working directory for this practice session.', usage: 'cd [DIRECTORY]', flags: [], optionDescriptions: {}, examples: ['cd Documents'] }],
   ['whoami', { summary: 'Print the effective user name.', usage: 'whoami', flags: [], optionDescriptions: {}, examples: ['whoami'] }],
   ['echo', { summary: 'Print text or variable values to standard output.', usage: 'echo [OPTION]... [STRING]...', flags: [], optionDescriptions: {}, examples: ['echo Hello, Fedora'] }],
   ['date', { summary: 'Display or set the system date and time.', usage: 'date [OPTION]... [+FORMAT]', flags: [], optionDescriptions: {}, examples: ['date'] }],
@@ -56,16 +59,21 @@ function appendSection(parent, title, text, cls='') {
   parent.append(section);
   return section;
 }
-function addPrompt(command) {
+function displayDirectory(path) {
+  if (path === '/home/fedora') return '~';
+  if (path.startsWith('/home/fedora/')) return `~/${path.slice('/home/fedora/'.length)}`;
+  return path;
+}
+function addPrompt(command, path=currentDirectory) {
   const line = el('div', 'entered-command');
-  line.append(el('span', 'prompt-user', 'fedora:~$'));
+  line.append(el('span', 'prompt-user', `fedora:${displayDirectory(path)}$`));
   line.append(el('code', '', command));
   historyEl.append(line);
   return line;
 }
-function addEntry(command, renderer) {
+function addEntry(command, renderer, promptDirectory=currentDirectory) {
   const entry = el('article', 'history-entry');
-  entry.append(addPrompt(command));
+  entry.append(addPrompt(command, promptDirectory));
   const response = el('div', 'response');
   renderer(response);
   entry.append(response);
@@ -133,6 +141,7 @@ function isDestructive(name, args) {
 }
 function previewFor(name, args, raw) {
   if (name === 'echo') return args.join(' ');
+  if (name === 'pwd') return currentDirectory;
   if (name === 'clear') return '';
   if (name === 'ls' && args.includes('-a')) return '.  ..  .bashrc  .config  Desktop  Documents  Downloads  Pictures  [illustrative]';
   if (name === 'systemctl' && args.includes('--failed')) return 'UNIT LOAD ACTIVE SUB DESCRIPTION\n0 loaded units listed.  [illustrative practice output]';
@@ -167,8 +176,8 @@ function handle(commandLine) {
     addEntry(line, response => {
       appendSection(response, 'PRACTICE HELP', 'Enter a command, a command with options, or a plain-language task. The simulator explains it and shows an illustrative output preview.');
       const samples = appendSection(response, 'TRY THESE');
-      samples.append(el('pre', '', 'ls -lah\ndf -h\nchown alex report.txt\nsystemctl --failed\nchange who owns a file\nman gsettings'));
-      appendSection(response, 'BUILT-IN SHORTCUTS', 'help   show this guide\nman NAME   read the Atlas summary for a command\nclear   clear the practice history');
+      samples.append(el('pre', '', 'ls -lah\ncd Documents\npwd\ndf -h\nchown alex report.txt\nsystemctl --failed\nchange who owns a file\nman gsettings'));
+      appendSection(response, 'BUILT-IN SHORTCUTS', 'help   show this guide\nman NAME   read the Atlas summary for a command\ncd DIR   change the simulated directory\npwd   print the simulated directory\nclear   clear the practice history');
     });
     return;
   }
@@ -179,6 +188,28 @@ function handle(commandLine) {
     return;
   }
   const parsed = tokenize(line);
+  if (parsed[0] === 'cd') {
+    const oldDirectory = currentDirectory;
+    if (parsed.length > 2) {
+      addEntry(line, response => appendSection(response, 'CD USAGE', 'Use cd with zero or one directory argument.'), oldDirectory);
+      return;
+    }
+    let destination = parsed[1] || '~';
+    if (destination === '-') destination = previousDirectory || '~';
+    if (destination === '~') destination = '/home/fedora';
+    else if (destination.startsWith('~/')) destination = `/home/fedora/${destination.slice(2)}`;
+    else if (!destination.startsWith('/')) destination = `${currentDirectory}/${destination}`;
+    const parts = [];
+    for (const part of destination.split('/')) {
+      if (!part || part === '.') continue;
+      if (part === '..') parts.pop();
+      else parts.push(part);
+    }
+    currentDirectory = `/${parts.join('/')}`;
+    previousDirectory = oldDirectory;
+    addEntry(line, response => appendSection(response, 'SIMULATED DIRECTORY CHANGED', `The practice prompt is now at ${displayDirectory(currentDirectory)}. No real folders were checked or changed.`), oldDirectory);
+    return;
+  }
   if ((parsed[0] === 'apropos' || parsed[0] === 'what') && parsed.length > 1) {
     const phrase = parsed.slice(1).join(' ').replace(/^does\s+/, '');
     showPhraseMatches(line, phrase);
