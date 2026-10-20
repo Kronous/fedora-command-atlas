@@ -14,6 +14,10 @@ python3 -m http.server 8080 --bind 127.0.0.1
 
 Then open <http://localhost:8080>. The app and catalog data are served from this computer; no internet connection is needed.
 
+## Practice terminal
+
+Open `simulator.html` from the Atlas or navigate to it directly to use the separate terminal-style practice page. It recognizes commands and task phrases from the registered modules, explains matched options, and shows clearly labeled illustrative output. It does not execute shell commands or access system state.
+
 ## Module layout
 
 Each command library lives in its own folder. `modules.json` is the registry the app reads to discover libraries.
