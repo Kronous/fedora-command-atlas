@@ -5,3 +5,14 @@
 .terminal-tools #clear-button,.terminal-tools #reset-button{position:static;right:auto}
 .mode-notice{padding:8px 10px;border:1px solid #28432d;border-radius:4px;color:#a4c9a5;background:#0d1710;font:10px/1.5 var(--mono)}
 @media(max-width:450px){.terminal-bar>span{display:none}}
+
+/* Interactive responses read as shell stdout/stderr; Guide mode keeps its cards. */
+.history-entry[data-mode="interactive"]{gap:2px}
+.history-entry[data-mode="interactive"]>.response,
+.history-entry[data-mode="interactive"] .response{display:block;border:0;margin:0;padding:0;background:transparent;color:#b9dabb}
+.history-entry[data-mode="interactive"] .response-title{display:none}
+.history-entry[data-mode="interactive"] .response p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;color:#b9dabb;font:12px/1.6 var(--mono)}
+.history-entry[data-mode="interactive"] .response .warning p,
+.history-entry[data-mode="interactive"] .response.warning p{color:#f0ca70}
+.history-entry[data-mode="interactive"] .response pre{display:block;margin:0;padding:0;border:0;border-radius:0;background:transparent;color:#b9f4b9;font:12px/1.6 var(--mono);white-space:pre-wrap;overflow-wrap:anywhere}
+.history-entry[data-mode="interactive"] .terminal-output.stderr{color:#f0ca70}

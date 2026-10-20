@@ -154,7 +154,8 @@ function runInteractiveFilesystem(line, tokens) {
       if (!node) { virtualError(response, `cd: ${destination}: No such directory in the virtual filesystem`); return; }
       if (node.type !== 'directory') { virtualError(response, `cd: ${destination}: Not a directory`); return; }
       currentDirectory = target; previousDirectory = old;
-      appendSection(response, 'DIRECTORY CHANGED', `Now at ${displayDirectory(currentDirectory)} in the virtual filesystem.`); return;
+      updatePromptDirectory();
+      return;
     }
     if (name === 'ls' || name === 'dir' || name === 'tree') {
       const all = args.some(x => x.includes('a') && x.startsWith('-')) || args.includes('--all');
@@ -175,7 +176,7 @@ function runInteractiveFilesystem(line, tokens) {
         if (!location) { errors.push(`mkdir: cannot create directory '${path}': No such file or directory`); continue; }
         location.parent.children[location.name] = makeDirectory();
       }
-      errors.length ? virtualError(response, errors.join('\n')) : appendSection(response, 'DIRECTORY CREATED', `Created ${paths.join(', ')} in the virtual filesystem.`);
+      if (errors.length) virtualError(response, errors.join('\n'));
       return;
     }
     if (name === 'touch') {
@@ -189,7 +190,7 @@ function runInteractiveFilesystem(line, tokens) {
         if (!location) { errors.push(`touch: cannot touch '${path}': No such file or directory`); continue; }
         location.parent.children[location.name] = makeFile('');
       }
-      errors.length ? virtualError(response, errors.join('\n')) : appendSection(response, 'FILE CREATED', `Created or updated ${paths.join(', ')} in the virtual filesystem.`);
+      if (errors.length) virtualError(response, errors.join('\n'));
       return;
     }
     if (name === 'cat') {
@@ -220,7 +221,7 @@ function runInteractiveFilesystem(line, tokens) {
         const error = removeVirtualPath(path, name === 'rmdir' ? true : recursive, force);
         if (error) errors.push(error);
       }
-      errors.length ? virtualError(response, errors.join('\n')) : appendSection(response, 'REMOVED FROM SANDBOX', `Removed ${paths.join(', ')} from the virtual filesystem.`);
+      if (errors.length) virtualError(response, errors.join('\n'));
       return;
     }
     if (name === 'cp' || name === 'mv') {
@@ -237,7 +238,6 @@ function runInteractiveFilesystem(line, tokens) {
       if (!location) { virtualError(response, `${name}: cannot create '${destination}': No such directory`); return; }
       location.parent.children[location.name] = cloneVirtualNode(sourceNode);
       if (name === 'mv') removeVirtualPath(sourcePath, true);
-      appendSection(response, name === 'mv' ? 'MOVED IN SANDBOX' : 'COPIED IN SANDBOX', `Simulated ${name} ${source} → ${destination}.`);
       return;
     }
     if (name === 'find') {
@@ -276,7 +276,6 @@ function handleEchoRedirect(line, match) {
     if (!location) { virtualError(response, `bash: ${destination}: No such directory`); return; }
     const prior = existing?.content || '';
     location.parent.children[location.name] = makeFile(match[2] === '>>' ? prior + text + '\n' : text + '\n');
-    appendSection(response, 'FILE WRITTEN IN SANDBOX', `${match[2] === '>>' ? 'Appended to' : 'Wrote'} ${destination} in the virtual filesystem.`);
   }, commandPath);
 }
 function resetVirtualFilesystem() {
@@ -297,6 +296,7 @@ function setSimulatorMode(mode) {
   document.querySelector('.terminal-foot>span:first-child').lastChild.textContent = interactive ? ' SANDBOX READY' : ' READY';
   document.querySelector('.terminal-foot>span:last-child').innerHTML = interactive ? 'IN-MEMORY FILESYSTEM <b>·</b> RESET OR RELOAD TO DISCARD' : 'ENTER TO SUBMIT <b>·</b> ↑ PREVIOUS COMMAND';
   document.querySelector('.welcome>p').textContent = interactive ? 'Interactive mode is active. File changes stay in this temporary virtual filesystem.' : 'Guide mode is active. Switch to Interactive mode to work in an in-memory virtual filesystem.';
+  updatePromptDirectory();
 }
 
 async function loadCatalog() {
@@ -333,6 +333,10 @@ function displayDirectory(path) {
   if (path.startsWith('/home/fedora/')) return `~/${path.slice('/home/fedora/'.length)}`;
   return path;
 }
+function updatePromptDirectory() {
+  const path = document.querySelector('.prompt-line .path');
+  if (path) path.textContent = displayDirectory(currentDirectory);
+}
 function addPrompt(command, path=currentDirectory) {
   const line = el('div', 'entered-command');
   line.append(el('span', 'prompt-user', `fedora:${displayDirectory(path)}$`));
@@ -342,6 +346,7 @@ function addPrompt(command, path=currentDirectory) {
 }
 function addEntry(command, renderer, promptDirectory=currentDirectory) {
   const entry = el('article', 'history-entry');
+  entry.dataset.mode = simulatorMode;
   entry.append(addPrompt(command, promptDirectory));
   const response = el('div', 'response');
   renderer(response);
@@ -350,6 +355,15 @@ function addEntry(command, renderer, promptDirectory=currentDirectory) {
   body.scrollTop = body.scrollHeight;
 }
 function printUsage(response, command) {
+  if (simulatorMode === 'interactive') {
+    const lines = [`${command.name} — ${command.summary}`, `Usage: ${command.usage}`];
+    if (command.flags?.length) {
+      lines.push('', 'Options:');
+      for (const flag of command.flags) lines.push(`  ${flag.padEnd(20)} ${command.optionDescriptions?.[flag] || 'See the command manual on Fedora for this option.'}`);
+    }
+    appendTerminalText(response, lines.join('\n'));
+    return;
+  }
   appendSection(response, 'COMMAND GUIDE', command.summary);
   const usage = appendSection(response, 'USAGE');
   usage.append(el('pre', '', command.usage));
@@ -362,6 +376,10 @@ function printUsage(response, command) {
       row.append(el('span', '', command.optionDescriptions?.[flag] || 'See the command manual on Fedora for this option.'));
     }
   }
+}
+function appendTerminalText(response, text, type='stdout') {
+  response.classList.add('terminal-response');
+  response.append(el('pre', `terminal-output ${type}`, text));
 }
 function words(text) { return text.toLocaleLowerCase().match(/[\p{L}\p{N}]+/gu) || []; }
 function phraseMatches(phrase, terms) {
@@ -428,22 +446,15 @@ function previewFor(name, args, raw) {
   return sample ? `The catalog’s example is: ${sample}\nActual output depends on the files, services, devices, or settings on your Fedora system.` : `Actual output depends on your local Fedora system. Try “${name} --help” to review its available options.`;
 }
 function simulatedCatalogOutput(name, args, raw, command) {
-  if (typeof command.simulation === 'string' && command.simulation.trim()) {
-    return command.simulation.trim();
+  const explicit = typeof command.simulation === 'string' && command.simulation.trim();
+  let output = explicit ? command.simulation.trim() : previewFor(name, args, raw);
+  if (!explicit && /The catalog’s example is:|Actual output depends on your local Fedora system/i.test(output)) {
+    output = `# ${name}: ${command.summary}\n# Arguments: ${args.join(' ') || '(none)'}\n# Exact output depends on this Fedora system's local state.`;
   }
-  const example = command.examples?.[0];
-  const lines = [
-    `[${command.library || command.platform || 'Atlas'} simulation]`,
-    `Command: ${raw}`,
-    `Purpose: ${command.summary}`,
-  ];
-  if (example && args.length === 0) lines.push(`Catalog example: ${example}`);
-  if (isDestructive(name, args)) {
-    lines.push('Requested effect was previewed only. No files, packages, settings, or system state were changed.');
-  } else {
-    lines.push('Output is generated from this library entry. No host files, services, devices, network, or settings were queried.');
-  }
-  return lines.join('\n');
+  const note = isDestructive(name, args)
+    ? '[simulation only — no host files, packages, settings, or system state changed]'
+    : '[simulation only — no host command or host data used]';
+  return `${output}\n\n${note}`;
 }
 function handle(commandLine) {
   const line = commandLine.trim();
@@ -458,11 +469,17 @@ function handle(commandLine) {
   }
   if (line === 'clear') { historyEl.replaceChildren(); return; }
   if (/^(exit|quit)$/.test(line)) {
-    addEntry(line, response => appendSection(response, 'SESSION READY', 'This is a browser practice page. Type another command whenever you like.'));
+    addEntry(line, response => simulatorMode === 'interactive'
+      ? appendTerminalText(response, 'logout')
+      : appendSection(response, 'SESSION READY', 'This is a browser practice page. Type another command whenever you like.'));
     return;
   }
   if (line === 'help') {
     addEntry(line, response => {
+      if (simulatorMode === 'interactive') {
+        appendTerminalText(response, 'Atlas practice shell\nFilesystem commands use the temporary sandbox. Other library commands show safe simulated output.\n\nTry: pwd, ls -la, mkdir Projects/demo, touch file.txt, cat file.txt, help dnf');
+        return;
+      }
       appendSection(response, 'PRACTICE HELP', simulatorMode === 'interactive' ? 'Interactive mode runs filesystem commands against a temporary virtual filesystem. Every command in the loaded libraries is also available: commands without a filesystem handler receive a metadata-based simulation preview. No host shell is run.' : 'Guide mode explains commands, options, and task phrases with illustrative output. Switch to Interactive mode to work in a temporary virtual filesystem.');
       const samples = appendSection(response, 'TRY THESE');
       samples.append(el('pre', '', simulatorMode === 'interactive' ? 'pwd\nls -la\nmkdir Projects/demo\ntouch Projects/demo/notes.txt\necho Hello Fedora > Projects/demo/notes.txt\ncat Projects/demo/notes.txt\nrm Projects/demo/notes.txt' : 'ls -lah\ncd Documents\npwd\ndf -h\nchown alex report.txt\nsystemctl --failed\nchange who owns a file\nman gsettings'));
@@ -503,6 +520,7 @@ function handle(commandLine) {
     }
     currentDirectory = `/${parts.join('/')}`;
     previousDirectory = oldDirectory;
+    updatePromptDirectory();
     addEntry(line, response => appendSection(response, 'SIMULATED DIRECTORY CHANGED', `The practice prompt is now at ${displayDirectory(currentDirectory)}. No real folders were checked or changed.`), oldDirectory);
     return;
   }
@@ -528,6 +546,10 @@ function handle(commandLine) {
   const options = matchedOptions(command, args);
   addEntry(line, response => {
     const interactive = simulatorMode === 'interactive';
+    if (interactive) {
+      appendTerminalText(response, simulatedCatalogOutput(name, args, line, command));
+      return;
+    }
     const section = appendSection(response, interactive ? 'SIMULATED COMMAND' : 'COMMAND RECOGNIZED');
     section.append(el('p', '', `${name} — ${command.summary}`));
     if (elevated) appendSection(response, 'PRIVILEGE NOTE', 'The sudo prefix requests administrator privileges in a real terminal. This simulator does not elevate permissions.');
@@ -550,6 +572,18 @@ function showPhraseMatches(original, phrase) {
   const intent = phrase.toLocaleLowerCase().replace(/^(what does|what is|how do i|how can i|how to|i need to|i want to|command for)\s+/, '').replace(/\s+do\??$/, '').trim();
   const matches = [...catalog.values()].filter(command => phraseMatches(intent, [command.name, command.summary, ...(command.searchTerms || [])].join(' '))).slice(0, 6);
   addEntry(original, response => {
+    if (simulatorMode === 'interactive') {
+      if (!matches.length) {
+        appendTerminalText(response, `bash: ${original}: no command or close task match found`, 'stderr');
+        return;
+      }
+      const lines = matches.flatMap(command => [
+        `${command.name} — ${command.summary}`,
+        ...(command.examples?.[0] ? [`  ${command.examples[0]}`] : []),
+      ]);
+      appendTerminalText(response, lines.join('\n'));
+      return;
+    }
     if (!matches.length) {
       appendSection(response, 'NO CLOSE MATCH', 'I could not match that task phrase to a command in the loaded libraries. Try a shorter phrase or search the Atlas.');
       return;
@@ -582,6 +616,7 @@ document.querySelector('#mode-toggle').addEventListener('click', () => {
 });
 document.querySelector('#reset-button').addEventListener('click', () => {
   resetVirtualFilesystem();
+  updatePromptDirectory();
   historyEl.replaceChildren();
   historyEl.append(el('div', 'mode-notice', 'Sandbox reset. The starter virtual filesystem has been restored.'));
   body.scrollTop = body.scrollHeight;
