@@ -1,6 +1,6 @@
 # Fedora Command Atlas
 
-A standalone, offline-friendly command reference for Fedora 44 with separate Fedora core, KDE Plasma, and GNOME libraries. This project is independent of YardLynx and has no runtime dependencies or external assets.
+A standalone, offline-friendly command reference for Fedora 44 with separate Fedora core, KDE Plasma, and GNOME libraries. It has no runtime dependencies or external assets.
 
 ## Run it
 
