@@ -1,0 +1,1698 @@
+{
+  "id": "fedora",
+  "name": "Fedora 44 Core",
+  "version": "Fedora 44 starter catalog",
+  "commands": [
+    {
+      "name": "dnf",
+      "category": "Packages",
+      "summary": "Install, remove, update, and inspect RPM software using DNF5.",
+      "usage": "dnf [GLOBAL OPTIONS] COMMAND [ARGUMENTS]",
+      "flags": [
+        "--help",
+        "--assumeno",
+        "--refresh",
+        "--repo",
+        "--releasever",
+        "--setopt"
+      ],
+      "examples": [
+        "sudo dnf install ripgrep"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "--help": "Show the help.",
+        "--assumeno": "Automatically answer no for all questions.",
+        "--refresh": "Force refreshing metadata before running the command.",
+        "--repo": "Enable just specified repositories. This is a list option which can be specified multiple times. Accepted values are ids, or a glob of ids.",
+        "--releasever": "Override the value of the distribution release (the releasever variable) in configuration files. This can affect cache paths, values in configuration files and mirrorlist URLs. Whenever re\u2010 leasever is set, releasever_major and releasever_minor will also",
+        "--setopt": "Override a configuration option from the configuration file. The REPO_ID parameter is used to override options for repositories."
+      },
+      "searchTerms": [
+        "install software package",
+        "remove uninstall package",
+        "update upgrade Fedora packages",
+        "search repositories for a package",
+        "list installed packages",
+        "refresh repository metadata",
+        "manage DNF software repositories"
+      ]
+    },
+    {
+      "name": "rpm",
+      "category": "Packages",
+      "summary": "Query, verify, install, and manage local RPM packages.",
+      "usage": "rpm [OPTIONS] PACKAGE",
+      "flags": [
+        "--query",
+        "--install",
+        "--erase",
+        "--verify",
+        "--upgrade",
+        "--force"
+      ],
+      "examples": [
+        "rpm -qf /usr/bin/bash"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "--query": "Query package files or installed package(s).",
+        "--install": "Install new package(s) without considering upgrade scenarios. This is considered special usage, normally installations should be done with --upgrade.",
+        "--erase": "Erase installed packages.",
+        "--verify": "Verify package(s), comparing information about the installed files in the package with information about the files taken from the pack\u2010 age metadata stored in the rpm database. Among other things, verify\u2010 ing compares the size, digest, permissions, type, owner and group of",
+        "--upgrade": "Install or upgrade package(s) to a newer version. Old and/or obso\u2010 leted package(s) are removed after the new package is installed.",
+        "--force": "Same as using --replacepkgs, --replacefiles, and --oldpackage."
+      },
+      "searchTerms": [
+        "query installed package information",
+        "find which package owns a file",
+        "install local RPM package",
+        "verify package files",
+        "remove an RPM package",
+        "inspect package version"
+      ]
+    },
+    {
+      "name": "flatpak",
+      "category": "Packages",
+      "summary": "Manage applications and runtimes distributed as Flatpaks.",
+      "usage": "flatpak [GLOBAL OPTIONS] COMMAND",
+      "flags": [
+        "--user",
+        "--system",
+        "--installation",
+        "--help",
+        "--assumeyes"
+      ],
+      "examples": [
+        "flatpak list --app"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "--user": "Install or operate on this user\u2019s Flatpak installation.",
+        "--system": "Use the system-wide Flatpak installation.",
+        "--installation": "Select a named Flatpak installation.",
+        "--help": "Show help options and exit.",
+        "--assumeyes": "Automatically answer yes to confirmation prompts."
+      },
+      "searchTerms": [
+        "install desktop application",
+        "update or remove Flatpak app",
+        "list installed graphical apps",
+        "run an application sandbox",
+        "manage Flatpak runtimes and remotes"
+      ]
+    },
+    {
+      "name": "systemctl",
+      "category": "System",
+      "summary": "Inspect and control systemd units.",
+      "usage": "systemctl [OPTIONS] COMMAND [UNIT...]",
+      "flags": [
+        "--user",
+        "--system",
+        "--now",
+        "--no-pager",
+        "--failed",
+        "--type"
+      ],
+      "examples": [
+        "systemctl --failed"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "--user": "reload is not performed and the edits will take effect only for subsequent logins (or after a reload is requested in a different way).",
+        "--system": "reload is not performed and the edits will take effect only for subsequent logins (or after a reload is requested in a different way).",
+        "--now": "that in case of unit instance enablement (i.e. enablement of units of the form foo@bar.service), symlinks named the same as instances are created in the unit configuration directory, however they point to the single template unit file they are instantiated from.",
+        "--no-pager": "Do not pipe output into a pager.",
+        "--failed": "As a special case, if one of the arguments is help, a list of allowed values will be printed and the program will exit.",
+        "--type": "The argument is a comma-separated list of unit types such as service and socket. When units are listed with list-units, list-dependencies, show, or status, only units of the specified types will be shown. By default, units of all types are shown."
+      },
+      "searchTerms": [
+        "start stop restart a system service",
+        "enable service at boot",
+        "disable service on startup",
+        "check whether a service is running",
+        "list failed services",
+        "manage background daemons and systemd units"
+      ]
+    },
+    {
+      "name": "journalctl",
+      "category": "System",
+      "summary": "Query logs collected by the systemd journal.",
+      "usage": "journalctl [OPTIONS] [MATCHES...]",
+      "flags": [
+        "-b",
+        "-f",
+        "--since",
+        "--until",
+        "-u",
+        "-p",
+        "--no-pager"
+      ],
+      "examples": [
+        "journalctl -b -p warning"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-b": "Show messages from a specific boot. This will add a match for \"_BOOT_ID=\".",
+        "-f": "Show only the most recent journal entries, and continuously print new entries as they are appended to the journal, until Ctrl-C is hit (or the tool is otherwise terminated).",
+        "--since": "Start showing entries on or newer than the specified date, or on or older than the specified date, respectively. Date specifications should be of the format \"2012-10-30 18:17:16\". If the time part is omitted, \"00:00:00\" is assumed. If only the seconds component is",
+        "--until": "Start showing entries on or newer than the specified date, or on or older than the specified date, respectively. Date specifications should be of the format \"2012-10-30 18:17:16\". If the time part is omitted, \"00:00:00\" is assumed. If only the seconds component is",
+        "-u": "Show messages for the specified systemd unit UNIT (such as a service unit), or for any of the units matched by PATTERN. If a pattern is specified, a list of unit names found in the journal is compared with the specified pattern and all that match are used. For each",
+        "-p": "Filter output by message priorities or priority ranges. Takes either a single numeric or textual log level (i.e. between 0/\"emerg\" and 7/\"debug\"), or a range of numeric/text log levels in the form FROM..TO. The log levels are the usual syslog log levels as",
+        "--no-pager": "When outputting to a tty, lines are colored according to priority: lines of level ERROR and higher are colored red; lines of level WARNING are colored yellow; lines of level NOTICE are highlighted; lines of level"
+      },
+      "searchTerms": [
+        "view system logs",
+        "read boot messages",
+        "find error warning logs",
+        "follow live service logs",
+        "show logs for a systemd service",
+        "debug why a service failed"
+      ]
+    },
+    {
+      "name": "loginctl",
+      "category": "System",
+      "summary": "Inspect and control logind sessions, seats, and users.",
+      "usage": "loginctl [OPTIONS] COMMAND",
+      "flags": [
+        "-a",
+        "--no-legend",
+        "--no-pager",
+        "--json"
+      ],
+      "examples": [
+        "loginctl list-sessions"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-a": "When showing session/user/seat properties, show all properties regardless of whether they are set or not.",
+        "--no-legend": "Do not print the legend, i.e. column headers and the footer with hints.",
+        "--no-pager": "Do not pipe output into a pager.",
+        "--json": "session-status [ID...] Show terse runtime status information about one or more sessions, followed by the most recent log data from the journal. Takes one or"
+      },
+      "searchTerms": [
+        "list logged in users",
+        "inspect desktop login sessions",
+        "end or terminate a user session",
+        "manage logind sessions and seats"
+      ]
+    },
+    {
+      "name": "hostnamectl",
+      "category": "System",
+      "summary": "View or change the system hostname and related metadata.",
+      "usage": "hostnamectl [OPTIONS] COMMAND",
+      "flags": [
+        "--static",
+        "--transient",
+        "--pretty",
+        "--json"
+      ],
+      "examples": [
+        "hostnamectl status"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "--static": "hostnames are changed. If the pretty hostname is being set, and static or transient are being set as well, the specified hostname will be simplified in regards to the character set used before the latter are updated. This is done by removing special characters and",
+        "--transient": "hostnames are changed. If the pretty hostname is being set, and static or transient are being set as well, the specified hostname will be simplified in regards to the character set used before the latter are updated. This is done by removing special characters and",
+        "--pretty": "hostnames are changed. If the pretty hostname is being set, and static or transient are being set as well, the specified hostname will be simplified in regards to the character set used before the latter are updated. This is done by removing special characters and",
+        "--json": "Shows output formatted as JSON. Expects one of \"short\" (for the shortest possible output without any redundant whitespace or line breaks), \"pretty\" (for a pretty version of the same, with indentation and line breaks) or \"off\" (to turn off JSON output, the"
+      },
+      "searchTerms": [
+        "change computer hostname",
+        "show machine name",
+        "set a new host name"
+      ]
+    },
+    {
+      "name": "timedatectl",
+      "category": "System",
+      "summary": "Inspect and configure the system clock and time zone.",
+      "usage": "timedatectl [OPTIONS] COMMAND",
+      "flags": [
+        "--no-pager",
+        "--adjust-system-clock",
+        "--monitor"
+      ],
+      "examples": [
+        "timedatectl list-timezones"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "--no-pager": "Do not pipe output into a pager.",
+        "--adjust-system-clock": "change the 3rd line of /etc/adjtime, as documented in hwclock(8).",
+        "--monitor": "If timesync-status is invoked and this option is passed, then timedatectl monitors the status of systemd-timesyncd.service(8) and updates the outputs. Use Ctrl+C to terminate the monitoring."
+      },
+      "searchTerms": [
+        "change system time zone",
+        "list available time zones",
+        "check date time and clock synchronization",
+        "set system clock"
+      ]
+    },
+    {
+      "name": "ls",
+      "category": "Files",
+      "summary": "List directory contents.",
+      "usage": "ls [OPTION]... [FILE]...",
+      "flags": [
+        "-a",
+        "-l",
+        "-h",
+        "-R",
+        "-t",
+        "-S",
+        "--color"
+      ],
+      "examples": [
+        "ls -lah ~/Downloads"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-a": "do not ignore entries starting with.",
+        "-l": "Use long format to show permissions, owner, size, and modification time.",
+        "-h": "with -l and -s, print sizes like 1K 234M 2G etc.",
+        "-R": "list subdirectories recursively",
+        "-t": "Sort entries by modification time, newest first.",
+        "-S": "Sort entries by file size, largest first.",
+        "--color": "color the output WHEN; more info below"
+      },
+      "searchTerms": [
+        "list files in a folder",
+        "show hidden files",
+        "see file permissions and details",
+        "sort files by size or date",
+        "browse directory contents"
+      ]
+    },
+    {
+      "name": "cp",
+      "category": "Files",
+      "summary": "Copy files and directories.",
+      "usage": "cp [OPTION]... SOURCE DEST",
+      "flags": [
+        "-a",
+        "-r",
+        "-i",
+        "-n",
+        "-u",
+        "-v"
+      ],
+      "examples": [
+        "cp -a project/ backup/"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-a": "same as -dR --preserve=all",
+        "-r": "copy directories recursively",
+        "-i": "prompt before overwrite (overrides a previous -n option)",
+        "-n": "(deprecated) silently skip existing files. See also --update",
+        "-u": "Copy only when the source is newer than the destination or the destination is missing.",
+        "-v": "explain what is being done"
+      },
+      "searchTerms": [
+        "copy a file or folder",
+        "duplicate files and directories",
+        "make a backup copy",
+        "copy folders recursively"
+      ]
+    },
+    {
+      "name": "mv",
+      "category": "Files",
+      "summary": "Move or rename files and directories.",
+      "usage": "mv [OPTION]... SOURCE DEST",
+      "flags": [
+        "-i",
+        "-n",
+        "-f",
+        "-v",
+        "-t"
+      ],
+      "examples": [
+        "mv draft.txt final.txt"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-i": "prompt before overwrite",
+        "-n": "do not overwrite an existing file",
+        "-f": "do not prompt before overwriting",
+        "-v": "explain what is being done",
+        "-t": "move all SOURCE arguments into DIRECTORY"
+      },
+      "searchTerms": [
+        "move a file to another folder",
+        "rename a file or directory",
+        "relocate files"
+      ]
+    },
+    {
+      "name": "rm",
+      "category": "Files",
+      "summary": "Remove files or directories.",
+      "usage": "rm [OPTION]... FILE...",
+      "flags": [
+        "-i",
+        "-I",
+        "-f",
+        "-r",
+        "-d",
+        "-v"
+      ],
+      "examples": [
+        "rm -i old-report.txt"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-i": "Prompt before removing each file.",
+        "-I": "ing recursively; less intrusive than -i, while still giving pro\u2010 tection against most mistakes",
+        "-f": "ignore nonexistent files and arguments, never prompt",
+        "-r": "remove directories and their contents recursively",
+        "-d": "remove empty directories",
+        "-v": "explain what is being done"
+      },
+      "searchTerms": [
+        "delete remove files",
+        "permanently remove a directory",
+        "clean up unwanted files",
+        "erase a folder and its contents"
+      ]
+    },
+    {
+      "name": "mkdir",
+      "category": "Files",
+      "summary": "Create directories.",
+      "usage": "mkdir [OPTION]... DIRECTORY...",
+      "flags": [
+        "-p",
+        "-m",
+        "-v"
+      ],
+      "examples": [
+        "mkdir -p ~/Projects/atlas/data"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-p": "no error if existing, make parent directories as needed, with their file modes unaffected by any -m option",
+        "-m": "set file mode (as in chmod), not a=rwx - umask",
+        "-v": "print a message for each created directory"
+      },
+      "searchTerms": [
+        "create a new folder",
+        "make nested directories",
+        "create a directory path"
+      ]
+    },
+    {
+      "name": "find",
+      "category": "Files",
+      "summary": "Search a directory tree by name, type, time, or other tests.",
+      "usage": "find [PATH...] [EXPRESSION]",
+      "flags": [
+        "-name",
+        "-iname",
+        "-type",
+        "-mtime",
+        "-maxdepth",
+        "-exec"
+      ],
+      "examples": [
+        "find . -type f -name '*.log'"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-name": "2 Any -type or -xtype tests are performed after any tests based only on the names of files, but before any tests that require information from the inode. On many modern",
+        "-iname": "Like -name, but the match is case insensitive. For example, the patterns `fo*' and `F??' match the file names `Foo', `FOO', `foo', `fOo', etc. The pattern `*foo*` will also match a file called '.foobar'.",
+        "-type": "File is of type c:",
+        "-mtime": "ago. This option only affects tests which appear later on the command line.",
+        "-maxdepth": "If more than one of -H, -L and -P is specified, each overrides the oth\u2010 ers; the last one appearing on the command line takes effect. Since it is the default, the -P option should be considered to be in effect un\u2010",
+        "-exec": "Execute command; true if 0 status is returned. All following ar\u2010 guments to find are taken to be arguments to the command until an argument consisting of `;' is encountered. The string `{}' is replaced by the current file name being processed everywhere it"
+      },
+      "searchTerms": [
+        "search for a file by name",
+        "find files modified recently",
+        "locate files in folders recursively",
+        "search by file type or size"
+      ]
+    },
+    {
+      "name": "stat",
+      "category": "Files",
+      "summary": "Display file or filesystem status.",
+      "usage": "stat [OPTION]... FILE...",
+      "flags": [
+        "-c",
+        "--format",
+        "--terse",
+        "--file-system"
+      ],
+      "examples": [
+        "stat -c '%A %U %G %n' script.sh"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-c": "use the specified FORMAT instead of the default; output a newline after each use of FORMAT",
+        "--format": "use the specified FORMAT instead of the default; output a newline after each use of FORMAT",
+        "--terse": "print the information in terse form",
+        "--file-system": "display file system status instead of file status"
+      },
+      "searchTerms": [
+        "show file metadata",
+        "inspect permissions owner and timestamps",
+        "get file status details"
+      ]
+    },
+    {
+      "name": "du",
+      "category": "Files",
+      "summary": "Estimate file and directory space usage.",
+      "usage": "du [OPTION]... [FILE]...",
+      "flags": [
+        "-h",
+        "-s",
+        "-a",
+        "--max-depth",
+        "--exclude"
+      ],
+      "examples": [
+        "du -h --max-depth=1 ~/Documents"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-h": "print sizes in human readable format (e.g., 1K 234M 2G)",
+        "-s": "display only a total for each argument",
+        "-a": "write counts for all files, not just directories",
+        "--max-depth": "print the total for a directory (or file, with --all) only if it is N or fewer levels below the command line argument;",
+        "--exclude": "exclude files that match PATTERN"
+      },
+      "searchTerms": [
+        "find which folders use disk space",
+        "show directory sizes",
+        "check how much storage files consume"
+      ]
+    },
+    {
+      "name": "df",
+      "category": "Files",
+      "summary": "Report available and used filesystem space.",
+      "usage": "df [OPTION]... [FILE]...",
+      "flags": [
+        "-h",
+        "-T",
+        "-i",
+        "--output",
+        "--total"
+      ],
+      "examples": [
+        "df -hT"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-h": "print sizes in powers of 1024 (e.g., 1023M)",
+        "-T": "print file system type",
+        "-i": "list inode information instead of block usage",
+        "--output": "use the output format defined by FIELD_LIST, or print all fields if FIELD_LIST is omitted",
+        "--total": "elide all entries insignificant to available space, and produce a grand total"
+      },
+      "searchTerms": [
+        "check free disk space",
+        "see filesystem capacity",
+        "show available storage on mounted drives"
+      ]
+    },
+    {
+      "name": "mount",
+      "category": "Storage",
+      "summary": "Show mounted filesystems or attach a filesystem.",
+      "usage": "mount [OPTIONS] [SOURCE] [DIRECTORY]",
+      "flags": [
+        "--bind",
+        "--read-only",
+        "--types",
+        "--options",
+        "--all"
+      ],
+      "examples": [
+        "findmnt --target /home"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "--bind": "Remount a subtree somewhere else (so that its contents are available in both places). See above, under Bind mount operation.",
+        "--read-only": "Mount the filesystem read-only. A synonym is -o ro.",
+        "--types": "The argument following the -t is used to indicate the filesystem type. The filesystem types which are currently supported depend on the running kernel. See /proc/filesystems and /lib/modules/$(uname",
+        "--options": "Use the specified mount options. The opts argument is a comma-separated list. For example:",
+        "--all": "Mount all filesystems (of the given types) mentioned in fstab (except for those whose line contains the noauto keyword). The filesystems are mounted following their order in fstab. The mount command compares filesystem source, target (and fs root for bind"
+      },
+      "searchTerms": [
+        "mount a disk or filesystem",
+        "show mounted drives",
+        "attach storage device to a directory"
+      ]
+    },
+    {
+      "name": "lsblk",
+      "category": "Storage",
+      "summary": "List block devices and their relationships.",
+      "usage": "lsblk [OPTIONS] [DEVICE...]",
+      "flags": [
+        "-f",
+        "-o",
+        "-p",
+        "-J",
+        "--fs",
+        "--json"
+      ],
+      "examples": [
+        "lsblk -f"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-f": "Output info about filesystems. This option is equivalent to -o NAME,FSTYPE,FSVER,LABEL,UUID,FSAVAIL,FSUSE%,MOUNTPOINTS. The authoritative information about filesystems and raids is provided by the blkid(8) command.",
+        "-o": "Specify which output columns to print. Use --list-columns to get a list of all supported columns. The columns may affect tree-like output. The default is to use tree for the column 'NAME' (see also",
+        "-p": "Print full device paths.",
+        "-J": "Use JSON output format. It\u2019s strongly recommended to use --output and also --tree if necessary. Note that children[] is used only if NAME column or --tree is used.",
+        "--fs": "Output info about filesystems. This option is equivalent to -o NAME,FSTYPE,FSVER,LABEL,UUID,FSAVAIL,FSUSE%,MOUNTPOINTS. The authoritative information about filesystems and raids is provided by the blkid(8) command.",
+        "--json": "Use JSON output format. It\u2019s strongly recommended to use --output and also --tree if necessary. Note that children[] is used only if NAME column or --tree is used."
+      },
+      "searchTerms": [
+        "list disks partitions and block devices",
+        "see drive layout",
+        "show filesystem and storage devices"
+      ]
+    },
+    {
+      "name": "blkid",
+      "category": "Storage",
+      "summary": "Locate or print block-device attributes.",
+      "usage": "blkid [OPTIONS] [DEVICE...]",
+      "flags": [
+        "-o",
+        "-s",
+        "-t",
+        "-p",
+        "--probe"
+      ],
+      "examples": [
+        "sudo blkid"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-o": "Use the specified output format. Note that the order of variables and devices is not fixed. See also option -s. The format parameter may be:",
+        "-s": "For each (specified) device, show only the tags that match tag. It is possible to specify multiple --match-tag options. If no tag is specified, then all tokens are shown for all (specified) devices. In order to just refresh the cache without showing any tokens, use",
+        "-t": "Search for block devices with tokens named NAME that have the value value, and display any devices which are found. Common values for NAME include TYPE, LABEL, and UUID. If there are no devices specified on the command line, all block devices will be searched;",
+        "-p": "Switch to low-level superblock probing mode (bypassing the cache).",
+        "--probe": "Switch to low-level superblock probing mode (bypassing the cache)."
+      },
+      "searchTerms": [
+        "find filesystem UUID",
+        "show disk partition labels and types",
+        "identify a block device filesystem"
+      ]
+    },
+    {
+      "name": "ip",
+      "category": "Network",
+      "summary": "Show or manage interfaces, addresses, routes, and neighbors.",
+      "usage": "ip [OPTIONS] OBJECT COMMAND",
+      "flags": [
+        "-br",
+        "-4",
+        "-6",
+        "-s",
+        "-d",
+        "-j"
+      ],
+      "examples": [
+        "ip -br address"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-br": "Print only basic information in a tabular format for better read\u2010 ability. This option is currently only supported by ip addr show, ip link show & ip neigh show commands.",
+        "-4": "Use IPv4 addresses only.",
+        "-6": "line] | -rc[vbuf] [size] | -t[imestamp] | -ts[hort] | -n[etns] name | -N[umeric] | -a[ll] | -c[olor] | -br[ief] | -j[son] |",
+        "-s": "Output more information. If the option appears twice or more, the amount of information increases. As a rule, the information is statistics or some time values.",
+        "-d": "Output more detailed information.",
+        "-j": "Output results in JavaScript Object Notation (JSON)."
+      },
+      "searchTerms": [
+        "show IP address and network interfaces",
+        "configure network routes",
+        "inspect local network connection",
+        "show IPv4 or IPv6 addresses"
+      ]
+    },
+    {
+      "name": "ss",
+      "category": "Network",
+      "summary": "Inspect sockets and listening network services.",
+      "usage": "ss [OPTIONS] [FILTER]",
+      "flags": [
+        "-t",
+        "-u",
+        "-l",
+        "-n",
+        "-p",
+        "-a"
+      ],
+      "examples": [
+        "ss -tulpn"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-t": "Display TCP sockets.",
+        "-u": "Display UDP sockets.",
+        "-l": "Display only listening sockets (these are omitted by default).",
+        "-n": "Do not try to resolve service names. Show exact bandwidth values, instead of human-readable.",
+        "-p": "Show process using socket.",
+        "-a": "Display both listening and non-listening (for TCP this means es\u2010 tablished connections) sockets."
+      },
+      "searchTerms": [
+        "see open network ports",
+        "list listening services and sockets",
+        "find what process uses a port",
+        "inspect TCP UDP connections"
+      ]
+    },
+    {
+      "name": "nmcli",
+      "category": "Network",
+      "summary": "Control NetworkManager connections and devices.",
+      "usage": "nmcli [OPTIONS] OBJECT COMMAND",
+      "flags": [
+        "-t",
+        "-f",
+        "-p",
+        "-c",
+        "--wait",
+        "--ask"
+      ],
+      "examples": [
+        "nmcli connection show"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-t": "Output is terse. This mode is designed and suitable for computer (script) processing.",
+        "-f": "This option is used to specify what fields (column names) should be printed. Valid field names differ for specific commands. List available fields by providing an invalid value to the --fields option. all is used to print all valid field values of the command.",
+        "-p": "Output is pretty. This causes nmcli to produce easily readable outputs for humans, i.e. values are aligned, headers are printed, etc.",
+        "-c": "This option controls color output (using terminal escape sequences). yes enables colors, no disables them, auto only produces colors when standard output is directed to a terminal. The default value is auto.",
+        "--wait": "This option sets a timeout period for which nmcli will wait for NetworkManager to finish operations. It is especially useful for commands that may take a longer time to complete, e.g. connection activation.",
+        "--ask": "When using this option nmcli will stop and ask for any missing required arguments, so do not use this option for non-interactive purposes like scripts. This option controls, for example, whether you will be prompted for a password if it is required for connecting"
+      },
+      "searchTerms": [
+        "connect to Wi-Fi from terminal",
+        "list saved network connections",
+        "show network adapter status",
+        "manage NetworkManager network settings"
+      ]
+    },
+    {
+      "name": "ping",
+      "category": "Network",
+      "summary": "Send ICMP echo requests to a host.",
+      "usage": "ping [OPTIONS] DESTINATION",
+      "flags": [
+        "-c",
+        "-i",
+        "-W",
+        "-4",
+        "-6",
+        "-n"
+      ],
+      "examples": [
+        "ping -c 4 fedoraproject.org"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-c": "Stop after sending count ECHO_REQUEST packets. With deadline option, ping waits for count ECHO_REPLY packets, until the timeout expires.",
+        "-i": "Wait interval seconds between sending each packet. Real number allowed with dot as a decimal separator (regardless locale setup). The default is to wait for one second between each packet normally, or not to wait in flood mode. Only super-user may set interval to",
+        "-W": "Time to wait for a response, in seconds. The option affects only timeout in absence of any responses, otherwise ping waits for two RTTs. Real number allowed with dot as a decimal separator (regardless locale setup). 0 means infinite timeout.",
+        "-4": "Use IPv4 only.",
+        "-6": "Use IPv6 only.",
+        "-n": "Numeric output only. No attempt will be made to lookup symbolic names for host addresses (no reverse DNS resolution). This is the default for numeric destination or -f option. Override previously defined -H option. See also IPUTILS_PING_PTR_LOOKUP environment"
+      },
+      "searchTerms": [
+        "test whether a server is reachable",
+        "check network connectivity",
+        "measure network response time"
+      ]
+    },
+    {
+      "name": "curl",
+      "category": "Network",
+      "summary": "Transfer data to or from URLs using supported protocols.",
+      "usage": "curl [OPTIONS] URL",
+      "flags": [
+        "-I",
+        "-L",
+        "-o",
+        "-O",
+        "-d",
+        "-H",
+        "-f",
+        "-sS"
+      ],
+      "examples": [
+        "curl -I https://fedoraproject.org"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-I": "(HTTP FTP FILE) Fetch the headers only. HTTP-servers feature the command HEAD which this uses to get nothing but the header of a document. When used on an FTP or FILE URL, curl displays the file size and last modification time only.",
+        "-L": "(HTTP) If the server reports that the requested page has moved to a different location (indicated with a Location: header and a 3XX response code), this option makes curl redo the request to the new place. If used together with --show-headers or --head, head\u2010",
+        "-o": "Write output to the given file instead of stdout. If you are us\u2010 ing globbing to fetch multiple documents, you should quote the URL and you can use \"#\" followed by a number in the filename. That variable is then replaced with the current string for the",
+        "-O": "referer = \"http://nowhereatall.example.com/\" # --- End of example file ---",
+        "-d": "(HTTP MQTT) Send the specified data in a POST request to the HTTP server, in the same way that a browser does when a user has filled in an HTML form and presses the submit button. This option makes curl pass the data to the server using the content-type ap\u2010",
+        "-H": "(HTTP IMAP SMTP) Extra header to include in information sent. When used within an HTTP request, it is added to the regular re\u2010 quest headers.",
+        "-f": "(HTTP) Fail with error code 22 and with no response body output at all for HTTP transfers returning HTTP response codes at 400 or greater.",
+        "-sS": "Silent mode: suppress progress and errors, then show errors again."
+      },
+      "searchTerms": [
+        "download a file from a URL",
+        "test a website or web API",
+        "make an HTTP request",
+        "fetch headers from a website"
+      ]
+    },
+    {
+      "name": "ssh",
+      "category": "Network",
+      "summary": "Connect securely to a remote host.",
+      "usage": "ssh [OPTIONS] [USER@]HOST [COMMAND]",
+      "flags": [
+        "-p",
+        "-i",
+        "-J",
+        "-L",
+        "-v",
+        "-X"
+      ],
+      "examples": [
+        "ssh -i ~/.ssh/id_ed25519 user@server"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-p": "Port to connect to on the remote host. This can be specified on a per-host basis in the configuration file.",
+        "-i": "Selects a file from which the identity (private key) for public key authentication is read. You can also specify a public key file to use the corresponding private key that is loaded in ssh-agent(1) when the private key file is not present locally.",
+        "-J": "Connect to the target host by first making an ssh connection to the jump host described by destination and then establishing a TCP forwarding to the ultimate destination from there. Multiple jump hops may be specified separated by comma characters. IPv6",
+        "-L": "Specifies that connections to the given TCP port or Unix socket on the local (client) host are to be forwarded to the given host and port, or Unix socket, on the remote side. This works by al\u2010 locating a socket to listen to either a TCP port on the local",
+        "-v": "progress. This is helpful in debugging connection, authentica\u2010 tion, and configuration problems. Multiple -v options increase the verbosity. The maximum is 3.",
+        "-X": "host basis in a configuration file."
+      },
+      "searchTerms": [
+        "connect to another computer remotely",
+        "open a secure remote shell",
+        "run a command on a server",
+        "remote login over SSH"
+      ]
+    },
+    {
+      "name": "firewall-cmd",
+      "category": "Network",
+      "summary": "Inspect and configure firewalld zones and rules.",
+      "usage": "firewall-cmd [OPTIONS] COMMAND",
+      "flags": [
+        "--state",
+        "--get-active-zones",
+        "--add-service",
+        "--permanent",
+        "--reload"
+      ],
+      "examples": [
+        "sudo firewall-cmd --get-active-zones"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "--state": "Check whether the firewalld daemon is active (i.e. running). Returns an exit code 0 if it is active, RUNNING_BUT_FAILED if failure occurred on startup, NOT_RUNNING otherwise. See the section called \u201cEXIT CODES\u201d. This will also print the state to STDOUT.",
+        "--get-active-zones": "Print currently active zones altogether with interfaces and sources used in these zones. Active zones are zones, that have a binding to an interface or source. The output format is:",
+        "--add-service": "Add a service. This option can be specified multiple times. If a timeout is supplied, the rule will be active for the specified amount of time and will be removed automatically afterwards. timeval is either a number (of seconds) or number followed by one of",
+        "--permanent": "The permanent option --permanent can be used to set options permanently. These changes are not effective immediately, only after service restart/reload or system reboot. Without the --permanent option, a change will only be part of the runtime configuration.",
+        "--reload": "Reload firewall rules and keep state information. Current permanent configuration will become new runtime configuration, i.e. all runtime only changes done until reload are lost with reload if they have not been also in permanent configuration."
+      },
+      "searchTerms": [
+        "open a firewall port",
+        "allow a service through firewall",
+        "check active firewall zones",
+        "configure firewalld rules"
+      ]
+    },
+    {
+      "name": "ps",
+      "category": "Processes",
+      "summary": "Report running processes.",
+      "usage": "ps [OPTIONS]",
+      "flags": [
+        "-e",
+        "-f",
+        "-u",
+        "-p",
+        "--forest"
+      ],
+      "examples": [
+        "ps -ef --forest"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-e": "g Really all, even session leaders. This flag is obsolete and may be discontinued in a future release. It is normally implied by the a flag, and is only useful when operating in the sunos4",
+        "-f": "other Unix-style options to add additional columns. It also causes the command arguments to be printed. When used with -L, the NLWP (number of threads) and LWP (thread ID) columns will be added. See the c option, the format keyword args, and the format",
+        "-u": "Select by effective user ID (EUID) or name. This selects the processes whose effective user name or ID is in userlist.",
+        "-p": "Select by PID. This selects the processes whose process ID numbers appear in pidlist. Identical to p and --pid.",
+        "--forest": "ASCII art process tree."
+      },
+      "searchTerms": [
+        "list running processes",
+        "see programs running on the computer",
+        "inspect process tree and command lines"
+      ]
+    },
+    {
+      "name": "top",
+      "category": "Processes",
+      "summary": "Interactively monitor processes and system load.",
+      "usage": "top [OPTIONS]",
+      "flags": [
+        "-b",
+        "-n",
+        "-p",
+        "-u",
+        "-H"
+      ],
+      "examples": [
+        "top -b -n 1"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-b": "Starts top in Batch mode, which could be useful for sending output from top to other programs or to a file. In this mode, top will not accept input and runs until the iterations limit you've set with the \u2018-n\u2019 command-line option or until killed.",
+        "-n": "Specifies the maximum number of iterations, or frames, top should produce before ending.",
+        "-p": "Monitor only the specified process ID or IDs.",
+        "-u": "Display only processes with a user id or user name matching that given. This option matches on the effective user id only.",
+        "-H": "Instructs top to display individual threads. Without this command-line option a summation of all threads in each process is shown. Later this can be changed with the \u2018H\u2019 interactive command."
+      },
+      "searchTerms": [
+        "monitor CPU and memory usage",
+        "see resource intensive processes",
+        "watch system processes live"
+      ]
+    },
+    {
+      "name": "kill",
+      "category": "Processes",
+      "summary": "Send a signal to a process.",
+      "usage": "kill [-SIGNAL] PID...",
+      "flags": [
+        "-l",
+        "-s",
+        "-TERM",
+        "-KILL"
+      ],
+      "examples": [
+        "kill -TERM 1234"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-l": "Print a list of signal names, convert the given signal number to a name, or convert the given signal mask to names. The signals can be found in /usr/include/linux/signal.h.",
+        "-s": "The signal to send. It may be given as a name or a number.",
+        "-TERM": "Send SIGTERM (15), asking the process to exit cleanly.",
+        "-KILL": "Send SIGKILL (9), forcing the kernel to stop the process immediately."
+      },
+      "searchTerms": [
+        "stop or terminate a running process",
+        "send a signal to a process",
+        "force quit a program by process ID"
+      ]
+    },
+    {
+      "name": "pgrep",
+      "category": "Processes",
+      "summary": "Find process IDs by name or attributes.",
+      "usage": "pgrep [OPTIONS] PATTERN",
+      "flags": [
+        "-a",
+        "-f",
+        "-u",
+        "-x",
+        "-l"
+      ],
+      "examples": [
+        "pgrep -af firefox"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-a": "List the full command line as well as the process ID. (pgrep only.)",
+        "-f": "The pattern is normally only matched against the process name. When -f is set, the full command line is used.",
+        "-u": "Only match processes whose effective user ID is listed. Either the numerical or symbolical value may be used.",
+        "-x": "Only match processes whose names (or command lines if -f is spec\u2010 ified) exactly match the pattern.",
+        "-l": "List the process name as well as the process ID. (pgrep only.)"
+      },
+      "searchTerms": [
+        "find process ID by program name",
+        "search running processes",
+        "find and show matching process commands"
+      ]
+    },
+    {
+      "name": "free",
+      "category": "System",
+      "summary": "Report memory and swap usage.",
+      "usage": "free [OPTIONS]",
+      "flags": [
+        "-b",
+        "-h",
+        "-m",
+        "-g",
+        "-s",
+        "-w"
+      ],
+      "examples": [
+        "free -h"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-b": "Display the amount of memory in bytes.",
+        "-h": "Show all output fields automatically scaled to shortest three digit unit and display the units of print out. Following units are used.",
+        "-m": "Display the amount of memory in mebibytes.",
+        "-g": "Display the amount of memory in gibibytes.",
+        "-s": "Continuously display the result delay seconds apart. You may actually specify any floating point number for delay using either. or, for decimal point. usleep(3) is used for microsecond res\u2010 olution delay times.",
+        "-w": "Switch to the wide mode. The wide mode produces lines longer than 80 characters. In this mode buffers and cache are reported in two separate columns."
+      },
+      "searchTerms": [
+        "check available RAM and memory usage",
+        "see used memory and swap",
+        "show system memory capacity"
+      ]
+    },
+    {
+      "name": "uname",
+      "category": "System",
+      "summary": "Print kernel and system information.",
+      "usage": "uname [OPTION]...",
+      "flags": [
+        "-a",
+        "-r",
+        "-m",
+        "-n",
+        "-s",
+        "-v"
+      ],
+      "examples": [
+        "uname -a"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-a": "print all information, in the following order, except omit -p and",
+        "-r": "print the kernel release",
+        "-m": "print the machine hardware name",
+        "-n": "print the network node hostname",
+        "-s": "print the kernel name",
+        "-v": "print the kernel version"
+      },
+      "searchTerms": [
+        "show Linux kernel version",
+        "identify operating system architecture",
+        "display system information"
+      ]
+    },
+    {
+      "name": "lscpu",
+      "category": "System",
+      "summary": "Display CPU architecture information.",
+      "usage": "lscpu [OPTIONS]",
+      "flags": [
+        "-a",
+        "-b",
+        "-c",
+        "-e",
+        "-J",
+        "-p"
+      ],
+      "examples": [
+        "lscpu"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-a": "Include lines for online and offline CPUs in the output (default for",
+        "-b": "Limit the output to online CPUs (default for -p). This option may only be specified together with option -e or -p.",
+        "-c": "Limit the output to offline CPUs. This option may only be specified together with option -e or -p.",
+        "-e": "Display the CPU information in human-readable format.",
+        "-J": "Use JSON output format for the default summary or extended output (see --extended). For backward compatibility, JSON output follows the default summary behavior for non-terminals (e.g., pipes) where subsections are missing. See also --hierarchic.",
+        "-p": "Optimize the command output for easy parsing."
+      },
+      "searchTerms": [
+        "show processor CPU details",
+        "check number of CPU cores",
+        "view processor architecture"
+      ]
+    },
+    {
+      "name": "lsmem",
+      "category": "System",
+      "summary": "List the ranges of available memory.",
+      "usage": "lsmem [OPTIONS]",
+      "flags": [
+        "-a",
+        "-b",
+        "-J",
+        "-o",
+        "-S"
+      ],
+      "examples": [
+        "lsmem"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-a": "List each individual memory block, instead of combining memory blocks with similar attributes.",
+        "-b": "Print the sizes in bytes rather than in a human-readable format.",
+        "-J": "Use JSON output format.",
+        "-o": "Specify which output columns to print. Use --help to get a list of all supported columns. The default list of columns may be extended if list is specified in the format +list (e.g., lsmem -o +NODE).",
+        "-S": "Specify which columns (attributes) use to split memory blocks to ranges. The supported columns are STATE, REMOVABLE, NODE and ZONES, or \"none\". The other columns are silently ignored. For more details see DESCRIPTION above."
+      },
+      "searchTerms": [
+        "show installed system memory ranges",
+        "inspect memory blocks"
+      ]
+    },
+    {
+      "name": "lsusb",
+      "category": "Hardware",
+      "summary": "List USB devices attached to the system.",
+      "usage": "lsusb [OPTIONS]",
+      "flags": [
+        "-t",
+        "-v",
+        "-s",
+        "-d"
+      ],
+      "examples": [
+        "lsusb -t"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-t": "Tells lsusb to dump the physical USB device hierarchy as a tree. Verbosity can be increased twice with the -v option.",
+        "-v": "Tells lsusb to be verbose and display detailed information about the devices shown. This includes configuration descriptors for the device's current speed. Class descriptors will be shown, when available, for USB device classes including hub, audio, HID,",
+        "-s": "Show only devices in specified bus and/or devnum. Both IDs are given in decimal and may be omitted.",
+        "-d": "Show only devices with the specified vendor and product ID. Both IDs are given in hexadecimal."
+      },
+      "searchTerms": [
+        "list connected USB devices",
+        "identify a USB device"
+      ]
+    },
+    {
+      "name": "lspci",
+      "category": "Hardware",
+      "summary": "List PCI devices and their details.",
+      "usage": "lspci [OPTIONS]",
+      "flags": [
+        "-k",
+        "-nn",
+        "-v",
+        "-s",
+        "-t"
+      ],
+      "examples": [
+        "lspci -nnk"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-k": "capable of handling it. Turned on by default when -v is given in the normal mode of output. (Currently works only on Linux with kernel 2.6 or newer.)",
+        "-nn": "Show numeric PCI vendor and device IDs alongside names.",
+        "-v": "Show verbose details for each PCI device.",
+        "-s": "Show only devices in the specified domain (in case your machine has several host bridges, they can either share a common bus num\u2010 ber space or each of them can address a PCI domain of its own; domains are numbered from 0 to ffff), bus (0 to ff), device (0 to",
+        "-t": "and connections between them."
+      },
+      "searchTerms": [
+        "list PCI hardware devices",
+        "identify graphics card and network adapter",
+        "show PCI driver in use"
+      ]
+    },
+    {
+      "name": "sudo",
+      "category": "Security",
+      "summary": "Run a command with another user's privileges, usually root.",
+      "usage": "sudo [OPTIONS] COMMAND",
+      "flags": [
+        "-u",
+        "-i",
+        "-s",
+        "-k",
+        "-v",
+        "-l"
+      ],
+      "examples": [
+        "sudo dnf upgrade"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-u": "Run the command as a user other than the default target user (usually root). The user may be either a user name or a numeric user-ID (UID) prefixed with the \u2018#\u2019 character (e.g., \u2018#0\u2019 for UID 0). When running commands as a UID, many shells require",
+        "-i": "Run the shell specified by the target user's password database entry as a login shell. This means that login-specific resource files such as.profile,.bash_profile, or.login will be read by the shell. If a command is specified, it is passed to the shell",
+        "-s": "Run the shell specified by the SHELL environment variable if it is set or the shell specified by the invoking user's password database entry. If a command is specified, it is passed to the shell as a simple command using the -c option. The command and",
+        "-k": "When used without a command, invalidates the user's cached cre\u2010 dentials for the current session. The next time sudo is run in the session, a password must be entered if the security policy requires authentication. By default, the sudoers policy uses a",
+        "-v": "Update the user's cached credentials, authenticating the user if necessary. For the sudoers plugin, this extends the sudo time\u2010 out for another 5 minutes by default, but does not run a command. Not all security policies support cached credentials.",
+        "-l": "If no command is specified, list the privileges for the invoking user (or the user specified by the -U option) on the current host. A longer list format is used if this option is specified multiple times and the security policy supports a verbose output"
+      },
+      "searchTerms": [
+        "run a command as administrator",
+        "execute command with root privileges",
+        "use superuser permissions"
+      ]
+    },
+    {
+      "name": "chmod",
+      "category": "Permissions",
+      "summary": "Change file mode bits.",
+      "usage": "chmod [OPTION]... MODE FILE...",
+      "flags": [
+        "-R",
+        "-v",
+        "-c",
+        "--reference",
+        "--changes"
+      ],
+      "examples": [
+        "chmod 640 secrets.txt"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-R": "change files and directories recursively",
+        "-v": "output a diagnostic for every file processed",
+        "-c": "like verbose but report only when a change is made",
+        "--reference": "use RFILE's mode instead of specifying MODE values. RFILE is al\u2010 ways dereferenced if a symbolic link.",
+        "--changes": "like verbose but report only when a change is made"
+      },
+      "searchTerms": [
+        "change file permissions",
+        "make a script executable",
+        "set read write execute access"
+      ]
+    },
+    {
+      "name": "chown",
+      "category": "Permissions",
+      "summary": "Change file owner and group.",
+      "usage": "chown [OPTION]... [OWNER][:[GROUP]] FILE...",
+      "flags": [
+        "-R",
+        "-v",
+        "-c",
+        "--reference",
+        "--from"
+      ],
+      "examples": [
+        "sudo chown \"$USER\":\"$USER\" report.txt"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-R": "operate on files and directories recursively",
+        "-v": "output a diagnostic for every file processed",
+        "-c": "like verbose but report only when a change is made",
+        "--reference": "use RFILE's ownership rather than specifying values. RFILE is always dereferenced if a symbolic link.",
+        "--from": "change the ownership of each file only if its current owner and/or group match those specified here. Either may be omitted, in which case a match is not required for the omitted attribute"
+      },
+      "searchTerms": [
+        "change file ownership",
+        "change who owns a file",
+        "change file owner and group",
+        "transfer ownership of a folder"
+      ]
+    },
+    {
+      "name": "getfacl",
+      "category": "Permissions",
+      "summary": "Display file access control lists.",
+      "usage": "getfacl [OPTIONS] FILE...",
+      "flags": [
+        "-a",
+        "-d",
+        "-R",
+        "-n",
+        "-p"
+      ],
+      "examples": [
+        "getfacl project/"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-a": "Display the file access control list.",
+        "-d": "Display the default access control list.",
+        "-R": "List the ACLs of all files and directories recursively.",
+        "-n": "List numeric user and group IDs",
+        "-p": "Do not strip leading slash characters (`/'). The default behavior is to strip leading slash characters."
+      },
+      "searchTerms": [
+        "view file access permissions",
+        "show ACL access control list",
+        "inspect user and group permissions"
+      ]
+    },
+    {
+      "name": "setfacl",
+      "category": "Permissions",
+      "summary": "Change file access control lists.",
+      "usage": "setfacl [OPTIONS] ACL FILE...",
+      "flags": [
+        "-m",
+        "-x",
+        "-b",
+        "-R",
+        "-d",
+        "--test"
+      ],
+      "examples": [
+        "setfacl -m u:alex:rw report.txt"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-m": "Modify or add the specified access control list entries.",
+        "-x": "Remove the specified access control list entries.",
+        "-b": "Remove all extended ACL entries. The base ACL entries of the owner, group and others are retained.",
+        "-R": "Apply operations to all files and directories recursively. This op\u2010 tion cannot be combined with `--restore'.",
+        "-d": "All operations apply to the Default ACL. Regular ACL entries in the input set are promoted to Default ACL entries. Default ACL entries in the input set are discarded. (A warning is issued if that hap\u2010 pens).",
+        "--test": "Test mode. Instead of changing the ACLs of any files, the resulting ACLs are listed."
+      },
+      "searchTerms": [
+        "change advanced file permissions",
+        "grant a user access to a file",
+        "remove an ACL permission",
+        "set access control list entries"
+      ]
+    },
+    {
+      "name": "useradd",
+      "category": "Accounts",
+      "summary": "Create a user account.",
+      "usage": "useradd [OPTIONS] LOGIN",
+      "flags": [
+        "-m",
+        "-G",
+        "-s",
+        "-c",
+        "-r",
+        "-e"
+      ],
+      "examples": [
+        "sudo useradd -m -G wheel alex"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-m": "Create the user's home directory if it does not exist. The files and directories contained in the skeleton directory (which can be defined with the -k option) will be copied to the home directory.",
+        "-G": "A list of supplementary groups which the user is also a member of. Each group is separated from the next by a comma, with no intervening whitespace. The groups are subject to the same restrictions as the group given with the -g option. The default is",
+        "-s": "sets the path to the user's login shell. Without this option, the system will use the SHELL variable specified in /etc/default/useradd, or, if that is as well not set, the field for the login shell in /etc/passwd remains empty.",
+        "-c": "Any text string. It is generally a short description of the account, and is currently used as the field for the user's full name.",
+        "-r": "Create a system account.",
+        "-e": "Sets the date on which the user account will be disabled. The value can be specified as a date in the YYYY-MM-DD format or as a number of days since 1970-01-01. The date is interpreted using the UTC timezone."
+      },
+      "searchTerms": [
+        "create a new user account",
+        "add Linux user",
+        "create user home folder",
+        "add user to a group"
+      ]
+    },
+    {
+      "name": "passwd",
+      "category": "Accounts",
+      "summary": "Change a user's password.",
+      "usage": "passwd [OPTIONS] [USER]",
+      "flags": [
+        "-l",
+        "-u",
+        "-d",
+        "-e",
+        "-S"
+      ],
+      "examples": [
+        "passwd"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-l": "Lock the password of the named account. This option disables a password by changing it to a value which matches no possible encrypted value (it adds a \u00b4!\u00b4 at the beginning of the password).",
+        "-u": "Unlock the password of the named account. This option re-enables a password by changing the password back to its previous value (to the value before using the -l option).",
+        "-d": "Deletes a user's password, making it empty. This command sets the account to be passwordless.",
+        "-e": "Immediately expire an account's password. This in effect can force a user to change their password at the user's next login.",
+        "-S": "Display account status information. The status information consists of 7 fields. The first field is the user's login name. The second field indicates if the user account has a locked password (L), has no password (NP), or has a usable password (P). The third field"
+      },
+      "searchTerms": [
+        "change user password",
+        "set or reset Linux account password",
+        "lock or unlock an account password"
+      ]
+    },
+    {
+      "name": "tar",
+      "category": "Archives",
+      "summary": "Create, list, and extract archive files.",
+      "usage": "tar [OPTIONS] ARCHIVE [FILES...]",
+      "flags": [
+        "-c",
+        "-x",
+        "-t",
+        "-f",
+        "-z",
+        "-J",
+        "-v"
+      ],
+      "examples": [
+        "tar -czf backup.tar.gz Documents/"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-c": "Create a new archive. Arguments supply the names of the files to be archived. Directories are archived recursively, unless the",
+        "-x": "Extract files from an archive. Arguments are optional. When given, they specify names of the archive members to be extracted.",
+        "-t": "List the contents of an archive. Arguments are optional. When given, they specify the names of the members to list.",
+        "-f": "Use archive file or device ARCHIVE. If this option is not given, tar will first examine the environment variable `TAPE'. If it is set, its value will be used as the archive name. Otherwise, tar will assume the compiled-in default. The default value can be",
+        "-z": "Filter the archive through gzip(1).",
+        "-J": "Filter the archive through xz(1).",
+        "-v": "Verbosely list files processed. Each instance of this option on the command line increases the verbosity level by one. The maxi\u2010 mum verbosity level is 3. For a detailed discussion of how vari\u2010 ous verbosity levels affect tar's output, please refer to GNU Tar"
+      },
+      "searchTerms": [
+        "create extract or list a tar archive",
+        "compress a folder into tar gz",
+        "unpack a tarball",
+        "archive files for backup"
+      ]
+    },
+    {
+      "name": "gzip",
+      "category": "Archives",
+      "summary": "Compress or decompress files using gzip.",
+      "usage": "gzip [OPTIONS] [FILE...]",
+      "flags": [
+        "-d",
+        "-k",
+        "-c",
+        "-1",
+        "-9",
+        "-v"
+      ],
+      "examples": [
+        "gzip -k access.log"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-d": "Decompress.",
+        "-k": "Keep (don't delete) input files during compression or decompres\u2010 sion.",
+        "-c": "Write output on standard output; keep original files unchanged. If there are several input files, the output consists of a se\u2010 quence of independently compressed members. To obtain better compression, concatenate all input files before compressing them.",
+        "-1": "Compress faster with less compression.",
+        "-9": "Use the slowest, highest-compression setting.",
+        "-v": "Verbose. Display the name and percentage reduction for each file compressed or decompressed."
+      },
+      "searchTerms": [
+        "compress or decompress a file",
+        "make a gz compressed file",
+        "unzip gzip data"
+      ]
+    },
+    {
+      "name": "zip",
+      "category": "Archives",
+      "summary": "Package and compress files in ZIP format.",
+      "usage": "zip [OPTIONS] ARCHIVE FILES...",
+      "flags": [
+        "-r",
+        "-e",
+        "-u",
+        "-9",
+        "-q",
+        "-T"
+      ],
+      "examples": [
+        "zip -r photos.zip Photos/"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-r": "Include files in directories recursively.",
+        "-e": "Encrypt the archive contents with a password.",
+        "-u": "For this option to work, the archive should be updated from the same directory it was created in so the relative paths match. If few files are being copied from the old archive, it may be faster",
+        "-9": "Use the highest compression level.",
+        "-q": "Suppress informational output.",
+        "-T": "Test the integrity of the created archive."
+      },
+      "searchTerms": [
+        "create a zip archive",
+        "compress files into zip folder",
+        "password protect a zip archive"
+      ]
+    },
+    {
+      "name": "unzip",
+      "category": "Archives",
+      "summary": "List, test, or extract ZIP archives.",
+      "usage": "unzip [OPTIONS] ARCHIVE [FILES...]",
+      "flags": [
+        "-l",
+        "-t",
+        "-d",
+        "-o",
+        "-n",
+        "-q"
+      ],
+      "examples": [
+        "unzip -l photos.zip"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-l": "sizes and modification dates and times of the specified files are printed, along with totals for all files specified. If UnZip was compiled with OS2_EAS defined, the -l option also lists columns for the sizes of stored OS/2 extended attributes (EAs) and OS/2",
+        "-t": "memory and compares the CRC (cyclic redundancy check, an enhanced checksum) of the expanded file with the original file's stored CRC value.",
+        "-d": "Extract files into the specified destination directory.",
+        "-o": "option, so use it with care. (It is often used with -f, however, and is the only way to overwrite directory EAs under OS/2.)",
+        "-n": "the extraction of that file without prompting. By default unzip queries before extracting any file that already exists; the user may choose to overwrite only the current file, overwrite all files, skip extraction of the current file, skip extraction of",
+        "-q": "zip prints the names of the files it's extracting or testing, the extraction methods, any file or zipfile comments that may be stored in the archive, and possibly a summary when finished with each archive. The -q[q] options suppress the printing of some or"
+      },
+      "searchTerms": [
+        "extract a zip file",
+        "open a compressed zip archive",
+        "list zip archive contents"
+      ]
+    },
+    {
+      "name": "rsync",
+      "category": "Files",
+      "summary": "Synchronize files locally or over a remote shell.",
+      "usage": "rsync [OPTIONS] SOURCE DESTINATION",
+      "flags": [
+        "-a",
+        "-v",
+        "-n",
+        "-h",
+        "--delete",
+        "--progress"
+      ],
+      "examples": [
+        "rsync -avh --dry-run Documents/ backup/Documents/"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-a": "This is equivalent to -rlptgoD. It is a quick way of saying you want recursion and want to preserve almost everything. Be aware that it does not include preserving ACLs (-A), xattrs (-X), atimes (-U), crtimes (-N), nor the finding and preserving of",
+        "-v": "This option increases the amount of information you are given during the transfer. By default, rsync works silently. A single",
+        "-n": "This makes rsync perform a trial run that doesn't make any changes, and produces mostly the same output as a real run. It is most commonly used in combination with the --verbose (-v) and/or --itemize-changes (-i) options to see what an rsync com\u2010",
+        "-h": "Rsync can also be run as a daemon, in which case the following options are accepted:",
+        "--delete": "One side-effect of incremental recursion is that any missing sub- directories inside a recursively-scanned directory are (by de\u2010 fault) created prior to recursing into the sub-directories. This",
+        "--progress": "This option tells rsync to print information showing the progress of the transfer. This gives a bored user something to watch. With a modern rsync this is the same as specifying"
+      },
+      "searchTerms": [
+        "synchronize copy files between folders",
+        "backup files to another drive or server",
+        "preview file synchronization",
+        "transfer files over SSH"
+      ]
+    },
+    {
+      "name": "git",
+      "category": "Development",
+      "summary": "Track source changes and manage repositories.",
+      "usage": "git [OPTIONS] COMMAND [ARGS...]",
+      "flags": [
+        "-C",
+        "-c",
+        "--version",
+        "--help",
+        "--no-pager"
+      ],
+      "examples": [
+        "git status --short"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-C": "Run as if git was started in <path> instead of the current working directory. When multiple -C options are given, each subsequent non-absolute -C <path> is interpreted relative to the preceding -C <path>. If <path> is present but empty, e.g. -C \"\", then the",
+        "-c": "Pass a configuration parameter to the command. The value given will override values from configuration files. The <name> is expected in the same format as listed by git config (subkeys separated by dots).",
+        "--version": "Prints the Git suite version that the git program came from.",
+        "--help": "Prints the synopsis and a list of the most commonly used commands. If the option --all or -a is given then all available commands are printed. If a Git command is named this option will bring up the manual page for that command.",
+        "--no-pager": "Do not pipe Git output into a pager."
+      },
+      "searchTerms": [
+        "check source code changes",
+        "manage code repository",
+        "commit changes and inspect branches",
+        "download and update a Git repository"
+      ]
+    },
+    {
+      "name": "python3",
+      "category": "Development",
+      "summary": "Run Python scripts and the Python interpreter.",
+      "usage": "python3 [OPTIONS] [SCRIPT] [ARGS...]",
+      "flags": [
+        "-c",
+        "-m",
+        "-V",
+        "-h",
+        "-u"
+      ],
+      "examples": [
+        "python3 -m http.server --directory . 8000"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-c": "Specify the command to execute (see next section). This termi\u2010 nates the option list (following options are passed as arguments to the command).",
+        "-m": "Searches sys.path for the named module and runs the corresponding.py file as a script. This terminates the option list (following options are passed as arguments to the module).",
+        "-V": "Prints the Python version number of the executable and exits. When given twice, print more information about the build.",
+        "-h": "Prints the usage for the interpreter executable and exits.",
+        "-u": "[ -v ] [ -V ] [ -W argument ] [ -x ] [ -X option ] [ -? ] [ --check-hash-based-pycs default | always | never ] [ --help ] [ --help-env ] [ --help-xoptions ] [ --help-all ] [ -c command | script | - ] [ arguments ]"
+      },
+      "searchTerms": [
+        "run a Python script",
+        "start Python interpreter",
+        "serve a local folder over HTTP",
+        "execute Python module"
+      ]
+    },
+    {
+      "name": "flatpak",
+      "category": "Packages",
+      "summary": "Manage Flatpak applications and runtimes.",
+      "usage": "flatpak [OPTIONS] COMMAND",
+      "flags": [
+        "--user",
+        "--system",
+        "--installation",
+        "--assumeyes",
+        "--help"
+      ],
+      "examples": [
+        "flatpak update --appstream"
+      ],
+      "platform": "Fedora",
+      "library": "Fedora",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "--user": "Install or operate on this user\u2019s Flatpak installation.",
+        "--system": "Use the system-wide Flatpak installation.",
+        "--installation": "Select a named Flatpak installation.",
+        "--assumeyes": "Automatically answer yes to confirmation prompts.",
+        "--help": "Show help options and exit."
+      },
+      "searchTerms": [
+        "install desktop application",
+        "update or remove Flatpak app",
+        "list installed graphical apps",
+        "run an application sandbox",
+        "manage Flatpak runtimes and remotes"
+      ]
+    }
+  ]
+}

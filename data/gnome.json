@@ -1,0 +1,299 @@
+{
+  "id": "gnome",
+  "name": "GNOME",
+  "version": "Fedora 44 starter catalog",
+  "commands": [
+    {
+      "name": "gsettings",
+      "category": "Settings",
+      "summary": "Read and change GNOME and application settings stored in GSettings.",
+      "usage": "gsettings [--schemadir DIR] COMMAND [ARGS...]",
+      "flags": [
+        "list-schemas",
+        "list-keys",
+        "get",
+        "set",
+        "reset",
+        "--schemadir"
+      ],
+      "examples": [
+        "gsettings get org.gnome.desktop.interface color-scheme"
+      ],
+      "platform": "GNOME",
+      "library": "GNOME",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "list-schemas": "List installed GSettings schema IDs.",
+        "list-keys": "List keys available in the selected schema.",
+        "get": "Print the current value of a schema key.",
+        "set": "Set a schema key to the supplied value.",
+        "reset": "Restore a key to its schema default.",
+        "--schemadir": "Search this directory for additional GSettings schemas."
+      },
+      "searchTerms": [
+        "change GNOME desktop setting from terminal",
+        "read GNOME preference",
+        "set GTK color scheme and desktop options",
+        "reset GNOME setting to default"
+      ]
+    },
+    {
+      "name": "dconf",
+      "category": "Settings",
+      "summary": "Read and write the dconf configuration database.",
+      "usage": "dconf [OPTIONS] COMMAND [ARGS...]",
+      "flags": [
+        "read",
+        "write",
+        "reset",
+        "dump",
+        "load",
+        "watch"
+      ],
+      "examples": [
+        "dconf read /org/gnome/desktop/interface/color-scheme"
+      ],
+      "platform": "GNOME",
+      "library": "GNOME",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "read": "Read and print the value at a dconf database path.",
+        "write": "Write a value to a dconf database path.",
+        "reset": "Reset a path or key to its default value.",
+        "dump": "Export values under a path as a text stream.",
+        "load": "Import values from a text stream under a path.",
+        "watch": "Print changes made beneath a dconf path."
+      },
+      "searchTerms": [
+        "edit GNOME configuration database",
+        "read or change low level GNOME setting",
+        "backup and restore GNOME preferences"
+      ]
+    },
+    {
+      "name": "gio",
+      "category": "Files",
+      "summary": "Inspect and manipulate files, mounts, and application launches through GIO.",
+      "usage": "gio COMMAND [OPTIONS] [ARGS...]",
+      "flags": [
+        "info",
+        "open",
+        "launch",
+        "mount",
+        "copy",
+        "move",
+        "trash",
+        "list"
+      ],
+      "examples": [
+        "gio info ~/Documents"
+      ],
+      "platform": "GNOME",
+      "library": "GNOME",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "info": "Print information about a file or URI.",
+        "open": "Open a file or URI with its registered default application.",
+        "launch": "Launch an installed application by its desktop application ID.",
+        "mount": "Mount a file system or volume.",
+        "copy": "Copy files or URIs to a destination.",
+        "move": "Move files or URIs to a destination.",
+        "trash": "Move files to the trash.",
+        "list": "List the contents of a directory or URI."
+      },
+      "searchTerms": [
+        "open file with default application",
+        "move copy or trash files from terminal",
+        "mount drive with GNOME GIO",
+        "inspect file metadata"
+      ]
+    },
+    {
+      "name": "gnome-extensions",
+      "category": "Add-ons",
+      "summary": "Inspect and manage GNOME Shell extensions.",
+      "usage": "gnome-extensions COMMAND [OPTIONS]",
+      "flags": [
+        "list",
+        "info",
+        "enable",
+        "disable",
+        "install",
+        "uninstall",
+        "prefs"
+      ],
+      "examples": [
+        "gnome-extensions list --enabled"
+      ],
+      "platform": "GNOME",
+      "library": "GNOME",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "list": "List installed GNOME Shell extensions.",
+        "info": "Show details about the named extension.",
+        "enable": "Enable the named extension.",
+        "disable": "Disable the named extension.",
+        "install": "Install an extension from a local extension bundle.",
+        "uninstall": "Remove the named extension.",
+        "prefs": "Open the preferences window for the named extension."
+      },
+      "searchTerms": [
+        "install GNOME Shell extension",
+        "enable or disable GNOME extension",
+        "manage GNOME desktop add-ons",
+        "list installed Shell extensions"
+      ]
+    },
+    {
+      "name": "gnome-shell",
+      "category": "Session",
+      "summary": "Run GNOME Shell, inspect version, or request shell restart.",
+      "usage": "gnome-shell [OPTIONS]",
+      "flags": [
+        "--version",
+        "--replace",
+        "--help"
+      ],
+      "examples": [
+        "gnome-shell --version"
+      ],
+      "platform": "GNOME",
+      "library": "GNOME",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "--version": "Print the GNOME Shell version.",
+        "--replace": "Replace the running GNOME Shell process.",
+        "--help": "Print command usage and available options."
+      },
+      "searchTerms": [
+        "restart GNOME Shell",
+        "check GNOME desktop version",
+        "replace GNOME desktop shell"
+      ]
+    },
+    {
+      "name": "gnome-control-center",
+      "category": "Settings",
+      "summary": "Open GNOME Settings or a named settings panel.",
+      "usage": "gnome-control-center [PANEL]",
+      "flags": [
+        "--overview",
+        "display",
+        "keyboard",
+        "network",
+        "privacy"
+      ],
+      "examples": [
+        "gnome-control-center display"
+      ],
+      "platform": "GNOME",
+      "library": "GNOME",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "--overview": "Open the GNOME Settings overview.",
+        "display": "Open the Displays settings panel.",
+        "keyboard": "Open the Keyboard settings panel.",
+        "network": "Open the Network settings panel.",
+        "privacy": "Open the Privacy settings panel."
+      },
+      "searchTerms": [
+        "open GNOME settings",
+        "change display keyboard or network settings",
+        "launch GNOME privacy settings panel"
+      ]
+    },
+    {
+      "name": "gnome-session-quit",
+      "category": "Session",
+      "summary": "Request logout, shutdown, or restart from a GNOME session.",
+      "usage": "gnome-session-quit [OPTIONS]",
+      "flags": [
+        "--logout",
+        "--power-off",
+        "--reboot",
+        "--no-prompt",
+        "--force"
+      ],
+      "examples": [
+        "gnome-session-quit --logout --no-prompt"
+      ],
+      "platform": "GNOME",
+      "library": "GNOME",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "--logout": "End the current session and log out.",
+        "--power-off": "Request that the computer shut down.",
+        "--reboot": "Request that the computer restart.",
+        "--no-prompt": "Skip the confirmation dialog.",
+        "--force": "Force logout without asking running applications to stop cleanly."
+      },
+      "searchTerms": [
+        "log out of GNOME desktop",
+        "shut down or restart computer from terminal",
+        "end current desktop session"
+      ]
+    },
+    {
+      "name": "gnome-disks",
+      "category": "Storage",
+      "summary": "Open GNOME Disks to inspect and manage drives.",
+      "usage": "gnome-disks [OPTIONS]",
+      "flags": [
+        "--block-device",
+        "--restore-disk-image",
+        "--help"
+      ],
+      "examples": [
+        "gnome-disks --block-device /dev/sda"
+      ],
+      "platform": "GNOME",
+      "library": "GNOME",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "--block-device": "Select a block device to show in GNOME Disks.",
+        "--restore-disk-image": "Open the disk image restore workflow.",
+        "--help": "Print command usage and available options."
+      },
+      "searchTerms": [
+        "manage disk partitions in GNOME",
+        "open disk utility",
+        "restore disk image to drive",
+        "inspect drive health and partitions"
+      ]
+    },
+    {
+      "name": "gdbus",
+      "category": "Development",
+      "summary": "Call D-Bus methods, emit signals, and inspect object information.",
+      "usage": "gdbus COMMAND [OPTIONS]",
+      "flags": [
+        "call",
+        "emit",
+        "introspect",
+        "monitor",
+        "--system",
+        "--session"
+      ],
+      "examples": [
+        "gdbus introspect --session --dest org.gnome.Shell --object-path /org/gnome/Shell"
+      ],
+      "platform": "GNOME",
+      "library": "GNOME",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "call": "Call a D-Bus method and print its return value.",
+        "emit": "Emit a D-Bus signal.",
+        "introspect": "List the methods, signals, and properties of a D-Bus object.",
+        "monitor": "Monitor D-Bus messages matching the supplied criteria.",
+        "--system": "Connect to the system D-Bus bus.",
+        "--session": "Connect to the current user session D-Bus bus."
+      },
+      "searchTerms": [
+        "call a D-Bus method",
+        "inspect D-Bus service and object",
+        "monitor D-Bus messages",
+        "send D-Bus signal"
+      ]
+    }
+  ]
+}

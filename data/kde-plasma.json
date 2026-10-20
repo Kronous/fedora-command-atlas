@@ -1,0 +1,309 @@
+{
+  "id": "kde plasma",
+  "name": "KDE Plasma",
+  "version": "Fedora 44 starter catalog",
+  "commands": [
+    {
+      "name": "kscreen-doctor",
+      "category": "Display",
+      "summary": "Inspect and configure displays in a Plasma session.",
+      "usage": "kscreen-doctor [OPTIONS] [OUTPUT CONFIG...]",
+      "flags": [
+        "-o",
+        "--outputs",
+        "--help",
+        "output.NAME.enable",
+        "output.NAME.mode",
+        "output.NAME.position"
+      ],
+      "examples": [
+        "kscreen-doctor -o"
+      ],
+      "platform": "KDE Plasma",
+      "library": "KDE Plasma",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-o": "Show the current display configuration.",
+        "--outputs": "List connected outputs and their available modes.",
+        "--help": "Print command usage and supported display actions.",
+        "output.NAME.enable": "Enable the named display output.",
+        "output.NAME.mode": "Set the named output to the requested display mode.",
+        "output.NAME.position": "Set the named output\u2019s position in the virtual desktop."
+      },
+      "searchTerms": [
+        "change screen resolution",
+        "configure monitor display layout",
+        "enable disable a monitor",
+        "set display position and mode in KDE"
+      ]
+    },
+    {
+      "name": "kquitapp6",
+      "category": "Session",
+      "summary": "Ask a KDE application to quit cleanly.",
+      "usage": "kquitapp6 [OPTIONS] APPLICATION",
+      "flags": [
+        "-s",
+        "--service",
+        "--help"
+      ],
+      "examples": [
+        "kquitapp6 plasmashell"
+      ],
+      "platform": "KDE Plasma",
+      "library": "KDE Plasma",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "-s": "Identify the application by its D-Bus service name.",
+        "--service": "Identify the application by its D-Bus service name.",
+        "--help": "Print command usage."
+      },
+      "searchTerms": [
+        "close a KDE application cleanly",
+        "quit an app through KDE D-Bus",
+        "stop a KDE desktop application"
+      ]
+    },
+    {
+      "name": "kstart",
+      "category": "Session",
+      "summary": "Start a KDE application with window and startup options.",
+      "usage": "kstart [OPTIONS] APPLICATION [ARGS...]",
+      "flags": [
+        "--window",
+        "--desktop",
+        "--icon",
+        "--help"
+      ],
+      "examples": [
+        "kstart dolphin"
+      ],
+      "platform": "KDE Plasma",
+      "library": "KDE Plasma",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "--window": "Apply the requested option to a window matching the supplied identifier.",
+        "--desktop": "Start the application on the specified virtual desktop.",
+        "--icon": "Set the startup icon shown by the window manager.",
+        "--help": "Print command usage and available startup options."
+      },
+      "searchTerms": [
+        "launch application in KDE",
+        "start program on a virtual desktop",
+        "open app with KDE window options"
+      ]
+    },
+    {
+      "name": "kdialog",
+      "category": "Desktop",
+      "summary": "Display KDE dialog boxes from scripts.",
+      "usage": "kdialog [OPTIONS] [WIDGET OPTIONS]",
+      "flags": [
+        "--msgbox",
+        "--yesno",
+        "--passivepopup",
+        "--title",
+        "--warningyesno"
+      ],
+      "examples": [
+        "kdialog --msgbox 'Backup complete'"
+      ],
+      "platform": "KDE Plasma",
+      "library": "KDE Plasma",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "--msgbox": "Show a message with an OK button.",
+        "--yesno": "Ask a yes/no question and return the selected answer as the exit status.",
+        "--passivepopup": "Show a non-modal notification that disappears after a timeout.",
+        "--title": "Set the dialog window title.",
+        "--warningyesno": "Show a warning with Yes and No choices."
+      },
+      "searchTerms": [
+        "show a popup message from script",
+        "ask yes no question in KDE",
+        "create KDE dialog box",
+        "display desktop notification"
+      ]
+    },
+    {
+      "name": "kioclient6",
+      "category": "Files",
+      "summary": "Perform KDE I/O operations such as opening URLs and copying files.",
+      "usage": "kioclient6 COMMAND [OPTIONS] URL",
+      "flags": [
+        "--help",
+        "copy",
+        "move",
+        "exec",
+        "openURL"
+      ],
+      "examples": [
+        "kioclient6 exec https://kde.org"
+      ],
+      "platform": "KDE Plasma",
+      "library": "KDE Plasma",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "--help": "Print command usage.",
+        "copy": "Copy a URL or file to a destination.",
+        "move": "Move a URL or file to a destination.",
+        "exec": "Open or execute the given URL with its associated application.",
+        "openURL": "Open the URL in the appropriate KDE application."
+      },
+      "searchTerms": [
+        "open a URL with KDE",
+        "copy or move file with KDE",
+        "launch default app for a file",
+        "open web link from terminal"
+      ]
+    },
+    {
+      "name": "kwriteconfig6",
+      "category": "Settings",
+      "summary": "Read and write KDE configuration values.",
+      "usage": "kwriteconfig6 [OPTIONS] KEY VALUE",
+      "flags": [
+        "--file",
+        "--group",
+        "--key",
+        "--type",
+        "--delete"
+      ],
+      "examples": [
+        "kwriteconfig6 --file kdeglobals --group General --key ColorScheme Breeze"
+      ],
+      "platform": "KDE Plasma",
+      "library": "KDE Plasma",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "--file": "Choose the KDE configuration file to edit.",
+        "--group": "Choose the configuration group (section).",
+        "--key": "Choose the configuration key to write.",
+        "--type": "Interpret the value using the specified data type.",
+        "--delete": "Remove the selected key instead of writing a value."
+      },
+      "searchTerms": [
+        "change KDE desktop setting from terminal",
+        "edit KDE configuration file",
+        "set KDE config value",
+        "write Plasma settings"
+      ]
+    },
+    {
+      "name": "kreadconfig6",
+      "category": "Settings",
+      "summary": "Read values from KDE configuration files.",
+      "usage": "kreadconfig6 [OPTIONS]",
+      "flags": [
+        "--file",
+        "--group",
+        "--key",
+        "--default",
+        "--type"
+      ],
+      "examples": [
+        "kreadconfig6 --file kdeglobals --group General --key ColorScheme"
+      ],
+      "platform": "KDE Plasma",
+      "library": "KDE Plasma",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "--file": "Choose the KDE configuration file to read.",
+        "--group": "Choose the configuration group (section).",
+        "--key": "Choose the configuration key to read.",
+        "--default": "Return this value when the key is absent.",
+        "--type": "Interpret the value using the specified data type."
+      },
+      "searchTerms": [
+        "read KDE desktop setting",
+        "get a value from KDE config file",
+        "inspect Plasma configuration"
+      ]
+    },
+    {
+      "name": "kcmshell6",
+      "category": "Settings",
+      "summary": "Open a KDE System Settings module by name.",
+      "usage": "kcmshell6 [OPTIONS] MODULE",
+      "flags": [
+        "--list",
+        "--help",
+        "--args"
+      ],
+      "examples": [
+        "kcmshell6 kcm_mouse"
+      ],
+      "platform": "KDE Plasma",
+      "library": "KDE Plasma",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "--list": "List available KDE Control Module (KCM) modules.",
+        "--help": "Print command usage.",
+        "--args": "Pass arguments to the selected settings module."
+      },
+      "searchTerms": [
+        "open KDE system settings panel",
+        "launch a KDE control module",
+        "configure mouse or display from terminal"
+      ]
+    },
+    {
+      "name": "plasmashell",
+      "category": "Session",
+      "summary": "Launch or control the Plasma desktop shell.",
+      "usage": "plasmashell [OPTIONS]",
+      "flags": [
+        "--replace",
+        "--version",
+        "--help"
+      ],
+      "examples": [
+        "plasmashell --replace"
+      ],
+      "platform": "KDE Plasma",
+      "library": "KDE Plasma",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "--replace": "Replace the currently running Plasma shell process.",
+        "--version": "Print the Plasma shell version.",
+        "--help": "Print command usage and available options."
+      },
+      "searchTerms": [
+        "restart KDE Plasma desktop shell",
+        "reload Plasma panel and desktop",
+        "launch KDE desktop shell"
+      ]
+    },
+    {
+      "name": "kpackagetool6",
+      "category": "Add-ons",
+      "summary": "Install and manage KDE packages such as Plasma widgets.",
+      "usage": "kpackagetool6 [OPTIONS] COMMAND",
+      "flags": [
+        "--type",
+        "--install",
+        "--remove",
+        "--list",
+        "--upgrade"
+      ],
+      "examples": [
+        "kpackagetool6 --type Plasma/Applet --list"
+      ],
+      "platform": "KDE Plasma",
+      "library": "KDE Plasma",
+      "source": "Fedora 44 installed command set; consult the command manual for version-specific details.",
+      "optionDescriptions": {
+        "--type": "The type of package, corresponding to the service type of the package plugin, e.g. KPackage/Generic, Plasma/Theme, Plasma/Wallpaper, Plasma/Applet, etc.",
+        "--install": "Install the package at \u201cpath\u201d.",
+        "--remove": "DESCRIPTION kpackagetool6 is a command line tool to install, list, remove Plasma packages.",
+        "--list": "List installed packages.",
+        "--upgrade": "Upgrade the package at \u201cpath\u201d."
+      },
+      "searchTerms": [
+        "install KDE Plasma widget",
+        "manage Plasma add-ons and plasmoids",
+        "list or remove KDE package add-ons"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f3f4ee">
+  <title>Fedora Command Atlas</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Fedora Command Atlas home"><span class="brand-mark">F</span><span>FIELD NOTES <b>/ COMMAND ATLAS</b></span></a>
+    <div class="top-actions"><button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false"><span class="theme-icon" aria-hidden="true">☾</span><span id="theme-label">DARK MODE</span></button><div class="offline"><i></i> OFFLINE READY</div></div>
+  </header>
+  <main>
+    <section class="intro">
+      <div class="eyebrow">FEDORA LINUX <span>•</span> RELEASE 44 <span>•</span> LOCAL REFERENCE</div>
+      <h1>Know your<br><em>command line.</em></h1>
+      <p>A practical, searchable field guide to Fedora, KDE Plasma, and GNOME commands. Everything here stays on this device.</p>
+      <div class="search-wrap"><span class="search-icon">⌕</span><input id="search" type="search" placeholder="Search commands, tasks, flags…" autocomplete="off" aria-label="Search commands"><kbd>/</kbd></div>
+      <div class="search-hint">Try <button class="hint" data-query="network">network</button>, <button class="hint" data-query="change who owns a file">change who owns a file</button>, or <button class="hint" data-query="--help">--help</button></div>
+    </section>
+    <section class="workspace">
+      <aside class="sidebar">
+        <div class="side-label">LIBRARIES <span id="library-count"></span></div>
+        <div id="library-list" class="library-list"></div>
+        <div class="side-note"><span class="plus">＋</span><div><b>Built to grow</b><p>Add a JSON library to bring in tools for other desktops, apps, or workflows.</p></div></div>
+        <a class="readme-link" href="README.md">HOW TO ADD A LIBRARY <span>↗</span></a>
+      </aside>
+      <section class="results-area">
+        <div class="results-head"><div><div class="eyebrow" id="active-eyebrow">ALL LIBRARIES</div><h2 id="results-title">Command index</h2></div><div class="result-meta"><span id="result-count">0 commands</span><select id="category-filter" aria-label="Filter by category"><option value="">All topics</option></select></div></div>
+        <div class="scope-note"><span>i</span><p><b>Coverage note</b> This starter edition is a curated index of common commands, with frequently used options and examples. Flags can differ by installed package version. Use each command’s local <code>--help</code> or <code>man</code> page for its complete, version-matched option list.</p></div>
+        <div id="cards" class="cards" aria-live="polite"></div>
+        <div id="empty" class="empty" hidden><span>⌕</span><h3>No commands found</h3><p>Try a shorter search or choose another library.</p></div>
+        <footer>FEDORA COMMAND ATLAS <span>•</span> LOCAL REFERENCE, NO NETWORK REQUIRED</footer>
+      </section>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
