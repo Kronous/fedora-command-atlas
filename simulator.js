@@ -142,7 +142,7 @@ function virtualTree(path, depth=0) {
 function runInteractiveFilesystem(line, tokens) {
   const name = tokens[0];
   const args = tokens.slice(1);
-  const supported = new Set(['pwd','cd','ls','mkdir','touch','cat','rm','rmdir','cp','mv','echo','tree','find','stat']);
+  const supported = new Set(['pwd','cd','ls','dir','mkdir','touch','cat','rm','rmdir','cp','mv','echo','tree','find','stat']);
   if (!supported.has(name)) return false;
   const commandPath = currentDirectory;
   addEntry(line, response => {
@@ -156,7 +156,7 @@ function runInteractiveFilesystem(line, tokens) {
       currentDirectory = target; previousDirectory = old;
       appendSection(response, 'DIRECTORY CHANGED', `Now at ${displayDirectory(currentDirectory)} in the virtual filesystem.`); return;
     }
-    if (name === 'ls' || name === 'tree') {
+    if (name === 'ls' || name === 'dir' || name === 'tree') {
       const all = args.some(x => x.includes('a') && x.startsWith('-')) || args.includes('--all');
       const long = args.some(x => x.includes('l') && x.startsWith('-')) || args.includes('--long');
       const target = args.find(x => !x.startsWith('-')) || '.';
@@ -427,6 +427,24 @@ function previewFor(name, args, raw) {
   const sample = command?.examples?.[0];
   return sample ? `The catalog’s example is: ${sample}\nActual output depends on the files, services, devices, or settings on your Fedora system.` : `Actual output depends on your local Fedora system. Try “${name} --help” to review its available options.`;
 }
+function simulatedCatalogOutput(name, args, raw, command) {
+  if (typeof command.simulation === 'string' && command.simulation.trim()) {
+    return command.simulation.trim();
+  }
+  const example = command.examples?.[0];
+  const lines = [
+    `[${command.library || command.platform || 'Atlas'} simulation]`,
+    `Command: ${raw}`,
+    `Purpose: ${command.summary}`,
+  ];
+  if (example && args.length === 0) lines.push(`Catalog example: ${example}`);
+  if (isDestructive(name, args)) {
+    lines.push('Requested effect was previewed only. No files, packages, settings, or system state were changed.');
+  } else {
+    lines.push('Output is generated from this library entry. No host files, services, devices, network, or settings were queried.');
+  }
+  return lines.join('\n');
+}
 function handle(commandLine) {
   const line = commandLine.trim();
   if (!line) return;
@@ -445,11 +463,17 @@ function handle(commandLine) {
   }
   if (line === 'help') {
     addEntry(line, response => {
-      appendSection(response, 'PRACTICE HELP', simulatorMode === 'interactive' ? 'Interactive mode applies supported file commands to a temporary virtual filesystem. Try mkdir, touch, echo text > file, cat, cp, mv, rm, ls, and cd. Other catalog commands show guide previews.' : 'Guide mode explains commands, options, and task phrases with illustrative output. Switch to Interactive mode to work in a temporary virtual filesystem.');
+      appendSection(response, 'PRACTICE HELP', simulatorMode === 'interactive' ? 'Interactive mode runs filesystem commands against a temporary virtual filesystem. Every command in the loaded libraries is also available: commands without a filesystem handler receive a metadata-based simulation preview. No host shell is run.' : 'Guide mode explains commands, options, and task phrases with illustrative output. Switch to Interactive mode to work in a temporary virtual filesystem.');
       const samples = appendSection(response, 'TRY THESE');
       samples.append(el('pre', '', simulatorMode === 'interactive' ? 'pwd\nls -la\nmkdir Projects/demo\ntouch Projects/demo/notes.txt\necho Hello Fedora > Projects/demo/notes.txt\ncat Projects/demo/notes.txt\nrm Projects/demo/notes.txt' : 'ls -lah\ncd Documents\npwd\ndf -h\nchown alex report.txt\nsystemctl --failed\nchange who owns a file\nman gsettings'));
       appendSection(response, 'BUILT-IN SHORTCUTS', 'help   show this guide\nman NAME   read the Atlas summary for a command\ncd DIR   change the simulated directory\npwd   print the simulated directory\nclear   clear the practice history');
     });
+    return;
+  }
+  if (line.startsWith('help ')) {
+    const name = line.slice(5).trim().split(/\s+/)[0];
+    const command = catalog.get(name);
+    addEntry(line, response => command ? printUsage(response, command) : appendSection(response, 'HELP NOT IN LIBRARY', `No local Atlas or Bash builtin entry was found for “${name}”.`));
     return;
   }
   if (line.startsWith('man ')) {
@@ -503,7 +527,8 @@ function handle(commandLine) {
   }
   const options = matchedOptions(command, args);
   addEntry(line, response => {
-    const section = appendSection(response, 'COMMAND RECOGNIZED');
+    const interactive = simulatorMode === 'interactive';
+    const section = appendSection(response, interactive ? 'SIMULATED COMMAND' : 'COMMAND RECOGNIZED');
     section.append(el('p', '', `${name} — ${command.summary}`));
     if (elevated) appendSection(response, 'PRIVILEGE NOTE', 'The sudo prefix requests administrator privileges in a real terminal. This simulator does not elevate permissions.');
     if (options.length) {
@@ -514,9 +539,9 @@ function handle(commandLine) {
         optionSection.append(row);
       }
     }
-    if (isDestructive(name, args)) appendSection(response, 'CAUTION', 'This kind of command can change or remove files, permissions, packages, or system services when run for real. Here it only produces a learning preview.', 'warning');
-    const output = appendSection(response, 'ILLUSTRATIVE OUTPUT — NOT RUN');
-    output.append(el('pre', '', previewFor(name, args, line)));
+    if (isDestructive(name, args)) appendSection(response, 'CAUTION', 'This kind of command can change or remove files, permissions, packages, or system services when run for real. In this simulator, no host changes are made.', 'warning');
+    const output = appendSection(response, interactive ? 'SIMULATED OUTPUT' : 'ILLUSTRATIVE OUTPUT — NOT RUN');
+    output.append(el('pre', '', interactive ? simulatedCatalogOutput(name, args, line, command) : previewFor(name, args, line)));
     const usage = appendSection(response, 'USAGE');
     usage.append(el('pre', '', command.usage));
   });

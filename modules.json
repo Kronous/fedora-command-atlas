@@ -21,6 +21,13 @@
       "version": "Fedora 44 starter catalog",
       "file": "modules/gnome/catalog.json",
       "icon": "G"
+    },
+    {
+      "id": "bash-builtins",
+      "name": "Bash shell built-ins",
+      "version": "Bash 5.3.9 \u00b7 Fedora 44",
+      "file": "modules/bash-builtins/catalog.json",
+      "icon": "$"
     }
   ]
 }

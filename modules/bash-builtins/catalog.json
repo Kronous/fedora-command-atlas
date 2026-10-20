@@ -1,0 +1,1562 @@
+{
+  "id": "bash-builtins",
+  "name": "Bash shell built-ins",
+  "version": "Bash 5.3.9 \u00b7 Fedora 44",
+  "commands": [
+    {
+      "name": ".",
+      "category": "Shell built-ins",
+      "summary": "Execute commands from a file in the current shell.",
+      "usage": ". [-p path] filename [arguments]",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "run a shell script in the current shell",
+        "load commands from a file",
+        "source a script without starting a subshell"
+      ],
+      "examples": [
+        ". ./env.sh"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": ":",
+      "category": "Shell built-ins",
+      "summary": "Null command.",
+      "usage": ":",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "do nothing successfully",
+        "no operation placeholder in a shell script"
+      ],
+      "examples": [
+        ":"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "[",
+      "category": "Shell built-ins",
+      "summary": "Evaluate conditional expression.",
+      "usage": "[ arg... ]",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "test a condition in a shell script",
+        "compare strings and numbers in bash",
+        "check whether a file exists"
+      ],
+      "examples": [
+        "[ -f report.txt ]"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "alias",
+      "category": "Shell built-ins",
+      "summary": "Define or display aliases.",
+      "usage": "alias [-p] [name[=value] ... ]",
+      "flags": [
+        "-p"
+      ],
+      "optionDescriptions": {
+        "-p": "print all defined aliases in a reusable format"
+      },
+      "searchTerms": [
+        "create a command shortcut",
+        "list shell aliases",
+        "make a short name for a long command"
+      ],
+      "examples": [
+        "alias ll=\"ls -lah\""
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "bg",
+      "category": "Shell built-ins",
+      "summary": "Move jobs to the background.",
+      "usage": "bg [job_spec ...]",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "resume a stopped job in the background",
+        "run a suspended shell job without waiting"
+      ],
+      "examples": [
+        "bg %1"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "bind",
+      "category": "Shell built-ins",
+      "summary": "Set Readline key bindings and variables.",
+      "usage": "bind [-lpsvPSVX] [-m keymap] [-f filename] [-q name] [-u name] [-r keyseq] [-x keyseq:shell-command] [keyseq:readline-function or readline-command]",
+      "flags": [
+        "-m",
+        "-l",
+        "-P",
+        "-p",
+        "-S",
+        "-s",
+        "-V",
+        "-v",
+        "-q",
+        "-u",
+        "-r",
+        "-f",
+        "-x",
+        "-X"
+      ],
+      "optionDescriptions": {
+        "-m": "keymap         Use KEYMAP as the keymap for the duration of this command.  Acceptable keymap names are emacs, emacs-standard, emacs-meta, emacs-ctlx, vi, vi-move, vi-command, and vi-insert.",
+        "-l": "List names of functions.",
+        "-P": "List function names and bindings.",
+        "-p": "List functions and bindings in a form that can be reused as input.",
+        "-S": "List key sequences that invoke macros and their values",
+        "-s": "List key sequences that invoke macros and their values in a form that can be reused as input.",
+        "-V": "List variable names and values",
+        "-v": "List variable names and values in a form that can be reused as input.",
+        "-q": "function-name  Query about which keys invoke the named function.",
+        "-u": "function-name  Unbind all keys which are bound to the named function.",
+        "-r": "keyseq         Remove the binding for KEYSEQ.",
+        "-f": "filename       Read key bindings from FILENAME.",
+        "-x": "keyseq:shell-command\tCause SHELL-COMMAND to be executed when KEYSEQ is entered.",
+        "-X": "List key sequences bound with -x and associated commands in a form that can be reused as input. If arguments remain after option processing, the -p and -P options treat them as readline command names and restrict output to those names."
+      },
+      "searchTerms": [
+        "customize readline keyboard shortcuts",
+        "change bash key bindings"
+      ],
+      "examples": [
+        "bind -P"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "break",
+      "category": "Shell built-ins",
+      "summary": "Exit for, while, or until loops.",
+      "usage": "break [n]",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "exit a loop early",
+        "stop the current for or while loop"
+      ],
+      "examples": [
+        "break"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "builtin",
+      "category": "Shell built-ins",
+      "summary": "Execute shell builtins.",
+      "usage": "builtin [shell-builtin [arg ...]]",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "run a shell builtin by name",
+        "bypass a shell function with the same name"
+      ],
+      "examples": [
+        "builtin pwd"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "caller",
+      "category": "Shell built-ins",
+      "summary": "Return the context of the current subroutine call.",
+      "usage": "caller [expr]",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "show the calling function and line in a shell script"
+      ],
+      "examples": [
+        "caller"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "cd",
+      "category": "Shell built-ins",
+      "summary": "Change the shell working directory.",
+      "usage": "cd [-L|[-P [-e]]] [-@] [dir]",
+      "flags": [
+        "-L",
+        "-P",
+        "-e"
+      ],
+      "optionDescriptions": {
+        "-L": "force symbolic links to be followed: resolve symbolic links in DIR after processing instances of `..'",
+        "-P": "use the physical directory structure without following symbolic links: resolve symbolic links in DIR before processing instances of `..'",
+        "-e": "if the -P option is supplied, and the current working directory cannot be determined successfully, exit with a non-zero status -@\ton systems that support it, present a file with extended attributes as a directory containing the file attributes The default is to follow symbolic links, as if `-L' were specified. `..' is processed by removing the immediately previous pathname component back to a slash or the beginning of DIR."
+      },
+      "searchTerms": [
+        "change directory in the shell",
+        "move to another folder",
+        "go to the home directory",
+        "change to the previous directory"
+      ],
+      "examples": [
+        "cd Documents"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "command",
+      "category": "Shell built-ins",
+      "summary": "Execute a simple command or display information about commands.",
+      "usage": "command [-pVv] command [arg ...]",
+      "flags": [
+        "-p",
+        "-v",
+        "-V"
+      ],
+      "optionDescriptions": {
+        "-p": "use a default value for PATH that is guaranteed to find all of the standard utilities",
+        "-v": "print a single word indicating the command or filename that invokes COMMAND",
+        "-V": "print a more verbose description of each COMMAND"
+      },
+      "searchTerms": [
+        "run a command bypassing shell functions",
+        "find how a command name resolves"
+      ],
+      "examples": [
+        "command -v bash"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "compgen",
+      "category": "Shell built-ins",
+      "summary": "Display possible completions depending on the options.",
+      "usage": "compgen [-V varname] [-abcdefgjksuv] [-o option] [-A action] [-G globpat] [-W wordlist] [-F function] [-C command] [-X filterpat] [-P prefix] [-S suffix] [word]",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "generate possible command completions",
+        "list shell builtins or available commands"
+      ],
+      "examples": [
+        "compgen -b"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "complete",
+      "category": "Shell built-ins",
+      "summary": "Specify how arguments are to be completed by Readline.",
+      "usage": "complete [-abcdefgjksuv] [-pr] [-DEI] [-o option] [-A action] [-G globpat] [-W wordlist] [-F function] [-C command] [-X filterpat] [-P prefix] [-S suffix] [name ...]",
+      "flags": [
+        "-p",
+        "-r",
+        "-D",
+        "-E",
+        "-I"
+      ],
+      "optionDescriptions": {
+        "-p": "print existing completion specifications in a reusable format",
+        "-r": "remove a completion specification for each NAME, or, if no NAMEs are supplied, all completion specifications",
+        "-D": "apply the completions and actions as the default for commands without any specific completion defined",
+        "-E": "apply the completions and actions to \"empty\" commands -- completion attempted on a blank line",
+        "-I": "apply the completions and actions to the initial (usually the command) word When completion is attempted, the actions are applied in the order the uppercase-letter options are listed above. If multiple options are supplied, the -D option takes precedence over -E, and both take precedence over -I."
+      },
+      "searchTerms": [
+        "define command line tab completion",
+        "show completion rules for a command"
+      ],
+      "examples": [
+        "complete -p"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "compopt",
+      "category": "Shell built-ins",
+      "summary": "Modify or display completion options.",
+      "usage": "compopt [-o|+o option] [-DEI] [name ...]",
+      "flags": [
+        "-o",
+        "-D",
+        "-E",
+        "-I"
+      ],
+      "optionDescriptions": {
+        "-o": "option\tSet completion option OPTION for each NAME",
+        "-D": "Change options for the \"default\" command completion",
+        "-E": "Change options for the \"empty\" command completion",
+        "-I": "Change options for completion on the initial word Using `+o' instead of `-o' turns off the specified option. Arguments: Each NAME refers to a command for which a completion specification must have previously been defined using the `complete' builtin.  If no NAMEs are supplied, compopt must be called by a function currently generating completions, and the options for that currently-executing completion generator are modified."
+      },
+      "searchTerms": [
+        "change completion options for a command"
+      ],
+      "examples": [
+        "compopt -o filenames"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "continue",
+      "category": "Shell built-ins",
+      "summary": "Resume for, while, or until loops.",
+      "usage": "continue [n]",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "skip to the next iteration of a loop",
+        "continue a for or while loop"
+      ],
+      "examples": [
+        "continue"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "declare",
+      "category": "Shell built-ins",
+      "summary": "Set variable values and attributes.",
+      "usage": "declare [-aAfFgiIlnrtux] [name[=value] ...] or declare -p [-aAfFilnrtux] [name ...]",
+      "flags": [
+        "-f",
+        "-F",
+        "-g",
+        "-I",
+        "-p",
+        "-a",
+        "-A",
+        "-i",
+        "-l",
+        "-n",
+        "-r",
+        "-t",
+        "-u",
+        "-x"
+      ],
+      "optionDescriptions": {
+        "-f": "restrict action or display to function names and definitions",
+        "-F": "restrict display to function names only (plus line number and source file when debugging)",
+        "-g": "create global variables when used in a shell function; otherwise ignored",
+        "-I": "if creating a local variable, inherit the attributes and value of a variable with the same name at a previous scope",
+        "-p": "display the attributes and value of each NAME Options which set attributes:",
+        "-a": "to make NAMEs indexed arrays (if supported)",
+        "-A": "to make NAMEs associative arrays (if supported)",
+        "-i": "to make NAMEs have the `integer' attribute",
+        "-l": "to convert the value of each NAME to lower case on assignment",
+        "-n": "make NAME a reference to the variable named by its value",
+        "-r": "to make NAMEs readonly",
+        "-t": "to make NAMEs have the `trace' attribute",
+        "-u": "to convert the value of each NAME to upper case on assignment",
+        "-x": "to make NAMEs export Using `+' instead of `-' turns off the given attribute, except for a, A, and r. Variables with the integer attribute have arithmetic evaluation (see the `let' command) performed when the variable is assigned a value. When used in a function, `declare' makes NAMEs local, as with the `local' command.  The `-g' option suppresses this behavior."
+      },
+      "searchTerms": [
+        "create or inspect bash variables",
+        "set variable attributes and types",
+        "declare indexed or associative array"
+      ],
+      "examples": [
+        "declare -a colors=(red green blue)"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "dirs",
+      "category": "Shell built-ins",
+      "summary": "Display directory stack.",
+      "usage": "dirs [-clpv] [+N] [-N]",
+      "flags": [
+        "-c",
+        "-l",
+        "-p",
+        "-v",
+        "-N"
+      ],
+      "optionDescriptions": {
+        "-c": "clear the directory stack by deleting all of the elements",
+        "-l": "do not print tilde-prefixed versions of directories relative to your home directory",
+        "-p": "print the directory stack with one entry per line",
+        "-v": "print the directory stack with one entry per line prefixed with its position in the stack Arguments: +N\tDisplays the Nth entry counting from the left of the list shown by dirs when invoked without options, starting with zero.",
+        "-N": "Displays the Nth entry counting from the right of the list shown by dirs when invoked without options, starting with zero."
+      },
+      "searchTerms": [
+        "show the directory stack",
+        "list directories saved by pushd"
+      ],
+      "examples": [
+        "dirs -v"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "disown",
+      "category": "Shell built-ins",
+      "summary": "Remove jobs from current shell.",
+      "usage": "disown [-h] [-ar] [jobspec ... | pid ...]",
+      "flags": [
+        "-a",
+        "-h",
+        "-r"
+      ],
+      "optionDescriptions": {
+        "-a": "remove all jobs if JOBSPEC is not supplied",
+        "-h": "mark each JOBSPEC so that SIGHUP is not sent to the job if the shell receives a SIGHUP",
+        "-r": "remove only running jobs"
+      },
+      "searchTerms": [
+        "remove a job from the shell job table",
+        "keep background job from receiving shell hangup"
+      ],
+      "examples": [
+        "disown %1"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "echo",
+      "category": "Shell built-ins",
+      "summary": "Write arguments to the standard output.",
+      "usage": "echo [-neE] [arg ...]",
+      "flags": [
+        "-n",
+        "-e",
+        "-E"
+      ],
+      "optionDescriptions": {
+        "-n": "do not append a newline",
+        "-e": "enable interpretation of the following backslash escapes",
+        "-E": "explicitly suppress interpretation of backslash escapes `echo' interprets the following backslash-escaped characters: \\a\talert (bell) \\b\tbackspace \\c\tsuppress further output \\e\tescape character \\E\tescape character \\f\tform feed \\n\tnew line \\r\tcarriage return \\t\thorizontal tab \\v\tvertical tab \\\\\tbackslash \\0nnn\tthe character whose ASCII code is NNN (octal).  NNN can be 0 to 3 octal digits \\xHH\tthe eight-bit character whose value is HH (hexadecimal).  HH can be one or two hex digits \\uHHHH\tthe Unicode character whose value is the hexadecimal value HHHH. HHHH can be one to four hex digits. \\UHHHHHHHH the Unicode character whose value is the hexadecimal value HHHHHHHH. HHHHHHHH can be one to eight hex digits."
+      },
+      "searchTerms": [
+        "print text in the terminal",
+        "display a message from a shell script"
+      ],
+      "examples": [
+        "echo Hello, Fedora"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "enable",
+      "category": "Shell built-ins",
+      "summary": "Enable and disable shell builtins.",
+      "usage": "enable [-a] [-dnps] [-f filename] [name ...]",
+      "flags": [
+        "-a",
+        "-n",
+        "-p",
+        "-s",
+        "-f",
+        "-d"
+      ],
+      "optionDescriptions": {
+        "-a": "print a list of builtins showing whether or not each is enabled",
+        "-n": "disable each NAME or display a list of disabled builtins",
+        "-p": "print the list of builtins in a reusable format",
+        "-s": "print only the names of Posix `special' builtins Options controlling dynamic loading:",
+        "-f": "Load builtin NAME from shared object FILENAME",
+        "-d": "Remove a builtin loaded with -f Without options, each NAME is enabled. On systems with dynamic loading, the shell variable BASH_LOADABLES_PATH defines a search path for the directory containing FILENAMEs that do not contain a slash. It may include \".\" to force a search of the current directory. To use the `test' found in $PATH instead of the shell builtin version, type `enable -n test'."
+      },
+      "searchTerms": [
+        "turn a bash builtin on or off",
+        "list enabled shell builtins"
+      ],
+      "examples": [
+        "enable -p"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "eval",
+      "category": "Shell built-ins",
+      "summary": "Execute arguments as a shell command.",
+      "usage": "eval [arg ...]",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "evaluate a string as shell input",
+        "run a constructed shell command"
+      ],
+      "examples": [
+        "eval \"echo $HOME\""
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "exec",
+      "category": "Shell built-ins",
+      "summary": "Replace the shell with the given command.",
+      "usage": "exec [-cl] [-a name] [command [argument ...]] [redirection ...]",
+      "flags": [
+        "-a",
+        "-c",
+        "-l"
+      ],
+      "optionDescriptions": {
+        "-a": "name\tpass NAME as the zeroth argument to COMMAND",
+        "-c": "execute COMMAND with an empty environment",
+        "-l": "place a dash in the zeroth argument to COMMAND If the command cannot be executed, a non-interactive shell exits, unless the shell option `execfail' is set."
+      },
+      "searchTerms": [
+        "replace the current shell with a program",
+        "redirect the shell process input or output"
+      ],
+      "examples": [
+        "exec bash"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "exit",
+      "category": "Shell built-ins",
+      "summary": "Exit the shell.",
+      "usage": "exit [n]",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "leave the current shell",
+        "close the terminal session",
+        "exit a shell script with a status"
+      ],
+      "examples": [
+        "exit 0"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "export",
+      "category": "Shell built-ins",
+      "summary": "Set export attribute for shell variables.",
+      "usage": "export [-fn] [name[=value] ...] or export -p [-f]",
+      "flags": [
+        "-f",
+        "-n",
+        "-p"
+      ],
+      "optionDescriptions": {
+        "-f": "refer to shell functions",
+        "-n": "remove the export property from each NAME",
+        "-p": "display a list of all exported variables or functions An argument of `--' disables further option processing."
+      },
+      "searchTerms": [
+        "set an environment variable",
+        "make a shell variable available to child programs"
+      ],
+      "examples": [
+        "export EDITOR=vim"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "false",
+      "category": "Shell built-ins",
+      "summary": "Return an unsuccessful result.",
+      "usage": "false",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "return a failure status in a script",
+        "always exit with status one"
+      ],
+      "examples": [
+        "false"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "fc",
+      "category": "Shell built-ins",
+      "summary": "Display or execute commands from the history list.",
+      "usage": "fc [-e ename] [-lnr] [first] [last] or fc -s [pat=rep] [command]",
+      "flags": [
+        "-e",
+        "-l",
+        "-n",
+        "-r"
+      ],
+      "optionDescriptions": {
+        "-e": "ENAME\tselect which editor to use.  Default is FCEDIT, then EDITOR, then vi",
+        "-l": "list lines instead of editing",
+        "-n": "omit line numbers when listing",
+        "-r": "reverse the order of the lines (newest listed first) With the `fc -s [pat=rep ...] [command]' format, COMMAND is re-executed after the substitution OLD=NEW is performed. A useful alias to use with this is r='fc -s', so that typing `r cc' runs the last command beginning with `cc' and typing `r' re-executes the last command. The history builtin also operates on the history list."
+      },
+      "searchTerms": [
+        "edit and rerun a command from shell history",
+        "list previous shell commands"
+      ],
+      "examples": [
+        "fc -l"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "fg",
+      "category": "Shell built-ins",
+      "summary": "Move job to the foreground.",
+      "usage": "fg [job_spec]",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "bring a background job into the foreground",
+        "resume a stopped job in the terminal"
+      ],
+      "examples": [
+        "fg %1"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "getopts",
+      "category": "Shell built-ins",
+      "summary": "Parse option arguments.",
+      "usage": "getopts optstring name [arg ...]",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "parse command line options in a shell script",
+        "read short flags passed to bash script"
+      ],
+      "examples": [
+        "getopts \":f:v\" opt"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "hash",
+      "category": "Shell built-ins",
+      "summary": "Remember or display program locations.",
+      "usage": "hash [-lr] [-p pathname] [-dt] [name ...]",
+      "flags": [
+        "-d",
+        "-l",
+        "-p",
+        "-r",
+        "-t"
+      ],
+      "optionDescriptions": {
+        "-d": "forget the remembered location of each NAME",
+        "-l": "display in a format that may be reused as input",
+        "-p": "pathname\tuse PATHNAME as the full pathname of NAME",
+        "-r": "forget all remembered locations",
+        "-t": "print the remembered location of each NAME, preceding each location with the corresponding NAME if multiple NAMEs are given Arguments: NAME\tEach NAME is searched for in $PATH and added to the list of remembered commands."
+      },
+      "searchTerms": [
+        "show cached command locations",
+        "clear command path lookup cache"
+      ],
+      "examples": [
+        "hash -r"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "help",
+      "category": "Shell built-ins",
+      "summary": "Display information about builtin commands.",
+      "usage": "help [-dms] [pattern ...]",
+      "flags": [
+        "-d",
+        "-m",
+        "-s"
+      ],
+      "optionDescriptions": {
+        "-d": "output short description for each topic",
+        "-m": "display usage in pseudo-manpage format",
+        "-s": "output only a short usage synopsis for each topic matching PATTERN Arguments: PATTERN\tPattern specifying a help topic"
+      },
+      "searchTerms": [
+        "show help for bash builtins",
+        "read bash builtin documentation"
+      ],
+      "examples": [
+        "help cd"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "history",
+      "category": "Shell built-ins",
+      "summary": "Display or manipulate the history list.",
+      "usage": "history [-c] [-d offset] [n] or history -anrw [filename] or history -ps arg [arg...]",
+      "flags": [
+        "-c",
+        "-d",
+        "-d",
+        "-a",
+        "-n",
+        "-r",
+        "-w",
+        "-p",
+        "-s"
+      ],
+      "optionDescriptions": {
+        "-c": "clear the history list by deleting all of the entries",
+        "-d": "start-end\tdelete the history entries beginning at position START through position END.",
+        "-a": "append history lines from this session to the history file",
+        "-n": "read all history lines not already read from the history file and append them to the history list",
+        "-r": "read the history file and append the contents to the history list",
+        "-w": "write the current history to the history file",
+        "-p": "perform history expansion on each ARG and display the result without storing it in the history list",
+        "-s": "append the ARGs to the history list as a single entry If FILENAME is given, it is used as the history file.  Otherwise, if HISTFILE has a value, that is used. If FILENAME is not supplied and HISTFILE is unset or null, the -a, -n, -r, and -w options have no effect and return success. The fc builtin also operates on the history list. If the HISTTIMEFORMAT variable is set and not null, its value is used as a format string for strftime(3) to print the time stamp associated with each displayed history entry.  No time stamps are printed otherwise."
+      },
+      "searchTerms": [
+        "show terminal command history",
+        "search previously entered shell commands"
+      ],
+      "examples": [
+        "history"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "jobs",
+      "category": "Shell built-ins",
+      "summary": "Display status of jobs.",
+      "usage": "jobs [-lnprs] [jobspec ...] or jobs -x command [args]",
+      "flags": [
+        "-l",
+        "-n",
+        "-p",
+        "-r",
+        "-s"
+      ],
+      "optionDescriptions": {
+        "-l": "lists process IDs in addition to the normal information",
+        "-n": "lists only processes that have changed status since the last notification",
+        "-p": "lists process IDs only",
+        "-r": "restrict output to running jobs",
+        "-s": "restrict output to stopped jobs If -x is supplied, COMMAND is run after all job specifications that appear in ARGS have been replaced with the process ID of that job's process group leader."
+      },
+      "searchTerms": [
+        "list background and stopped jobs",
+        "see jobs started from this shell"
+      ],
+      "examples": [
+        "jobs -l"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "kill",
+      "category": "Shell built-ins",
+      "summary": "Send a signal to a job.",
+      "usage": "kill [-s sigspec | -n signum | -sigspec] pid | jobspec ... or kill -l [sigspec]",
+      "flags": [
+        "-s",
+        "-n",
+        "-l",
+        "-L"
+      ],
+      "optionDescriptions": {
+        "-s": "sig\tSIG is a signal name",
+        "-n": "sig\tSIG is a signal number",
+        "-l": "list the signal names; if arguments follow `-l' they are assumed to be signal numbers for which names should be listed",
+        "-L": "synonym for -l Kill is a shell builtin for two reasons: it allows job IDs to be used instead of process IDs, and allows processes to be killed if the limit on processes that you can create is reached."
+      },
+      "searchTerms": [
+        "send a signal to a shell job or process",
+        "stop a process by PID"
+      ],
+      "examples": [
+        "kill -TERM %1"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "let",
+      "category": "Shell built-ins",
+      "summary": "Evaluate arithmetic expressions.",
+      "usage": "let arg [arg ...]",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "evaluate arithmetic expressions in bash",
+        "increment a shell counter"
+      ],
+      "examples": [
+        "let count=count+1"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "local",
+      "category": "Shell built-ins",
+      "summary": "Define local variables.",
+      "usage": "local [option] name[=value] ...",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "create a function local variable",
+        "limit a variable to the current bash function"
+      ],
+      "examples": [
+        "local project_dir=\"$PWD\""
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "logout",
+      "category": "Shell built-ins",
+      "summary": "Exit a login shell.",
+      "usage": "logout [n]",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "end a login shell",
+        "log out from a shell session"
+      ],
+      "examples": [
+        "logout"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "mapfile",
+      "category": "Shell built-ins",
+      "summary": "Read lines from the standard input into an indexed array variable.",
+      "usage": "mapfile [-d delim] [-n count] [-O origin] [-s count] [-t] [-u fd] [-C callback] [-c quantum] [array]",
+      "flags": [
+        "-d",
+        "-n",
+        "-O",
+        "-s",
+        "-t",
+        "-u",
+        "-C",
+        "-c"
+      ],
+      "optionDescriptions": {
+        "-d": "delim\tUse DELIM to terminate lines, instead of newline",
+        "-n": "count\tCopy at most COUNT lines.  If COUNT is 0, all lines are copied",
+        "-O": "origin\tBegin assigning to ARRAY at index ORIGIN.  The default index is 0",
+        "-s": "count\tDiscard the first COUNT lines read",
+        "-t": "Remove a trailing DELIM from each line read (default newline)",
+        "-u": "fd\tRead lines from file descriptor FD instead of the standard input",
+        "-C": "callback\tEvaluate CALLBACK each time QUANTUM lines are read",
+        "-c": "quantum\tSpecify the number of lines read between each call to CALLBACK Arguments: ARRAY\tArray variable name to use for file data If -C is supplied without -c, the default quantum is 5000.  When CALLBACK is evaluated, it is supplied the index of the next array element to be assigned and the line to be assigned to that element as additional arguments. If not supplied with an explicit origin, mapfile will clear ARRAY before assigning to it."
+      },
+      "searchTerms": [
+        "read lines from input into a bash array",
+        "load a text file into an array"
+      ],
+      "examples": [
+        "mapfile -t lines < names.txt"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "popd",
+      "category": "Shell built-ins",
+      "summary": "Remove directories from stack.",
+      "usage": "popd [-n] [+N | -N]",
+      "flags": [
+        "-n",
+        "-N"
+      ],
+      "optionDescriptions": {
+        "-n": "Suppresses the normal change of directory when removing directories from the stack, so only the stack is manipulated. Arguments: +N\tRemoves the Nth entry counting from the left of the list shown by `dirs', starting with zero.  For example: `popd +0' removes the first directory, `popd +1' the second.",
+        "-N": "Removes the Nth entry counting from the right of the list shown by `dirs', starting with zero.  For example: `popd -0' removes the last directory, `popd -1' the next to last. The `dirs' builtin displays the directory stack."
+      },
+      "searchTerms": [
+        "return to the previous directory on the directory stack"
+      ],
+      "examples": [
+        "popd"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "printf",
+      "category": "Shell built-ins",
+      "summary": "Formats and prints ARGUMENTS under control of the FORMAT.",
+      "usage": "printf [-v var] format [arguments]",
+      "flags": [
+        "-v"
+      ],
+      "optionDescriptions": {
+        "-v": "var\tassign the output to shell variable VAR rather than display it on the standard output FORMAT is a character string which contains three types of objects: plain characters, which are simply copied to standard output; character escape sequences, which are converted and copied to the standard output; and format specifications, each of which causes printing of the next successive argument. In addition to the standard format characters csndiouxXeEfFgGaA described in printf(3), printf interprets: %b\texpand backslash escape sequences in the corresponding argument %q\tquote the argument in a way that can be reused as shell input %Q\tlike %q, but apply any precision to the unquoted argument before quoting %(fmt)T\toutput the date-time string resulting from using FMT as a format string for strftime(3) The format is re-used as necessary to consume all of the arguments.  If there are fewer arguments than the format requires,  extra format specifications behave as if a zero value or null string, as appropriate, had been supplied."
+      },
+      "searchTerms": [
+        "format and print text or numbers",
+        "print variables with a format string",
+        "create formatted output in bash"
+      ],
+      "examples": [
+        "printf \"Name: %s\\n\" \"$USER\""
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "pushd",
+      "category": "Shell built-ins",
+      "summary": "Add directories to stack.",
+      "usage": "pushd [-n] [+N | -N | dir]",
+      "flags": [
+        "-n",
+        "-N"
+      ],
+      "optionDescriptions": {
+        "-n": "Suppresses the normal change of directory when adding directories to the stack, so only the stack is manipulated. Arguments: +N\tRotates the stack so that the Nth directory (counting from the left of the list shown by `dirs', starting with zero) is at the top.",
+        "-N": "Rotates the stack so that the Nth directory (counting from the right of the list shown by `dirs', starting with zero) is at the top. dir\tAdds DIR to the directory stack at the top, making it the new current working directory. The `dirs' builtin displays the directory stack."
+      },
+      "searchTerms": [
+        "change directory and save current folder on stack",
+        "navigate through a directory stack"
+      ],
+      "examples": [
+        "pushd Documents"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "pwd",
+      "category": "Shell built-ins",
+      "summary": "Print the name of the current working directory.",
+      "usage": "pwd [-LP]",
+      "flags": [
+        "-L",
+        "-P"
+      ],
+      "optionDescriptions": {
+        "-L": "print the value of $PWD if it names the current working directory",
+        "-P": "print the physical directory, without any symbolic links By default, `pwd' behaves as if `-L' were specified."
+      },
+      "searchTerms": [
+        "print the current working directory",
+        "show current folder path"
+      ],
+      "examples": [
+        "pwd"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "read",
+      "category": "Shell built-ins",
+      "summary": "Read a line from the standard input and split it into fields.",
+      "usage": "read [-Eers] [-a array] [-d delim] [-i text] [-n nchars] [-N nchars] [-p prompt] [-t timeout] [-u fd] [name ...]",
+      "flags": [
+        "-a",
+        "-d",
+        "-e",
+        "-E",
+        "-i",
+        "-n",
+        "-N",
+        "-p",
+        "-r",
+        "-s",
+        "-t",
+        "-u"
+      ],
+      "optionDescriptions": {
+        "-a": "array\tassign the words read to sequential indices of the array variable ARRAY, starting at zero",
+        "-d": "delim\tcontinue until the first character of DELIM is read, rather than newline",
+        "-e": "use Readline to obtain the line",
+        "-E": "use Readline to obtain the line and use the bash default completion instead of Readline's default completion",
+        "-i": "text\tuse TEXT as the initial text for Readline",
+        "-n": "nchars\treturn after reading NCHARS characters rather than waiting for a newline, but honor a delimiter if fewer than NCHARS characters are read before the delimiter",
+        "-N": "nchars\treturn only after reading exactly NCHARS characters, unless EOF is encountered or read times out, ignoring any delimiter",
+        "-p": "prompt\toutput the string PROMPT without a trailing newline before attempting to read",
+        "-r": "do not allow backslashes to escape any characters",
+        "-s": "do not echo input coming from a terminal",
+        "-t": "timeout\ttime out and return failure if a complete line of input is not read within TIMEOUT seconds.  The value of the TMOUT variable is the default timeout.  TIMEOUT may be a fractional number.  If TIMEOUT is 0, read returns immediately, without trying to read any data, returning success only if input is available on the specified file descriptor.  The exit status is greater than 128 if the timeout is exceeded",
+        "-u": "fd\tread from file descriptor FD instead of the standard input"
+      },
+      "searchTerms": [
+        "read user input into a shell variable",
+        "prompt for input in bash script",
+        "read a line from standard input"
+      ],
+      "examples": [
+        "read -r answer"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "readarray",
+      "category": "Shell built-ins",
+      "summary": "Read lines from a file into an array variable.",
+      "usage": "readarray [-d delim] [-n count] [-O origin] [-s count] [-t] [-u fd] [-C callback] [-c quantum] [array]",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "read lines of input into a bash array"
+      ],
+      "examples": [
+        "readarray -t lines < names.txt"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "readonly",
+      "category": "Shell built-ins",
+      "summary": "Mark shell variables as unchangeable.",
+      "usage": "readonly [-aAf] [name[=value] ...] or readonly -p",
+      "flags": [
+        "-a",
+        "-A",
+        "-f",
+        "-p"
+      ],
+      "optionDescriptions": {
+        "-a": "refer to indexed array variables",
+        "-A": "refer to associative array variables",
+        "-f": "refer to shell functions",
+        "-p": "display a list of all readonly variables or functions, depending on whether or not the -f option is given An argument of `--' disables further option processing."
+      },
+      "searchTerms": [
+        "mark a shell variable as read only",
+        "create a constant variable in bash"
+      ],
+      "examples": [
+        "readonly VERSION=1"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "return",
+      "category": "Shell built-ins",
+      "summary": "Return from a shell function.",
+      "usage": "return [n]",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "return from a bash function",
+        "exit a sourced shell script with a status"
+      ],
+      "examples": [
+        "return 0"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "set",
+      "category": "Shell built-ins",
+      "summary": "Set or unset values of shell options and positional parameters.",
+      "usage": "set [-abefhkmnptuvxBCEHPT] [-o option-name] [--] [-] [arg ...]",
+      "flags": [
+        "-a",
+        "-b",
+        "-e",
+        "-f",
+        "-h",
+        "-k",
+        "-m",
+        "-n",
+        "-o",
+        "-p",
+        "-t",
+        "-u",
+        "-v",
+        "-x",
+        "-B",
+        "-C",
+        "-E",
+        "-H",
+        "-P",
+        "-T"
+      ],
+      "optionDescriptions": {
+        "-a": "Mark variables which are modified or created for export.",
+        "-b": "Notify of job termination immediately.",
+        "-e": "Exit immediately if a command exits with a non-zero status.",
+        "-f": "Disable file name generation (globbing).",
+        "-h": "Remember the location of commands as they are looked up.",
+        "-k": "All assignment arguments are placed in the environment for a command, not just those that precede the command name.",
+        "-m": "Job control is enabled.",
+        "-n": "Read commands but do not execute them.",
+        "-o": "option-name Set the variable corresponding to option-name: allexport    same as -a braceexpand  same as -B emacs        use an emacs-style line editing interface errexit      same as -e errtrace     same as -E functrace    same as -T hashall      same as -h histexpand   same as -H history      enable command history ignoreeof    the shell will not exit upon reading EOF interactive-comments allow comments to appear in interactive commands keyword      same as -k monitor      same as -m noclobber    same as -C noexec       same as -n noglob       same as -f nolog        currently accepted but ignored notify       same as -b nounset      same as -u onecmd       same as -t physical     same as -P pipefail     the return value of a pipeline is the status of the last command to exit with a non-zero status, or zero if no command exited with a non-zero status posix        change the behavior of bash where the default operation differs from the Posix standard to match the standard privileged   same as -p verbose      same as -v vi           use a vi-style line editing interface xtrace       same as -x",
+        "-p": "Turned on whenever the real and effective user ids do not match. Disables processing of the $ENV file and importing of shell functions.  Turning this option off causes the effective uid and gid to be set to the real uid and gid.",
+        "-t": "Exit after reading and executing one command.",
+        "-u": "Treat unset variables as an error when substituting.",
+        "-v": "Print shell input lines as they are read.",
+        "-x": "Print commands and their arguments as they are executed.",
+        "-B": "the shell will perform brace expansion",
+        "-C": "If set, disallow existing regular files to be overwritten by redirection of output.",
+        "-E": "If set, the ERR trap is inherited by shell functions.",
+        "-H": "Enable ! style history substitution.  This flag is on by default when the shell is interactive.",
+        "-P": "If set, do not resolve symbolic links when executing commands such as cd which change the current directory.",
+        "-T": "If set, the DEBUG and RETURN traps are inherited by shell functions. --  Assign any remaining arguments to the positional parameters. If there are no remaining arguments, the positional parameters are unset. -   Assign any remaining arguments to the positional parameters. The -x and -v options are turned off. If -o is supplied with no option-name, set prints the current shell option settings. If +o is supplied with no option-name, set prints a series of set commands to recreate the current option settings. Using + rather than - causes these flags to be turned off.  The flags can also be used upon invocation of the shell.  The current set of flags may be found in $-.  The remaining n ARGs are positional parameters and are assigned, in order, to $1, $2, .. $n.  If no ARGs are given, all shell variables are printed."
+      },
+      "searchTerms": [
+        "change bash shell options",
+        "show or set shell variables",
+        "enable strict mode in a script"
+      ],
+      "examples": [
+        "set -o pipefail"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "shift",
+      "category": "Shell built-ins",
+      "summary": "Shift positional parameters.",
+      "usage": "shift [n]",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "move positional parameters in a shell script",
+        "process script arguments one by one"
+      ],
+      "examples": [
+        "shift"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "shopt",
+      "category": "Shell built-ins",
+      "summary": "Set and unset shell options.",
+      "usage": "shopt [-pqsu] [-o] [optname ...]",
+      "flags": [
+        "-o",
+        "-p",
+        "-q",
+        "-s",
+        "-u"
+      ],
+      "optionDescriptions": {
+        "-o": "restrict OPTNAMEs to those defined for use with `set -o'",
+        "-p": "print each shell option with an indication of its status",
+        "-q": "suppress output",
+        "-s": "enable (set) each OPTNAME",
+        "-u": "disable (unset) each OPTNAME"
+      },
+      "searchTerms": [
+        "view or change bash shell options",
+        "enable shell behavior such as globstar"
+      ],
+      "examples": [
+        "shopt -s nullglob"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "source",
+      "category": "Shell built-ins",
+      "summary": "Execute commands from a file in the current shell.",
+      "usage": "source [-p path] filename [arguments]",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "load a shell script in the current shell",
+        "apply environment changes from a file"
+      ],
+      "examples": [
+        "source ./env.sh"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "suspend",
+      "category": "Shell built-ins",
+      "summary": "Suspend shell execution.",
+      "usage": "suspend [-f]",
+      "flags": [
+        "-f"
+      ],
+      "optionDescriptions": {
+        "-f": "force the suspend, even if the shell is a login shell or job control is not enabled."
+      },
+      "searchTerms": [
+        "suspend the current shell until resumed"
+      ],
+      "examples": [
+        "suspend"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "test",
+      "category": "Shell built-ins",
+      "summary": "Evaluate conditional expression.",
+      "usage": "test [expr]",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "test a condition in a shell script",
+        "compare files strings or numbers"
+      ],
+      "examples": [
+        "test -d Documents"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "times",
+      "category": "Shell built-ins",
+      "summary": "Display process times.",
+      "usage": "times",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "show CPU time used by shell and its children"
+      ],
+      "examples": [
+        "times"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "trap",
+      "category": "Shell built-ins",
+      "summary": "Trap signals and other events.",
+      "usage": "trap [-Plp] [[action] signal_spec ...]",
+      "flags": [
+        "-l",
+        "-p",
+        "-P"
+      ],
+      "optionDescriptions": {
+        "-l": "print a list of signal names and their corresponding numbers",
+        "-p": "display the trap commands associated with each SIGNAL_SPEC in a form that may be reused as shell input; or for all trapped signals if no arguments are supplied",
+        "-P": "display the trap commands associated with each SIGNAL_SPEC. At least one SIGNAL_SPEC must be supplied. -P and -p cannot be used together. Each SIGNAL_SPEC is either a signal name in <signal.h> or a signal number. Signal names are case insensitive and the SIG prefix is optional.  A signal may be sent to the shell with \"kill -signal $$\"."
+      },
+      "searchTerms": [
+        "run a command when shell receives a signal",
+        "clean up temporary files when a script exits"
+      ],
+      "examples": [
+        "trap 'rm -f \"$tmpfile\"' EXIT"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "true",
+      "category": "Shell built-ins",
+      "summary": "Return a successful result.",
+      "usage": "true",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "return a success status in a script",
+        "always exit with status zero"
+      ],
+      "examples": [
+        "true"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "type",
+      "category": "Shell built-ins",
+      "summary": "Display information about command type.",
+      "usage": "type [-afptP] name [name ...]",
+      "flags": [
+        "-a",
+        "-f",
+        "-P",
+        "-p",
+        "-t"
+      ],
+      "optionDescriptions": {
+        "-a": "display all locations containing an executable named NAME; includes aliases, builtins, and functions, if and only if the `-p' option is not also used",
+        "-f": "suppress shell function lookup",
+        "-P": "force a PATH search for each NAME, even if it is an alias, builtin, or function, and returns the name of the disk file that would be executed",
+        "-p": "returns either the name of the disk file that would be executed, or nothing if `type -t NAME' would not return `file'",
+        "-t": "output a single word which is one of `alias', `keyword', `function', `builtin', `file' or `', if NAME is an alias, shell reserved word, shell function, shell builtin, disk file, or not found, respectively Arguments: NAME\tCommand name to be interpreted."
+      },
+      "searchTerms": [
+        "identify whether a command is builtin alias or file",
+        "show where a command comes from"
+      ],
+      "examples": [
+        "type cd"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "typeset",
+      "category": "Shell built-ins",
+      "summary": "Set variable values and attributes.",
+      "usage": "typeset [-aAfFgiIlnrtux] name[=value] ... or typeset -p [-aAfFilnrtux] [name ...]",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "declare shell variables and attributes",
+        "set variable type in bash"
+      ],
+      "examples": [
+        "typeset -i count=1"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "ulimit",
+      "category": "Shell built-ins",
+      "summary": "Modify shell resource limits.",
+      "usage": "ulimit [-SHabcdefiklmnpqrstuvxPRT] [limit]",
+      "flags": [
+        "-S",
+        "-H",
+        "-a",
+        "-b",
+        "-c",
+        "-d",
+        "-e",
+        "-f",
+        "-i",
+        "-k",
+        "-l",
+        "-m",
+        "-n",
+        "-p",
+        "-q",
+        "-r",
+        "-s",
+        "-t",
+        "-u",
+        "-v",
+        "-x",
+        "-P",
+        "-R",
+        "-T"
+      ],
+      "optionDescriptions": {
+        "-S": "use the `soft' resource limit",
+        "-H": "use the `hard' resource limit",
+        "-a": "all current limits are reported",
+        "-b": "the socket buffer size",
+        "-c": "the maximum size of core files created",
+        "-d": "the maximum size of a process's data segment",
+        "-e": "the maximum scheduling priority (`nice')",
+        "-f": "the maximum size of files written by the shell and its children",
+        "-i": "the maximum number of pending signals",
+        "-k": "the maximum number of kqueues allocated for this process",
+        "-l": "the maximum size a process may lock into memory",
+        "-m": "the maximum resident set size",
+        "-n": "the maximum number of open file descriptors",
+        "-p": "the pipe buffer size",
+        "-q": "the maximum number of bytes in POSIX message queues",
+        "-r": "the maximum real-time scheduling priority",
+        "-s": "the maximum stack size",
+        "-t": "the maximum amount of cpu time in seconds",
+        "-u": "the maximum number of user processes",
+        "-v": "the size of virtual memory",
+        "-x": "the maximum number of file locks",
+        "-P": "the maximum number of pseudoterminals",
+        "-R": "the maximum time a real-time process can run before blocking",
+        "-T": "the maximum number of threads Not all options are available on all platforms. If LIMIT is given, it is the new value of the specified resource; the special LIMIT values `soft', `hard', and `unlimited' stand for the current soft limit, the current hard limit, and no limit, respectively. Otherwise, the current value of the specified resource is printed.  If no option is given, then -f is assumed. Values are in 1024-byte increments, except for -t, which is in seconds; -p, which is in increments of 512 bytes; -R, which is in microseconds; -b, which is in bytes; and -e, -i, -k, -n, -q, -r, -u, -x, and -P, which accept unscaled values. When in posix mode, values supplied with -c and -f are in 512-byte increments."
+      },
+      "searchTerms": [
+        "show or change process resource limits",
+        "set maximum open files for a shell"
+      ],
+      "examples": [
+        "ulimit -n"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "umask",
+      "category": "Shell built-ins",
+      "summary": "Display or set file mode mask.",
+      "usage": "umask [-p] [-S] [mode]",
+      "flags": [
+        "-p",
+        "-S"
+      ],
+      "optionDescriptions": {
+        "-p": "if MODE is omitted, output in a form that may be reused as input",
+        "-S": "makes the output symbolic; otherwise an octal number is output"
+      },
+      "searchTerms": [
+        "show or set default permissions for new files",
+        "change default file creation permissions"
+      ],
+      "examples": [
+        "umask 027"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "unalias",
+      "category": "Shell built-ins",
+      "summary": "Remove each NAME from the list of defined aliases.",
+      "usage": "unalias [-a] name [name ...]",
+      "flags": [
+        "-a"
+      ],
+      "optionDescriptions": {
+        "-a": "remove all alias definitions Return success unless a NAME is not an existing alias."
+      },
+      "searchTerms": [
+        "remove a shell command alias",
+        "delete an alias by name"
+      ],
+      "examples": [
+        "unalias ll"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "unset",
+      "category": "Shell built-ins",
+      "summary": "Unset values and attributes of shell variables and functions.",
+      "usage": "unset [-f] [-v] [-n] [name ...]",
+      "flags": [
+        "-f",
+        "-v",
+        "-n"
+      ],
+      "optionDescriptions": {
+        "-f": "treat each NAME as a shell function",
+        "-v": "treat each NAME as a shell variable",
+        "-n": "treat each NAME as a name reference and unset the variable itself rather than the variable it references Without options, unset first tries to unset a variable, and if that fails, tries to unset a function. Some variables cannot be unset; also see `readonly'."
+      },
+      "searchTerms": [
+        "delete a shell variable or function",
+        "remove an environment variable"
+      ],
+      "examples": [
+        "unset EDITOR"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    },
+    {
+      "name": "wait",
+      "category": "Shell built-ins",
+      "summary": "Wait for job completion and return exit status.",
+      "usage": "wait [-fn] [-p var] [id ...]",
+      "flags": [],
+      "optionDescriptions": {},
+      "searchTerms": [
+        "wait for a background job to finish",
+        "wait for a process and read its exit status"
+      ],
+      "examples": [
+        "wait %1"
+      ],
+      "platform": "Bash",
+      "library": "Bash shell built-ins",
+      "source": "Fedora 44 Bash 5.3.9 builtin help"
+    }
+  ]
+}

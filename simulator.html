@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#080d0a">
   <title>Practice Terminal · Fedora Command Atlas</title>
+  <link rel="icon" href="assets/terminal-icon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="assets/terminal-icon.png">
   <link rel="stylesheet" href="simulator.css">
 </head>
 <body>
@@ -16,7 +18,7 @@
     <section class="hero">
       <div class="eyebrow">A SAFE PLACE TO EXPERIMENT</div>
       <h1>Practice at<br><em>the prompt.</em></h1>
-      <p>Switch between Guide mode for command explanations and Interactive mode for a stateful virtual filesystem. Commands are never run on your computer.</p>
+      <p>Switch between Guide mode for command explanations and Interactive mode for safe command practice. Filesystem commands use a temporary virtual filesystem; every loaded library command has a simulation preview. Commands are never run on your computer.</p>
     </section>
     <section class="terminal" aria-label="Command line practice simulator">
       <div class="terminal-bar"><div class="window-dots"><i></i><i></i><i></i></div><span>fedora-lab — bash practice session</span><div class="terminal-tools"><button id="mode-toggle" type="button" role="switch" aria-checked="false" aria-label="Switch to interactive filesystem mode"><i></i><span>GUIDE MODE</span></button><button id="reset-button" type="button" hidden>RESET FS</button><button id="clear-button" type="button">CLEAR</button></div></div>
@@ -27,7 +29,7 @@
       </div>
       <div class="terminal-foot"><span><i></i> READY</span><span>ENTER TO SUBMIT <b>·</b> ↑ PREVIOUS COMMAND</span></div>
     </section>
-    <section class="sim-notes"><span class="note-mark">i</span><p><b>Sandboxed practice.</b> Interactive mode changes only a virtual filesystem held in browser memory. Nothing is read from or written to your computer, and the sandbox resets when the page reloads or you press RESET FS. Other command previews are illustrative, not live Fedora output.</p></section>
+    <section class="sim-notes"><span class="note-mark">i</span><p><b>Sandboxed practice.</b> Interactive mode changes only a virtual filesystem held in browser memory. Every command in the loaded libraries is available: filesystem commands act on that sandbox, and other commands show a generated simulation from their library entry. Nothing is read from or written to your computer, no host shell is run, and the sandbox resets when the page reloads or you press RESET FS.</p></section>
     <footer>FEDORA COMMAND ATLAS <span>•</span> LOCAL REFERENCE, NO NETWORK REQUIRED</footer>
   </main>
   <script src="simulator.js"></script>
