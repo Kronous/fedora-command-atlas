@@ -16,7 +16,7 @@ Then open <http://localhost:8080>. The app and catalog data are served from this
 
 ## Practice terminal
 
-Open `simulator.html` from the Atlas or navigate to it directly to use the separate terminal-style practice page. It recognizes commands and task phrases from the registered modules, explains matched options, and shows clearly labeled illustrative output. Shell built-ins `cd` and `pwd` update and report a virtual working directory for the practice session. It does not execute shell commands, inspect your filesystem, or access system state.
+Open `simulator.html` from the Atlas or navigate to it directly to use the separate terminal-style practice page. **Guide mode** explains commands and shows illustrative output. **Interactive mode** supports a small set of file commands (`ls`, `cd`, `pwd`, `mkdir`, `touch`, `cat`, `echo`, `cp`, `mv`, `rm`, `rmdir`, `find`, `stat`, and `tree`) against an in-memory virtual filesystem. You can create, edit, copy, move, and remove practice files and folders. The sandbox never accesses your real filesystem and is discarded when the page reloads or you press **Reset FS**. Other catalog commands continue to show guide previews; no shell commands are executed.
 
 ## Module layout
 

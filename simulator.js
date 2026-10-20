@@ -6,6 +6,8 @@ let commandHistory = [];
 let historyIndex = 0;
 let currentDirectory = '/home/fedora';
 let previousDirectory = null;
+let simulatorMode = 'guide';
+let virtualFs = createVirtualFilesystem();
 
 const builtins = new Map([
   ['pwd', { summary: 'Print the current simulated working directory.', usage: 'pwd [OPTION]...', flags: [], optionDescriptions: {}, examples: ['pwd'] }],
@@ -29,6 +31,273 @@ const canned = {
   ps: '  PID TTY          TIME CMD\n 1042 ?        00:00:02 systemd\n 2081 pts/0    00:00:00 bash  [illustrative]',
   lsblk: 'NAME        SIZE TYPE MOUNTPOINTS\nnvme0n1   476.9G disk\n├─nvme0n1p1   1G part /boot\n└─nvme0n1p2 476G part /  [illustrative]',
 };
+
+
+function makeDirectory() { return { type: 'directory', children: Object.create(null), content: '' }; }
+function makeFile(content='') { return { type: 'file', content }; }
+function createVirtualFilesystem() {
+  const root = makeDirectory();
+  const addDirectory = path => {
+    let node = root;
+    for (const part of path.split('/').filter(Boolean)) {
+      if (!node.children[part]) node.children[part] = makeDirectory();
+      node = node.children[part];
+    }
+    return node;
+  };
+  const addFile = (path, content) => {
+    const parts = path.split('/').filter(Boolean), name = parts.pop();
+    addDirectory('/' + parts.join('/')).children[name] = makeFile(content);
+  };
+  for (const dir of ['/home/fedora/Desktop','/home/fedora/Documents','/home/fedora/Downloads','/home/fedora/Music','/home/fedora/Pictures','/home/fedora/Public','/home/fedora/Templates','/home/fedora/Projects','/tmp','/var/tmp','/etc']) addDirectory(dir);
+  addFile('/home/fedora/.bashrc', '# ~/.bashrc — simulated practice file\n');
+  addFile('/home/fedora/Documents/readme.txt', 'Welcome to the Fedora Command Atlas practice filesystem.\n');
+  addFile('/home/fedora/Documents/notes.txt', 'Try mkdir, touch, echo > file, cat, cp, mv, and rm.\n');
+  addFile('/home/fedora/Projects/hello.txt', 'Hello from the virtual filesystem!\n');
+  addFile('/etc/hostname', 'fedora-lab\n');
+  return root;
+}
+function normalizeVirtualPath(path, base=currentDirectory) {
+  let value = path || base;
+  if (value === '~') value = '/home/fedora';
+  else if (value.startsWith('~/')) value = `/home/fedora/${value.slice(2)}`;
+  else if (!value.startsWith('/')) value = `${base}/${value}`;
+  const parts = [];
+  for (const part of value.split('/')) {
+    if (!part || part === '.') continue;
+    if (part === '..') parts.pop();
+    else parts.push(part);
+  }
+  return '/' + parts.join('/');
+}
+function getVirtualNode(path) {
+  const normalized = normalizeVirtualPath(path);
+  let node = virtualFs;
+  for (const part of normalized.split('/').filter(Boolean)) {
+    if (!node || node.type !== 'directory') return null;
+    node = node.children[part];
+  }
+  return node || null;
+}
+function virtualParent(path, create=false) {
+  const normalized = normalizeVirtualPath(path);
+  if (normalized === '/') return null;
+  const parts = normalized.split('/').filter(Boolean), name = parts.pop();
+  let parent = virtualFs;
+  for (const part of parts) {
+    if (!parent.children[part] && create) parent.children[part] = makeDirectory();
+    parent = parent.children[part];
+    if (!parent || parent.type !== 'directory') return null;
+  }
+  return { parent, name, path: normalized };
+}
+function childPath(parent, name) { return parent === '/' ? `/${name}` : `${parent}/${name}`; }
+function virtualError(response, message) { appendSection(response, 'VIRTUAL FILESYSTEM', message, 'warning'); }
+function cloneVirtualNode(node) {
+  if (node.type === 'file') return makeFile(node.content);
+  const copy = makeDirectory();
+  for (const [name, child] of Object.entries(node.children)) copy.children[name] = cloneVirtualNode(child);
+  return copy;
+}
+function removeVirtualPath(path, recursive=false, force=false) {
+  const normalized = normalizeVirtualPath(path), location = virtualParent(normalized);
+  if (!location) return 'Refusing to remove the virtual filesystem root.';
+  const node = location.parent.children[location.name];
+  if (!node) return force ? '' : `rm: cannot remove '${path}': No such file or directory`;
+  if (node.type === 'directory' && !recursive) return `rm: cannot remove '${path}': Is a directory (use -r to remove directories)`;
+  delete location.parent.children[location.name];
+  if (currentDirectory === normalized || currentDirectory.startsWith(normalized + '/')) currentDirectory = normalizeVirtualPath('..', normalized);
+  return '';
+}
+function virtualList(path, all=false, long=false) {
+  const node = getVirtualNode(path);
+  if (!node) return { error: `ls: cannot access '${path}': No such file or directory` };
+  if (node.type === 'file') return { text: long ? `-rw-r--r-- 1 fedora fedora ${node.content.length} ${path.split('/').pop()}` : path.split('/').pop() };
+  let names = Object.keys(node.children).sort((a,b) => a.localeCompare(b));
+  if (all) names = ['.', '..', ...names];
+  if (!names.length) return { text: '(empty directory)' };
+  if (!long) return { text: names.join('  ') };
+  return { text: names.map(name => {
+    if (name === '.' || name === '..') return `drwxr-xr-x 1 fedora fedora 0 ${name}`;
+    const child = node.children[name], directory = child.type === 'directory';
+    return `${directory ? 'drwxr-xr-x' : '-rw-r--r--'} 1 fedora fedora ${directory ? 0 : child.content.length} ${name}${directory ? '/' : ''}`;
+  }).join('\n') };
+}
+function virtualTree(path, depth=0) {
+  const node = getVirtualNode(path);
+  if (!node) return `tree: '${path}': No such file or directory`;
+  const lines = [path === '.' ? '.' : path];
+  const walk = (dir, prefix, level) => {
+    if (level >= 5) return;
+    const names = Object.keys(dir.children).sort((a,b) => a.localeCompare(b));
+    names.forEach((name,index) => {
+      const last = index === names.length - 1, child = dir.children[name];
+      lines.push(`${prefix}${last ? '└── ' : '├── '}${name}${child.type === 'directory' ? '/' : ''}`);
+      if (child.type === 'directory') walk(child, prefix + (last ? '    ' : '│   '), level + 1);
+    });
+  };
+  if (node.type === 'directory') walk(node, '', depth);
+  return lines.join('\n');
+}
+function runInteractiveFilesystem(line, tokens) {
+  const name = tokens[0];
+  const args = tokens.slice(1);
+  const supported = new Set(['pwd','cd','ls','mkdir','touch','cat','rm','rmdir','cp','mv','echo','tree','find','stat']);
+  if (!supported.has(name)) return false;
+  const commandPath = currentDirectory;
+  addEntry(line, response => {
+    if (name === 'pwd') { appendSection(response, 'SIMULATED OUTPUT', currentDirectory); return; }
+    if (name === 'cd') {
+      if (args.length > 1) { virtualError(response, 'cd: use cd with zero or one directory argument.'); return; }
+      const old = currentDirectory, destination = args[0] || '~', target = destination === '-' ? (previousDirectory || '/home/fedora') : normalizeVirtualPath(destination);
+      const node = getVirtualNode(target);
+      if (!node) { virtualError(response, `cd: ${destination}: No such directory in the virtual filesystem`); return; }
+      if (node.type !== 'directory') { virtualError(response, `cd: ${destination}: Not a directory`); return; }
+      currentDirectory = target; previousDirectory = old;
+      appendSection(response, 'DIRECTORY CHANGED', `Now at ${displayDirectory(currentDirectory)} in the virtual filesystem.`); return;
+    }
+    if (name === 'ls' || name === 'tree') {
+      const all = args.some(x => x.includes('a') && x.startsWith('-')) || args.includes('--all');
+      const long = args.some(x => x.includes('l') && x.startsWith('-')) || args.includes('--long');
+      const target = args.find(x => !x.startsWith('-')) || '.';
+      const result = name === 'tree' ? { text: virtualTree(target) } : virtualList(target, all, long);
+      result.error ? virtualError(response, result.error) : appendSection(response, 'VIRTUAL OUTPUT', result.text);
+      return;
+    }
+    if (name === 'mkdir') {
+      const parents = args.includes('-p') || args.includes('--parents'), paths = args.filter(x => !x.startsWith('-'));
+      if (!paths.length) { virtualError(response, 'mkdir: missing directory operand'); return; }
+      const errors = [];
+      for (const path of paths) {
+        const normalized = normalizeVirtualPath(path), existing = getVirtualNode(normalized);
+        if (existing) { if (!parents) errors.push(`mkdir: cannot create directory '${path}': File exists`); continue; }
+        const location = virtualParent(normalized, parents);
+        if (!location) { errors.push(`mkdir: cannot create directory '${path}': No such file or directory`); continue; }
+        location.parent.children[location.name] = makeDirectory();
+      }
+      errors.length ? virtualError(response, errors.join('\n')) : appendSection(response, 'DIRECTORY CREATED', `Created ${paths.join(', ')} in the virtual filesystem.`);
+      return;
+    }
+    if (name === 'touch') {
+      const paths = args.filter(x => !x.startsWith('-'));
+      if (!paths.length) { virtualError(response, 'touch: missing file operand'); return; }
+      const errors = [];
+      for (const path of paths) {
+        const normalized = normalizeVirtualPath(path), existing = getVirtualNode(normalized);
+        if (existing) { if (existing.type === 'directory') errors.push(`touch: '${path}': Is a directory`); continue; }
+        const location = virtualParent(normalized);
+        if (!location) { errors.push(`touch: cannot touch '${path}': No such file or directory`); continue; }
+        location.parent.children[location.name] = makeFile('');
+      }
+      errors.length ? virtualError(response, errors.join('\n')) : appendSection(response, 'FILE CREATED', `Created or updated ${paths.join(', ')} in the virtual filesystem.`);
+      return;
+    }
+    if (name === 'cat') {
+      if (!args.length) { virtualError(response, 'cat: provide a file path to read'); return; }
+      const outputs = [], errors = [];
+      for (const path of args) {
+        const node = getVirtualNode(path);
+        if (!node) errors.push(`cat: ${path}: No such file or directory`);
+        else if (node.type === 'directory') errors.push(`cat: ${path}: Is a directory`);
+        else outputs.push(node.content);
+      }
+      if (errors.length) virtualError(response, errors.join('\n'));
+      else appendSection(response, 'FILE CONTENT', outputs.join(''));
+      return;
+    }
+    if (name === 'echo') { appendSection(response, 'SIMULATED OUTPUT', args.join(' ')); return; }
+    if (name === 'rm' || name === 'rmdir') {
+      const recursive = name === 'rmdir' ? false : args.some(x => x === '-r' || x === '-R' || x === '--recursive' || /^-[^-]*r/.test(x));
+      const force = args.some(x => x === '-f' || x === '--force' || /^-[^-]*f/.test(x));
+      const paths = args.filter(x => !x.startsWith('-'));
+      if (!paths.length) { virtualError(response, `${name}: missing operand`); return; }
+      const errors = [];
+      for (const path of paths) {
+        const normalized = normalizeVirtualPath(path), node = getVirtualNode(normalized);
+        if (name === 'rmdir' && node?.type === 'directory' && Object.keys(node.children).length) { errors.push(`rmdir: failed to remove '${path}': Directory not empty`); continue; }
+        if (name === 'rmdir' && node?.type !== 'directory') { errors.push(`rmdir: failed to remove '${path}': Not a directory`); continue; }
+        if (name === 'rm' && node?.type === 'directory' && !recursive) { errors.push(`rm: cannot remove '${path}': Is a directory (use -r)`); continue; }
+        const error = removeVirtualPath(path, name === 'rmdir' ? true : recursive, force);
+        if (error) errors.push(error);
+      }
+      errors.length ? virtualError(response, errors.join('\n')) : appendSection(response, 'REMOVED FROM SANDBOX', `Removed ${paths.join(', ')} from the virtual filesystem.`);
+      return;
+    }
+    if (name === 'cp' || name === 'mv') {
+      const recursive = args.some(x => x === '-r' || x === '-R' || x === '--recursive' || /^-[^-]*r/.test(x));
+      const paths = args.filter(x => !x.startsWith('-'));
+      if (paths.length !== 2) { virtualError(response, `${name}: provide one source and one destination`); return; }
+      const [source,destination] = paths, sourcePath = normalizeVirtualPath(source), sourceNode = getVirtualNode(sourcePath);
+      if (!sourceNode) { virtualError(response, `${name}: cannot stat '${source}': No such file or directory`); return; }
+      if (sourceNode.type === 'directory' && !recursive) { virtualError(response, `${name}: '${source}' is a directory (use -r)`); return; }
+      const destinationPath = normalizeVirtualPath(destination), destinationNode = getVirtualNode(destinationPath);
+      const finalPath = destinationNode?.type === 'directory' ? childPath(destinationPath, sourcePath.split('/').pop()) : destinationPath;
+      if ((name === 'mv' || name === 'cp') && (finalPath === sourcePath || (sourceNode.type === 'directory' && finalPath.startsWith(sourcePath + '/')))) { virtualError(response, `${name}: cannot place a directory inside itself`); return; }
+      const location = virtualParent(finalPath);
+      if (!location) { virtualError(response, `${name}: cannot create '${destination}': No such directory`); return; }
+      location.parent.children[location.name] = cloneVirtualNode(sourceNode);
+      if (name === 'mv') removeVirtualPath(sourcePath, true);
+      appendSection(response, name === 'mv' ? 'MOVED IN SANDBOX' : 'COPIED IN SANDBOX', `Simulated ${name} ${source} → ${destination}.`);
+      return;
+    }
+    if (name === 'find') {
+      const start = args.find(x => !x.startsWith('-')) || '.';
+      const rootNode = getVirtualNode(start);
+      if (!rootNode) { virtualError(response, `find: '${start}': No such file or directory`); return; }
+      const nameIndex = args.indexOf('-name'), pattern = nameIndex >= 0 ? args[nameIndex + 1] : '*';
+      const output = [];
+      const walk = (node, path) => {
+        const base = path.split('/').pop() || '/';
+        const matches = pattern === '*' || pattern === base || (pattern.startsWith('*') && base.endsWith(pattern.slice(1))) || (pattern.endsWith('*') && base.startsWith(pattern.slice(0,-1)));
+        if (matches) output.push(path);
+        if (node.type === 'directory') for (const [child,entry] of Object.entries(node.children)) walk(entry, childPath(path, child));
+      };
+      walk(rootNode, normalizeVirtualPath(start));
+      appendSection(response, 'FIND RESULTS IN SANDBOX', output.join('\n') || '(no matches)');
+      return;
+    }
+    if (name === 'stat') {
+      const path = args.find(x => !x.startsWith('-')) || '.';
+      const node = getVirtualNode(path);
+      if (!node) { virtualError(response, `stat: cannot stat '${path}': No such file or directory`); return; }
+      appendSection(response, 'VIRTUAL FILE DETAILS', `File: ${path}\nType: ${node.type}\nOwner: fedora\nPermissions: ${node.type === 'directory' ? 'drwxr-xr-x' : '-rw-r--r--'}\nSize: ${node.type === 'file' ? node.content.length : Object.keys(node.children).length}`);
+    }
+  }, commandPath);
+  return true;
+}
+function handleEchoRedirect(line, match) {
+  const commandPath = currentDirectory;
+  const text = tokenize(match[1]).join(' ');
+  const destination = tokenize(match[3])[0];
+  addEntry(line, response => {
+    const path = normalizeVirtualPath(destination), existing = getVirtualNode(path);
+    if (existing?.type === 'directory') { virtualError(response, `bash: ${destination}: Is a directory`); return; }
+    const location = virtualParent(path);
+    if (!location) { virtualError(response, `bash: ${destination}: No such directory`); return; }
+    const prior = existing?.content || '';
+    location.parent.children[location.name] = makeFile(match[2] === '>>' ? prior + text + '\n' : text + '\n');
+    appendSection(response, 'FILE WRITTEN IN SANDBOX', `${match[2] === '>>' ? 'Appended to' : 'Wrote'} ${destination} in the virtual filesystem.`);
+  }, commandPath);
+}
+function resetVirtualFilesystem() {
+  virtualFs = createVirtualFilesystem();
+  currentDirectory = '/home/fedora';
+  previousDirectory = null;
+}
+function setSimulatorMode(mode) {
+  simulatorMode = mode;
+  const terminal = document.querySelector('.terminal');
+  const toggle = document.querySelector('#mode-toggle');
+  const interactive = mode === 'interactive';
+  terminal.dataset.mode = mode;
+  toggle.setAttribute('aria-checked', String(interactive));
+  toggle.setAttribute('aria-label', interactive ? 'Switch to guide mode' : 'Switch to interactive filesystem mode');
+  toggle.querySelector('span').textContent = interactive ? 'FILESYSTEM MODE' : 'GUIDE MODE';
+  document.querySelector('#reset-button').hidden = !interactive;
+  document.querySelector('.terminal-foot>span:first-child').lastChild.textContent = interactive ? ' SANDBOX READY' : ' READY';
+  document.querySelector('.terminal-foot>span:last-child').innerHTML = interactive ? 'IN-MEMORY FILESYSTEM <b>·</b> RESET OR RELOAD TO DISCARD' : 'ENTER TO SUBMIT <b>·</b> ↑ PREVIOUS COMMAND';
+  document.querySelector('.welcome>p').textContent = interactive ? 'Interactive mode is active. File changes stay in this temporary virtual filesystem.' : 'Guide mode is active. Switch to Interactive mode to work in an in-memory virtual filesystem.';
+}
 
 async function loadCatalog() {
   const manifest = await fetch('modules.json').then(r => {
@@ -161,9 +430,11 @@ function previewFor(name, args, raw) {
 function handle(commandLine) {
   const line = commandLine.trim();
   if (!line) return;
+  const redirect = simulatorMode === 'interactive' ? /^echo\s+(.+?)\s*(>>|>)\s*(\S+)\s*$/.exec(line) : null;
+  if (redirect) { handleEchoRedirect(line, redirect); return; }
   if (/[|;&><`]|\$\(/.test(line)) {
     addEntry(line, response => {
-      appendSection(response, 'ONE COMMAND AT A TIME', 'Pipes, redirection, command chaining, and shell substitutions are not interpreted here. Submit one plain command to see its practice preview.');
+      appendSection(response, 'ONE COMMAND AT A TIME', simulatorMode === 'interactive' ? 'Pipes, command chaining, and shell substitutions are not supported. In Interactive mode, echo TEXT > FILE and echo TEXT >> FILE write only to the virtual filesystem.' : 'Pipes, redirection, command chaining, and shell substitutions are not interpreted in Guide mode. Submit one plain command to see its practice preview.');
     });
     return;
   }
@@ -174,9 +445,9 @@ function handle(commandLine) {
   }
   if (line === 'help') {
     addEntry(line, response => {
-      appendSection(response, 'PRACTICE HELP', 'Enter a command, a command with options, or a plain-language task. The simulator explains it and shows an illustrative output preview.');
+      appendSection(response, 'PRACTICE HELP', simulatorMode === 'interactive' ? 'Interactive mode applies supported file commands to a temporary virtual filesystem. Try mkdir, touch, echo text > file, cat, cp, mv, rm, ls, and cd. Other catalog commands show guide previews.' : 'Guide mode explains commands, options, and task phrases with illustrative output. Switch to Interactive mode to work in a temporary virtual filesystem.');
       const samples = appendSection(response, 'TRY THESE');
-      samples.append(el('pre', '', 'ls -lah\ncd Documents\npwd\ndf -h\nchown alex report.txt\nsystemctl --failed\nchange who owns a file\nman gsettings'));
+      samples.append(el('pre', '', simulatorMode === 'interactive' ? 'pwd\nls -la\nmkdir Projects/demo\ntouch Projects/demo/notes.txt\necho Hello Fedora > Projects/demo/notes.txt\ncat Projects/demo/notes.txt\nrm Projects/demo/notes.txt' : 'ls -lah\ncd Documents\npwd\ndf -h\nchown alex report.txt\nsystemctl --failed\nchange who owns a file\nman gsettings'));
       appendSection(response, 'BUILT-IN SHORTCUTS', 'help   show this guide\nman NAME   read the Atlas summary for a command\ncd DIR   change the simulated directory\npwd   print the simulated directory\nclear   clear the practice history');
     });
     return;
@@ -188,6 +459,7 @@ function handle(commandLine) {
     return;
   }
   const parsed = tokenize(line);
+  if (simulatorMode === 'interactive' && runInteractiveFilesystem(line, parsed)) return;
   if (parsed[0] === 'cd') {
     const oldDirectory = currentDirectory;
     if (parsed.length > 2) {
@@ -276,6 +548,21 @@ function submit(event) {
 }
 document.querySelector('#command-form').addEventListener('submit', submit);
 document.querySelector('#clear-button').addEventListener('click', () => { historyEl.replaceChildren(); input.focus(); });
+document.querySelector('#mode-toggle').addEventListener('click', () => {
+  if (simulatorMode === 'guide') {
+    if (!getVirtualNode(currentDirectory)) currentDirectory = '/home/fedora';
+    setSimulatorMode('interactive');
+  } else setSimulatorMode('guide');
+  input.focus();
+});
+document.querySelector('#reset-button').addEventListener('click', () => {
+  resetVirtualFilesystem();
+  historyEl.replaceChildren();
+  historyEl.append(el('div', 'mode-notice', 'Sandbox reset. The starter virtual filesystem has been restored.'));
+  body.scrollTop = body.scrollHeight;
+  input.focus();
+});
+setSimulatorMode('guide');
 document.querySelectorAll('[data-command]').forEach(button => button.addEventListener('click', () => { input.value = button.dataset.command; input.focus(); if (button.dataset.command.startsWith('change ')) { handle(input.value); input.value = ''; } }));
 input.addEventListener('keydown', event => {
   if (event.key === 'ArrowUp') {
