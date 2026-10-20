@@ -20,6 +20,8 @@ Open `simulator.html` from the Atlas or navigate to it directly to use the separ
 
 Use **Save Log** to download the session transcript and virtual filesystem effects as Markdown. **Save State** downloads a JSON state file with the virtual filesystem, current mode and directory, visible history, and command recall. Load it with **Load State** or enter `/loadstate` and choose the saved file.
 
+Enter `/challenge` (or `/challange`) in the practice terminal to start or resume a guided filesystem task. Completing a task awards Atlas Coins; `/coins` shows your balance and progress. Coins and completed challenges persist locally in this browser using browser storage, with no account, server, or network connection. Save State files also include the coin balance and challenge progress.
+
 ## Module layout
 
 Each command library lives in its own folder. `modules.json` is the registry the app reads to discover libraries.

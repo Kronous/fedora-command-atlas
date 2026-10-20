@@ -27,3 +27,10 @@
   .terminal-tools #load-state-button::after{content:"LOAD";font:7px var(--mono)}
   .terminal-tools #clear-button::after{content:"CLEAR";font:7px var(--mono)}
 }
+.terminal-foot .coin-display{color:#d9bf67}
+.terminal-foot .coin-display b{color:#f0d77f;font-weight:600}
+@media(max-width:450px){
+  .terminal-foot .coin-display{font-size:6px}
+  .terminal-foot>span:last-child{font-size:0}
+  .terminal-foot>span:last-child::before{content:"↵ RUN · ↑ HISTORY";font:7px var(--mono)}
+}

@@ -9,6 +9,121 @@ let currentDirectory = '/home/fedora';
 let previousDirectory = null;
 let simulatorMode = 'guide';
 let virtualFs = createVirtualFilesystem();
+const GAME_PROFILE_KEY = 'fedora-command-atlas-game-v1';
+let atlasCoins = 0;
+let completedChallengeIds = [];
+let activeChallengeId = null;
+let gameProfileStorageAvailable = true;
+const challengeDefinitions = [
+  {
+    id: 'make-project-folder', title: 'Make room for a project', reward: 10,
+    task: 'Create a directory named Projects/atlas-lab.',
+    hint: 'Try: mkdir Projects/atlas-lab',
+    available: () => !getVirtualNode('Projects/atlas-lab'),
+    complete: () => getVirtualNode('Projects/atlas-lab')?.type === 'directory',
+  },
+  {
+    id: 'write-atlas-note', title: 'Leave a note for future you', reward: 10,
+    task: 'Create Documents/atlas-note.txt and put the words “Atlas coins” in it.',
+    hint: 'Try: echo Atlas coins > Documents/atlas-note.txt',
+    available: () => getVirtualNode('Documents/atlas-note.txt')?.type !== 'file' || !getVirtualNode('Documents/atlas-note.txt').content.toLowerCase().includes('atlas coins'),
+    complete: () => getVirtualNode('Documents/atlas-note.txt')?.type === 'file' && getVirtualNode('Documents/atlas-note.txt').content.toLowerCase().includes('atlas coins'),
+  },
+  {
+    id: 'copy-readme', title: 'Make a backup copy', reward: 10,
+    task: 'Copy Documents/readme.txt into Projects/ as readme-copy.txt.',
+    hint: 'Try: cp Documents/readme.txt Projects/readme-copy.txt',
+    available: () => getVirtualNode('Documents/readme.txt')?.type === 'file' && !getVirtualNode('Projects/readme-copy.txt'),
+    complete: () => getVirtualNode('Documents/readme.txt')?.type === 'file' && getVirtualNode('Projects/readme-copy.txt')?.type === 'file' && getVirtualNode('Documents/readme.txt').content === getVirtualNode('Projects/readme-copy.txt').content,
+  },
+  {
+    id: 'rename-greeting', title: 'Give a file a better name', reward: 10,
+    task: 'Rename Projects/hello.txt to Projects/greeting.txt.',
+    hint: 'Try: mv Projects/hello.txt Projects/greeting.txt',
+    available: () => getVirtualNode('Projects/hello.txt')?.type === 'file' && !getVirtualNode('Projects/greeting.txt'),
+    complete: () => !getVirtualNode('Projects/hello.txt') && getVirtualNode('Projects/greeting.txt')?.type === 'file',
+  },
+  {
+    id: 'remove-practice-file', title: 'Clean up a practice file', reward: 10,
+    task: 'Remove the sample file Projects/hello.txt.',
+    hint: 'Try: rm Projects/hello.txt',
+    available: () => getVirtualNode('Projects/hello.txt')?.type === 'file',
+    complete: () => !getVirtualNode('Projects/hello.txt'),
+  },
+  {
+    id: 'nested-field-note', title: 'Build a tiny folder tree', reward: 15,
+    task: 'Create Projects/field-notes/tips.txt and write “useful commands” in the file.',
+    hint: 'Try: mkdir -p Projects/field-notes, then echo useful commands > Projects/field-notes/tips.txt',
+    available: () => getVirtualNode('Projects/field-notes/tips.txt')?.type !== 'file' || !getVirtualNode('Projects/field-notes/tips.txt').content.toLowerCase().includes('useful commands'),
+    complete: () => getVirtualNode('Projects/field-notes/tips.txt')?.type === 'file' && getVirtualNode('Projects/field-notes/tips.txt').content.toLowerCase().includes('useful commands'),
+  },
+];
+function loadGameProfile() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(GAME_PROFILE_KEY) || '{}');
+    atlasCoins = Number.isSafeInteger(saved.atlasCoins) && saved.atlasCoins >= 0 ? saved.atlasCoins : 0;
+    completedChallengeIds = Array.isArray(saved.completedChallengeIds)
+      ? [...new Set(saved.completedChallengeIds.filter(id => challengeDefinitions.some(challenge => challenge.id === id)))]
+      : [];
+    activeChallengeId = challengeDefinitions.some(challenge => challenge.id === saved.activeChallengeId) && !completedChallengeIds.includes(saved.activeChallengeId)
+      ? saved.activeChallengeId
+      : null;
+  } catch {
+    gameProfileStorageAvailable = false;
+    atlasCoins = 0;
+    completedChallengeIds = [];
+    activeChallengeId = null;
+  }
+}
+function saveGameProfile() {
+  try {
+    localStorage.setItem(GAME_PROFILE_KEY, JSON.stringify({ atlasCoins, completedChallengeIds, activeChallengeId }));
+    gameProfileStorageAvailable = true;
+    return true;
+  } catch {
+    gameProfileStorageAvailable = false;
+    return false;
+  }
+}
+function updateCoinBalance() {
+  const display = document.querySelector('#coin-balance');
+  if (display) display.textContent = String(atlasCoins);
+}
+function currentChallenge() { return challengeDefinitions.find(challenge => challenge.id === activeChallengeId) || null; }
+function renderChallenge(challenge, command='/challenge') {
+  const storageNote = gameProfileStorageAvailable
+    ? 'Coins and challenge progress save locally in this browser.'
+    : 'Warning: browser storage is unavailable, so coin progress may not survive a reload.';
+  addEntry(command, response => appendTerminalText(response,
+    `╭─ ATLAS CHALLENGE ─────────────────────╮\n${challenge.title}\n\n${challenge.task}\n\nHint: ${challenge.hint}\nReward: ${challenge.reward} Atlas Coins\n\nComplete the task in the virtual filesystem.\n${storageNote}\n╰───────────────────────────────────────╯`));
+}
+function startOrShowChallenge() {
+  setSimulatorMode('interactive');
+  let challenge = currentChallenge();
+  if (!challenge) {
+    const available = challengeDefinitions.filter(item => !completedChallengeIds.includes(item.id) && item.available());
+    if (!available.length) {
+      addEntry('/challenge', response => appendTerminalText(response,
+        `All available Atlas challenges are complete or already satisfied in this sandbox.\nYou have ${atlasCoins} Atlas Coins. More challenges can be added to future modules.`));
+      return;
+    }
+    challenge = available[Math.floor(Math.random() * available.length)];
+    activeChallengeId = challenge.id;
+    saveGameProfile();
+  }
+  renderChallenge(challenge);
+}
+function checkChallengeProgress() {
+  const challenge = currentChallenge();
+  if (!challenge || !challenge.complete()) return;
+  atlasCoins += challenge.reward;
+  completedChallengeIds = [...new Set([...completedChallengeIds, challenge.id])];
+  activeChallengeId = null;
+  const saved = saveGameProfile();
+  updateCoinBalance();
+  addEntry('ATLAS COINS', response => appendTerminalText(response,
+    `✓ Challenge complete: ${challenge.title}\n\n${challenge.reward} Atlas Coins\nBalance: ${atlasCoins} Atlas Coins\n\n${saved ? 'Your coins and completed challenges are saved in this browser.' : 'Warning: browser storage is unavailable; this reward may not persist after a reload.'}`));
+}
 
 const builtins = new Map([
   ['pwd', { summary: 'Print the current simulated working directory.', usage: 'pwd [OPTION]...', flags: [], optionDescriptions: {}, examples: ['pwd'] }],
@@ -513,6 +628,9 @@ function saveSimulatorState() {
     historyIndex,
     inputValue: input.value,
     scrollTop: body.scrollTop,
+    atlasCoins,
+    completedChallengeIds,
+    activeChallengeId,
     visibleHistory,
     sessionRecords,
   };
@@ -556,18 +674,30 @@ async function loadSimulatorState(file) {
   const visible = Array.isArray(data.visibleHistory) ? data.visibleHistory.slice(-1000).map(safeSavedRecord) : [];
   const records = Array.isArray(data.sessionRecords) ? data.sessionRecords.slice(-5000).map(safeSavedRecord) : visible.slice();
   const restoredCommands = Array.isArray(data.commandHistory) ? data.commandHistory.slice(-1000).filter(item => typeof item === 'string').map(item => item.slice(0,10000)) : [];
+  const restoredCoins = Number.isSafeInteger(data.atlasCoins) && data.atlasCoins >= 0 ? data.atlasCoins : atlasCoins;
+  const restoredCompleted = Array.isArray(data.completedChallengeIds)
+    ? [...new Set(data.completedChallengeIds.filter(id => challengeDefinitions.some(challenge => challenge.id === id)))]
+    : completedChallengeIds;
+  const restoredActive = challengeDefinitions.some(challenge => challenge.id === data.activeChallengeId) && !restoredCompleted.includes(data.activeChallengeId)
+    ? data.activeChallengeId
+    : (Object.hasOwn(data, 'activeChallengeId') ? null : activeChallengeId);
 
   virtualFs = restoredFs;
   currentDirectory = restoredDirectory;
   previousDirectory = restoredPrevious;
   simulatorMode = restoredMode;
   commandHistory = restoredCommands;
+  atlasCoins = restoredCoins;
+  completedChallengeIds = restoredCompleted;
+  activeChallengeId = restoredActive;
   historyIndex = Math.max(0, Math.min(Number.isInteger(data.historyIndex) ? data.historyIndex : commandHistory.length, commandHistory.length));
   input.value = typeof data.inputValue === 'string' ? data.inputValue.slice(0,10000) : '';
   sessionRecords = records;
   historyEl.replaceChildren();
   for (const record of visible) renderSavedHistoryRecord(record);
   setSimulatorMode(simulatorMode);
+  updateCoinBalance();
+  saveGameProfile();
   body.scrollTop = Number.isFinite(data.scrollTop) ? Math.max(0, data.scrollTop) : body.scrollHeight;
   return file.name;
 }
@@ -650,6 +780,14 @@ function simulatedCatalogOutput(name, args, raw, command) {
 function handle(commandLine) {
   const line = commandLine.trim();
   if (!line) return;
+  if (line === '/challenge' || line === '/challange') {
+    startOrShowChallenge();
+    return;
+  }
+  if (line === '/coins') {
+    addEntry(line, response => appendTerminalText(response, `Atlas Coins: ${atlasCoins}\nChallenges completed: ${completedChallengeIds.length}/${challengeDefinitions.length}${activeChallengeId ? `\nActive challenge: ${currentChallenge()?.title}` : ''}`));
+    return;
+  }
   if (line === '/loadstate') {
     addEntry(line, response => appendTerminalText(response, 'Choose a Fedora Command Atlas state file to load.'));
     requestLoadState();
@@ -673,10 +811,10 @@ function handle(commandLine) {
   if (line === 'help') {
     addEntry(line, response => {
       if (simulatorMode === 'interactive') {
-        appendTerminalText(response, 'Atlas practice shell\nFilesystem commands use the temporary sandbox. Other library commands show safe simulated output.\n\nTry: pwd, ls -la, mkdir Projects/demo, touch file.txt, cat file.txt, help dnf\nUse /loadstate to restore a saved state. SAVE LOG downloads this session as Markdown; SAVE STATE downloads a restorable snapshot.');
+        appendTerminalText(response, 'Atlas practice shell\nFilesystem commands use the temporary sandbox. Other library commands show safe simulated output.\n\nTry: pwd, ls -la, mkdir Projects/demo, touch file.txt, cat file.txt, help dnf\nUse /challenge for a guided task, /coins to check your balance, or /loadstate to restore a snapshot.');
         return;
       }
-      appendSection(response, 'PRACTICE HELP', simulatorMode === 'interactive' ? 'Interactive mode runs filesystem commands against a temporary virtual filesystem. Every command in the loaded libraries is also available: commands without a filesystem handler receive a metadata-based simulation preview. No host shell is run.' : 'Guide mode explains commands, options, and task phrases with illustrative output. Switch to Interactive mode to work in a temporary virtual filesystem.');
+      appendSection(response, 'PRACTICE HELP', 'Guide mode explains commands, options, and task phrases with illustrative output. Switch to Interactive mode to work in the virtual filesystem. Enter /challenge for a guided task or /coins to check your Atlas Coins.');
       const samples = appendSection(response, 'TRY THESE');
       samples.append(el('pre', '', simulatorMode === 'interactive' ? 'pwd\nls -la\nmkdir Projects/demo\ntouch Projects/demo/notes.txt\necho Hello Fedora > Projects/demo/notes.txt\ncat Projects/demo/notes.txt\nrm Projects/demo/notes.txt' : 'ls -lah\ncd Documents\npwd\ndf -h\nchown alex report.txt\nsystemctl --failed\nchange who owns a file\nman gsettings'));
       appendSection(response, 'BUILT-IN SHORTCUTS', 'help   show this guide\nman NAME   read the Atlas summary for a command\ncd DIR   change the simulated directory\npwd   print the simulated directory\nclear   clear the practice history');
@@ -798,6 +936,7 @@ function submit(event) {
   commandHistory.push(value);
   historyIndex = commandHistory.length;
   handle(value);
+  if (!['/challenge','/challange','/coins','/loadstate'].includes(value.trim())) checkChallengeProgress();
   input.value = '';
   input.focus();
 }
@@ -841,7 +980,9 @@ document.querySelector('#load-state-input').addEventListener('change', async eve
   }
   input.focus({ preventScroll: true });
 });
-setSimulatorMode('guide');
+loadGameProfile();
+updateCoinBalance();
+setSimulatorMode(activeChallengeId ? 'interactive' : 'guide');
 document.querySelectorAll('[data-command]').forEach(button => button.addEventListener('click', () => { input.value = button.dataset.command; input.focus(); if (button.dataset.command.startsWith('change ')) { handle(input.value); input.value = ''; } }));
 input.addEventListener('keydown', event => {
   if (event.key === 'ArrowUp') {
@@ -854,7 +995,10 @@ input.addEventListener('keydown', event => {
     input.value = commandHistory[historyIndex] || '';
   }
 });
-loadCatalog().catch(error => {
+loadCatalog().then(() => {
+  const challenge = currentChallenge();
+  if (challenge) renderChallenge(challenge);
+}).catch(error => {
   const response = el('div', 'response');
   response.append(el('div', 'response-title', 'CATALOG UNAVAILABLE'), el('p', '', `${error.message}. Start the Atlas with ./launch-atlas.sh and try again.`));
   historyEl.append(response);
