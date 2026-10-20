@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "modules": [
+    {
+      "id": "fedora",
+      "name": "Fedora 44 Core",
+      "version": "Fedora 44 starter catalog",
+      "file": "modules/fedora-core/catalog.json",
+      "icon": "F"
+    },
+    {
+      "id": "kde",
+      "name": "KDE Plasma",
+      "version": "Fedora 44 starter catalog",
+      "file": "modules/kde-plasma/catalog.json",
+      "icon": "K"
+    },
+    {
+      "id": "gnome",
+      "name": "GNOME",
+      "version": "Fedora 44 starter catalog",
+      "file": "modules/gnome/catalog.json",
+      "icon": "G"
+    }
+  ]
+}

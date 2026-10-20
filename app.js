@@ -1,15 +1,13 @@
-const SOURCES = [
-  { file: 'data/fedora-core.json', id: 'Fedora', icon: 'F' },
-  { file: 'data/kde-plasma.json', id: 'KDE Plasma', icon: 'K' },
-  { file: 'data/gnome.json', id: 'GNOME', icon: 'G' },
-];
 let libraries = [], selected = 'All libraries', query = '', category = '';
 const $ = (s) => document.querySelector(s);
 async function load() {
-  libraries = await Promise.all(SOURCES.map(async (source) => {
-    const data = await fetch(source.file).then(r => { if (!r.ok) throw new Error(`Could not load ${source.file}`); return r.json(); });
-    if (!Array.isArray(data.commands) || data.commands.some(c => !Array.isArray(c.searchTerms))) throw new Error(`${source.file} is missing required searchTerms on one or more commands.`);
-    return { ...data, icon: source.icon };
+  const manifest = await fetch('modules.json').then(r => { if (!r.ok) throw new Error('Could not load modules.json'); return r.json(); });
+  if (manifest.schemaVersion !== 1 || !Array.isArray(manifest.modules)) throw new Error('modules.json must use schemaVersion 1 and include a modules array.');
+  libraries = await Promise.all(manifest.modules.map(async (module) => {
+    if (!module.id || !module.name || !module.file || !module.icon) throw new Error('Every module manifest entry needs id, name, file, and icon.');
+    const data = await fetch(module.file).then(r => { if (!r.ok) throw new Error(`Could not load module catalog ${module.file}`); return r.json(); });
+    if (!Array.isArray(data.commands) || data.commands.some(c => !Array.isArray(c.searchTerms) || !c.optionDescriptions)) throw new Error(`${module.file} is missing required searchTerms or optionDescriptions on one or more commands.`);
+    return { ...data, ...module };
   }));
   renderLibraries(); fillCategories(); render();
 }
