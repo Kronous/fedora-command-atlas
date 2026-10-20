@@ -16,3 +16,14 @@
 .history-entry[data-mode="interactive"] .response.warning p{color:#f0ca70}
 .history-entry[data-mode="interactive"] .response pre{display:block;margin:0;padding:0;border:0;border-radius:0;background:transparent;color:#b9f4b9;font:12px/1.6 var(--mono);white-space:pre-wrap;overflow-wrap:anywhere}
 .history-entry[data-mode="interactive"] .terminal-output.stderr{color:#f0ca70}
+.terminal-tools #save-log-button,.terminal-tools #save-state-button,.terminal-tools #load-state-button{color:#a8dda9}
+@media(max-width:600px){
+  .terminal-tools #mode-toggle span{font-size:0}
+  .terminal-tools #mode-toggle span::after{content:"FS";font:7px var(--mono)}
+  .terminal-tools #reset-button,.terminal-tools #save-log-button,.terminal-tools #save-state-button,.terminal-tools #load-state-button,.terminal-tools #clear-button{font-size:0;padding:4px 5px}
+  .terminal-tools #reset-button::after{content:"RST";font:7px var(--mono)}
+  .terminal-tools #save-log-button::after{content:"LOG";font:7px var(--mono)}
+  .terminal-tools #save-state-button::after{content:"SAVE";font:7px var(--mono)}
+  .terminal-tools #load-state-button::after{content:"LOAD";font:7px var(--mono)}
+  .terminal-tools #clear-button::after{content:"CLEAR";font:7px var(--mono)}
+}

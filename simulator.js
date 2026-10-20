@@ -4,6 +4,7 @@ const body = document.querySelector('#terminal-body');
 let catalog = new Map();
 let commandHistory = [];
 let historyIndex = 0;
+let sessionRecords = [];
 let currentDirectory = '/home/fedora';
 let previousDirectory = null;
 let simulatorMode = 'guide';
@@ -98,6 +99,48 @@ function cloneVirtualNode(node) {
   const copy = makeDirectory();
   for (const [name, child] of Object.entries(node.children)) copy.children[name] = cloneVirtualNode(child);
   return copy;
+}
+function serializeVirtualNode(node) {
+  if (node.type === 'file') return { type: 'file', content: node.content };
+  const children = {};
+  for (const [name, child] of Object.entries(node.children)) children[name] = serializeVirtualNode(child);
+  return { type: 'directory', children };
+}
+function virtualFilesystemEntries(root) {
+  const entries = new Map();
+  const visit = (node, path) => {
+    entries.set(path, node);
+    if (node.type === 'directory') {
+      for (const [name, child] of Object.entries(node.children)) visit(child, path === '/' ? `/${name}` : `${path}/${name}`);
+    }
+  };
+  visit(root, '/');
+  return entries;
+}
+function describeFilesystemChanges(before, after) {
+  const prior = virtualFilesystemEntries(before), next = virtualFilesystemEntries(after), changes = [];
+  for (const [path, node] of next) {
+    const old = prior.get(path);
+    if (!old) changes.push(`Created ${node.type}: ${path}${node.type === 'file' ? ` (${node.content.length} characters)` : ''}`);
+    else if (node.type === 'file' && old.type === 'file' && node.content !== old.content) changes.push(`Updated file: ${path} (${old.content.length} → ${node.content.length} characters)`);
+    else if (node.type !== old.type) changes.push(`Replaced ${old.type} with ${node.type}: ${path}`);
+  }
+  for (const [path, node] of prior) if (!next.has(path)) changes.push(`Removed ${node.type}: ${path}`);
+  return changes.sort((a,b) => a.localeCompare(b));
+}
+function sanitizeVirtualNode(value, depth=0, count={nodes:0}) {
+  if (!value || typeof value !== 'object' || Array.isArray(value) || depth > 64 || ++count.nodes > 20000) throw new Error('Invalid or oversized filesystem data.');
+  if (value.type === 'file') {
+    if (typeof value.content !== 'string' || value.content.length > 2000000) throw new Error('Invalid or oversized file content.');
+    return makeFile(value.content);
+  }
+  if (value.type !== 'directory' || !value.children || typeof value.children !== 'object' || Array.isArray(value.children)) throw new Error('Invalid filesystem node.');
+  const directory = makeDirectory();
+  for (const [name, child] of Object.entries(value.children)) {
+    if (!name || name === '.' || name === '..' || name.includes('/') || name.includes('\\') || name.length > 255) throw new Error('Invalid filename in saved state.');
+    directory.children[name] = sanitizeVirtualNode(child, depth + 1, count);
+  }
+  return directory;
 }
 function removeVirtualPath(path, recursive=false, force=false) {
   const normalized = normalizeVirtualPath(path), location = virtualParent(normalized);
@@ -347,12 +390,32 @@ function addPrompt(command, path=currentDirectory) {
 function addEntry(command, renderer, promptDirectory=currentDirectory) {
   const entry = el('article', 'history-entry');
   entry.dataset.mode = simulatorMode;
+  entry.dataset.promptDirectory = promptDirectory;
   entry.append(addPrompt(command, promptDirectory));
   const response = el('div', 'response');
+  const beforeFs = simulatorMode === 'interactive' ? cloneVirtualNode(virtualFs) : null;
+  const beforeDirectory = currentDirectory;
   renderer(response);
+  const outputCopy = response.cloneNode(true);
+  if (simulatorMode === 'interactive') outputCopy.querySelectorAll('.response-title').forEach(title => title.remove());
+  const record = {
+    command, promptDirectory, mode: simulatorMode,
+    output: domText(outputCopy).trim(),
+    effects: beforeFs ? describeFilesystemChanges(beforeFs, virtualFs) : [],
+    directoryBefore: beforeDirectory,
+    directoryAfter: currentDirectory,
+  };
+  entry.sessionRecord = record;
+  sessionRecords.push(record);
   entry.append(response);
   historyEl.append(entry);
   body.scrollTop = body.scrollHeight;
+}
+function domText(node) {
+  if (node.nodeType === Node.TEXT_NODE) return node.textContent || '';
+  if (node.nodeType !== Node.ELEMENT_NODE) return '';
+  const text = [...node.childNodes].map(domText).join('');
+  return ['P','PRE','DIV','SECTION'].includes(node.tagName) ? `${text.trim()}\n` : text;
 }
 function printUsage(response, command) {
   if (simulatorMode === 'interactive') {
@@ -381,6 +444,134 @@ function appendTerminalText(response, text, type='stdout') {
   response.classList.add('terminal-response');
   response.append(el('pre', `terminal-output ${type}`, text));
 }
+function renderSavedHistoryRecord(record) {
+  const entry = el('article', 'history-entry');
+  entry.dataset.mode = record.mode === 'interactive' ? 'interactive' : 'guide';
+  entry.dataset.promptDirectory = record.promptDirectory || '/home/fedora';
+  entry.append(addPrompt(record.command || '', entry.dataset.promptDirectory));
+  const response = el('div', 'response');
+  if (record.output) {
+    if (entry.dataset.mode === 'interactive') appendTerminalText(response, record.output);
+    else response.append(el('pre', '', record.output));
+  }
+  entry.sessionRecord = record;
+  entry.append(response);
+  historyEl.append(entry);
+}
+function markdownFence(text) {
+  const runs = text.match(/`+/g) || [];
+  return '`'.repeat(Math.max(3, ...runs.map(run => run.length + 1)));
+}
+function sessionMarkdown() {
+  const lines = [
+    '# Fedora Command Atlas session log',
+    '',
+    `- Saved: ${new Date().toLocaleString()}`,
+    `- Session entries: ${sessionRecords.length}`,
+    '- Filesystem changes in this log refer only to the browser sandbox.',
+    '',
+  ];
+  sessionRecords.forEach((record, index) => {
+    const command = record.command || '(session event)';
+    lines.push(`## ${index + 1}. ${record.mode === 'interactive' ? 'Interactive' : 'Guide'} session`, '', `**Prompt:** \`${displayDirectory(record.promptDirectory || '/home/fedora')}$\``, '', `$ ${command}`, '');
+    if (record.output) {
+      const fence = markdownFence(record.output);
+      lines.push('**Output**', '', fence + 'text', record.output, fence, '');
+    } else lines.push('_No output._', '');
+    if (record.directoryBefore !== record.directoryAfter) lines.push(`**Working directory:** \`${record.directoryBefore}\` → \`${record.directoryAfter}\``, '');
+    if (record.effects?.length) {
+      lines.push('**Virtual filesystem effects**', '');
+      for (const effect of record.effects) lines.push(`- ${effect}`);
+      lines.push('');
+    }
+  });
+  return lines.join('\n');
+}
+function downloadFile(filename, contents, mimeType) {
+  const url = URL.createObjectURL(new Blob([contents], { type: mimeType }));
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+function timestampForFilename() { return new Date().toISOString().replace(/[:.]/g, '-'); }
+function saveSessionLog() {
+  downloadFile(`fedora-atlas-session-${timestampForFilename()}.md`, sessionMarkdown(), 'text/markdown;charset=utf-8');
+}
+function saveSimulatorState() {
+  const visibleHistory = [...historyEl.querySelectorAll(':scope > .history-entry')].map(entry => entry.sessionRecord).filter(Boolean);
+  const state = {
+    format: 'fedora-command-atlas-state',
+    schemaVersion: 1,
+    savedAt: new Date().toISOString(),
+    mode: simulatorMode,
+    currentDirectory,
+    previousDirectory,
+    filesystem: serializeVirtualNode(virtualFs),
+    commandHistory: commandHistory.slice(-1000),
+    historyIndex,
+    inputValue: input.value,
+    scrollTop: body.scrollTop,
+    visibleHistory,
+    sessionRecords,
+  };
+  downloadFile(`fedora-atlas-state-${timestampForFilename()}.json`, JSON.stringify(state, null, 2), 'application/json;charset=utf-8');
+}
+function safeSavedRecord(value) {
+  if (!value || typeof value !== 'object') throw new Error('Invalid session history entry.');
+  const text = (candidate, limit=200000) => typeof candidate === 'string' ? candidate.slice(0, limit) : '';
+  return {
+    command: text(value.command, 10000),
+    promptDirectory: text(value.promptDirectory, 2000) || '/home/fedora',
+    mode: value.mode === 'interactive' ? 'interactive' : 'guide',
+    output: text(value.output),
+    effects: Array.isArray(value.effects) ? value.effects.slice(0, 1000).map(effect => text(effect, 4000)) : [],
+    directoryBefore: text(value.directoryBefore, 2000),
+    directoryAfter: text(value.directoryAfter, 2000),
+  };
+}
+function findNodeAt(root, path) {
+  let node = root;
+  for (const part of path.split('/').filter(Boolean)) {
+    if (!node || node.type !== 'directory') return null;
+    node = node.children[part];
+  }
+  return node || null;
+}
+async function loadSimulatorState(file) {
+  if (!file) return;
+  if (file.size > 10_000_000) throw new Error('State file is larger than 10 MB.');
+  const data = JSON.parse(await file.text());
+  if (data.format !== 'fedora-command-atlas-state' || data.schemaVersion !== 1) throw new Error('This is not a supported Fedora Command Atlas state file.');
+  const restoredFs = sanitizeVirtualNode(data.filesystem);
+  if (restoredFs.type !== 'directory') throw new Error('The saved filesystem root is invalid.');
+  const restoredMode = data.mode === 'interactive' ? 'interactive' : 'guide';
+  const restoredDirectory = typeof data.currentDirectory === 'string' && data.currentDirectory.startsWith('/') ? normalizeVirtualPath(data.currentDirectory, '/') : '/home/fedora';
+  if (restoredMode === 'interactive' && findNodeAt(restoredFs, restoredDirectory)?.type !== 'directory') throw new Error('The saved working directory is missing from its filesystem.');
+  const previousCandidate = typeof data.previousDirectory === 'string' && data.previousDirectory.startsWith('/') ? normalizeVirtualPath(data.previousDirectory, '/') : null;
+  const restoredPrevious = restoredMode === 'interactive'
+    ? (previousCandidate && findNodeAt(restoredFs, previousCandidate)?.type === 'directory' ? previousCandidate : null)
+    : previousCandidate;
+  const visible = Array.isArray(data.visibleHistory) ? data.visibleHistory.slice(-1000).map(safeSavedRecord) : [];
+  const records = Array.isArray(data.sessionRecords) ? data.sessionRecords.slice(-5000).map(safeSavedRecord) : visible.slice();
+  const restoredCommands = Array.isArray(data.commandHistory) ? data.commandHistory.slice(-1000).filter(item => typeof item === 'string').map(item => item.slice(0,10000)) : [];
+
+  virtualFs = restoredFs;
+  currentDirectory = restoredDirectory;
+  previousDirectory = restoredPrevious;
+  simulatorMode = restoredMode;
+  commandHistory = restoredCommands;
+  historyIndex = Math.max(0, Math.min(Number.isInteger(data.historyIndex) ? data.historyIndex : commandHistory.length, commandHistory.length));
+  input.value = typeof data.inputValue === 'string' ? data.inputValue.slice(0,10000) : '';
+  sessionRecords = records;
+  historyEl.replaceChildren();
+  for (const record of visible) renderSavedHistoryRecord(record);
+  setSimulatorMode(simulatorMode);
+  body.scrollTop = Number.isFinite(data.scrollTop) ? Math.max(0, data.scrollTop) : body.scrollHeight;
+  return file.name;
+}
+function requestLoadState() { document.querySelector('#load-state-input').click(); }
 function words(text) { return text.toLocaleLowerCase().match(/[\p{L}\p{N}]+/gu) || []; }
 function phraseMatches(phrase, terms) {
   const q = words(phrase);
@@ -459,6 +650,11 @@ function simulatedCatalogOutput(name, args, raw, command) {
 function handle(commandLine) {
   const line = commandLine.trim();
   if (!line) return;
+  if (line === '/loadstate') {
+    addEntry(line, response => appendTerminalText(response, 'Choose a Fedora Command Atlas state file to load.'));
+    requestLoadState();
+    return;
+  }
   const redirect = simulatorMode === 'interactive' ? /^echo\s+(.+?)\s*(>>|>)\s*(\S+)\s*$/.exec(line) : null;
   if (redirect) { handleEchoRedirect(line, redirect); return; }
   if (/[|;&><`]|\$\(/.test(line)) {
@@ -477,7 +673,7 @@ function handle(commandLine) {
   if (line === 'help') {
     addEntry(line, response => {
       if (simulatorMode === 'interactive') {
-        appendTerminalText(response, 'Atlas practice shell\nFilesystem commands use the temporary sandbox. Other library commands show safe simulated output.\n\nTry: pwd, ls -la, mkdir Projects/demo, touch file.txt, cat file.txt, help dnf');
+        appendTerminalText(response, 'Atlas practice shell\nFilesystem commands use the temporary sandbox. Other library commands show safe simulated output.\n\nTry: pwd, ls -la, mkdir Projects/demo, touch file.txt, cat file.txt, help dnf\nUse /loadstate to restore a saved state. SAVE LOG downloads this session as Markdown; SAVE STATE downloads a restorable snapshot.');
         return;
       }
       appendSection(response, 'PRACTICE HELP', simulatorMode === 'interactive' ? 'Interactive mode runs filesystem commands against a temporary virtual filesystem. Every command in the loaded libraries is also available: commands without a filesystem handler receive a metadata-based simulation preview. No host shell is run.' : 'Guide mode explains commands, options, and task phrases with illustrative output. Switch to Interactive mode to work in a temporary virtual filesystem.');
@@ -612,15 +808,38 @@ document.querySelector('#mode-toggle').addEventListener('click', () => {
     if (!getVirtualNode(currentDirectory)) currentDirectory = '/home/fedora';
     setSimulatorMode('interactive');
   } else setSimulatorMode('guide');
-  input.focus();
+  input.focus({ preventScroll: true });
 });
 document.querySelector('#reset-button').addEventListener('click', () => {
+  const beforeFs = cloneVirtualNode(virtualFs);
+  const beforeDirectory = currentDirectory;
   resetVirtualFilesystem();
   updatePromptDirectory();
   historyEl.replaceChildren();
-  historyEl.append(el('div', 'mode-notice', 'Sandbox reset. The starter virtual filesystem has been restored.'));
+  const record = {
+    command: 'RESET FS', promptDirectory: beforeDirectory, mode: simulatorMode,
+    output: 'Sandbox reset. The starter virtual filesystem has been restored.',
+    effects: describeFilesystemChanges(beforeFs, virtualFs),
+    directoryBefore: beforeDirectory, directoryAfter: currentDirectory,
+  };
+  sessionRecords.push(record);
+  renderSavedHistoryRecord(record);
   body.scrollTop = body.scrollHeight;
   input.focus();
+});
+document.querySelector('#save-log-button').addEventListener('click', saveSessionLog);
+document.querySelector('#save-state-button').addEventListener('click', saveSimulatorState);
+document.querySelector('#load-state-button').addEventListener('click', requestLoadState);
+document.querySelector('#load-state-input').addEventListener('change', async event => {
+  const file = event.target.files?.[0];
+  event.target.value = '';
+  if (!file) return;
+  try {
+    await loadSimulatorState(file);
+  } catch (error) {
+    addEntry('/loadstate', response => appendTerminalText(response, `loadstate: ${error.message}`, 'stderr'));
+  }
+  input.focus({ preventScroll: true });
 });
 setSimulatorMode('guide');
 document.querySelectorAll('[data-command]').forEach(button => button.addEventListener('click', () => { input.value = button.dataset.command; input.focus(); if (button.dataset.command.startsWith('change ')) { handle(input.value); input.value = ''; } }));
